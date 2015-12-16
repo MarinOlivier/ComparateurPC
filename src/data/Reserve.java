@@ -6,7 +6,7 @@ package data;
 public class Reserve {
 
     private String _username;
-    private int id_PC;
+    private int _id_PC;
 
 
     public String get_username() {
@@ -18,11 +18,11 @@ public class Reserve {
     }
 
     public int getId_PC() {
-        return id_PC;
+        return _id_PC;
     }
 
     public void setId_PC(int id_PC) {
-        this.id_PC = id_PC;
+        this._id_PC = id_PC;
     }
 
 
