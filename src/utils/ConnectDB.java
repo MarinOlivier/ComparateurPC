@@ -12,17 +12,29 @@ import com.mysql.jdbc.Connection;
 public class ConnectDB {
     public static void startConnection() {
         Connection conn = null;
-        try {
-            conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:8888/projet_poo?" +
-                            "user=root&password=");
 
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        try {
+        	
+            conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:8889/projet_poo?" +
+                            "user=root&password=root");
             
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+
             /* Création de l'objet gérant les requêtes */
             Statement statement = conn.createStatement();
-            ResultSet res = statement.executeQuery("SELECT * FROM user;");
+            ResultSet resultat = statement.executeQuery("SELECT * FROM user;");
+            
+            /* Récupération des données du résultat de la requête de lecture */
+            while (resultat.next()) {
+                int idUser = resultat.getInt("id");
+                String nameUser = resultat.getString("name");
+                String pwdUser = resultat.getString("password");
+                String roleUser = resultat.getString("role");
+                /* Traiter ici les valeurs récupérées. */
+                System.out.println(idUser + " " + nameUser + " " + pwdUser + " " + roleUser);
+            }
         } catch (Exception ex) {
-            // handle any errors LOL
+            // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
         }
     }
