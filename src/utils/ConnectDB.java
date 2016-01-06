@@ -2,25 +2,32 @@
  * 
  */
 package utils;
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
+
+import java.sql.*;
+//import java.sql.Connection;
+//import java.sql.DriverManager;
+import java.sql.SQLException;
+
 /**
  * @author josetarsitano
  *
  */
 public class ConnectDB {
-    /* La liste qui contiendra tous les résultats de nos essais */
-    private List<String> messages = new ArrayList<String>();
-    
-    public List<String> executerTests(HttpServletRequest request) {
 
-        /* Ici, nous placerons le code de nos manipulations */
+    public static void startConnection() {
+        Connection conn = null;
 
-        /* ... */
+        try {
+            // The newInstance() call is a work around for some
+            // broken Java implementations
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:8888/projet_poo?" +
+                            "user=root&password=");
 
 
-        return messages;
-
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (Exception ex) {
+            // handle any errors
+            System.out.println("SQLException: " + ex.getMessage());
+        }
     }
 }
