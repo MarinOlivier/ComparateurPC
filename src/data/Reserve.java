@@ -8,7 +8,6 @@ public class Reserve {
     private String _username;
     private int _id_PC;
 
-
     public String get_username() {
         return _username;
     }
