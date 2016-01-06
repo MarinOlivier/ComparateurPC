@@ -22,7 +22,7 @@ public class ConnectDB {
             Statement statement = conn.createStatement();
             ResultSet res = statement.executeQuery("SELECT * FROM user;");
         } catch (Exception ex) {
-            // handle any errors
+            // handle any errors LOL
             System.out.println("SQLException: " + ex.getMessage());
         }
     }
