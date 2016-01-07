@@ -17,7 +17,7 @@ public class Main {
         System.out.println("Hello lol!");
         utils.ConnectDB.startConnection();
 
-        File file = new File("/Users/josetarsitano/Documents/Work/Development/Eclipse/ComparateurPC/src/db/ldlc.json");
-        utils.JsonParse.reader(file);
+        File file = new File("/Users/olivier/Documents/Polytech/Cours 4a Moi/POO_Projet/src/ComparateurPCv2/src/db/ldlc.json");
+        //utils.JsonParse.reader(file);
     }
 }
