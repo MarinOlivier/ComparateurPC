@@ -41,7 +41,6 @@ public class ConnectDB {
         for (int i = 0; i < a.size(); i++) {
     		listComponent[i] = (String)a.get(component[i]);
     		listComponent[i] = listComponent[i] != null ? listComponent[i].replace(",", ".") : (String)a.get(component[i]);
-    		System.out.println(listComponent[i]);
 
             preparedStatement.setString(i+1, listComponent[i]);
 		}
