@@ -2,8 +2,6 @@ package main;
 
 import java.io.File;
 
-import utils.JsonParse;
-
 /**
  * @TODO Creation BDD
  * @TODO Connexion BDD / Appli
@@ -19,7 +17,7 @@ public class Main {
         System.out.println("Hello lol!");
         utils.ConnectDB.startConnection();
 
-        File file = new File("/Users/josetarsitano/Documents/Work/Development/Eclipse/ComparateurPC/src/db/pm_eshop_wanted_articles.json");
+        File file = new File("/Users/josetarsitano/Documents/Work/Development/Eclipse/ComparateurPC/src/db/ldlc.json");
         utils.JsonParse.reader(file);
     }
 }

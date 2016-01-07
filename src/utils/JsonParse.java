@@ -25,7 +25,6 @@ public class JsonParse {
         catch (Exception je) {
             System.out.printf("JSONException: " + je.getMessage());
         }
-
     }
     
     /** Lit l'InputStream entièrement et le charge en mémoire sous forme de String avec le charset donné.
