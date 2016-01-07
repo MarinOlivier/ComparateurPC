@@ -24,45 +24,35 @@ public class JsonParse {
             JSONObject _computer = data.getJSONObject(0);
             JSONArray computer = _computer.getJSONArray("computer");
 
+            boolean first = true;
             for (int i = 0 ; i < computer.length() ; i++){
                 JSONObject current = computer.getJSONObject(i);
 
-                Map toPush = new HashMap<>();
+                Map<String, String> toPush = new HashMap<>();
 
-
-                if(current.has("Name")) {
-                    String name = current.getString("Name");
-                }
-                else {
-                    String name = null;
-                }
-                if(current.has("motherBoard")) {
-                    String motherBoard = current.getString("motherBoard");
-                }
-                else{
-                    String motherBoard = null;
-                }
-
-                toPush.put("name", current.getString("Name"));
-                toPush.put("motherBoard", null);
-                toPush.put("CPU", current.getString("CPU"));
-                toPush.put("RAM", current.getString("RAM"));
-                toPush.put("GPU", current.getString("GPU"));
-                toPush.put("ROM", current.getString("HDD"));
-                toPush.put("powerSupply", current.getString("Alim"));
-                toPush.put("price", current.getString("prix"));
-                toPush.put("RAM_freq", null);
-                toPush.put("CPU_freq", current.getString("Freq_CPU"));
+                toPush.put("name", (current.has("Name") ? current.getString("Name") : null));
+                toPush.put("motherBoard", (current.has("motherBoard") ? current.getString("motherBoard") : null));
+                toPush.put("CPU", (current.has("CPU") ? current.getString("CPU") : null));
+                toPush.put("RAM", (current.has("RAM") ? current.getString("RAM") : null));
+                toPush.put("GPU", (current.has("GPU") ? current.getString("GPU") : null));
+                toPush.put("ROM", (current.has("HDD") ? current.getString("HDD") : null));
+                toPush.put("powerSupply", (current.has("Alim") ? current.getString("Alim") : null));
+                toPush.put("price", (current.has("prix") ? current.getString("prix") : null));
+                toPush.put("RAM_freq", (current.has("Freq_RAM") ? current.getString("Freq_RAM") : null));
+                toPush.put("CPU_freq", (current.has("Freq_CPU") ? current.getString("Freq_CPU") : null));
                 toPush.put("GPU_freq", null);
-                toPush.put("GPU_RAM", current.getString("Ram_GPU"));
-                toPush.put("E_S", current.getString("ES"));
-                toPush.put("case_PC", current.getString("boitier"));
+                toPush.put("GPU_RAM", (current.has("Ram_GPU") ? current.getString("Ram_GPU") : null));
+                toPush.put("E_S", (current.has("ES") ? current.getString("ES") : null));
+                toPush.put("case_PC", (current.has("boitier") ? current.getString("boitier") : null));
                 toPush.put("airing", null);
-                toPush.put("OS", current.getString("OS"));
-                toPush.put("brand", current.getString("marque"));
+                toPush.put("OS", (current.has("OS") ? current.getString("OS") : null));
+                toPush.put("brand", (current.has("marque") ? current.getString("marque") : null));
                 toPush.put("soundCard", null);
-
-
+                
+                if (first) {
+                	utils.ConnectDB.pushComputerOnDB(toPush, conn);
+                	first = false;
+                }
             }
 
         }

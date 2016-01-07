@@ -1,6 +1,10 @@
 package main;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @TODO Creation BDD
@@ -13,14 +17,11 @@ import java.io.File;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         System.out.println("Hello lol!");
-        utils.ConnectDB.startConnection();
+        Connection con = utils.ConnectDB.startConnection();
 
-        File file = new File("/Users/olivier/Documents/Polytech/Cours 4a Moi/POO_Projet/src/ComparateurPCv2/src/db/ldlc.json");
-        utils.JsonParse.reader(file,utils.ConnectDB.startConnection());
-
-
-
+        File file = new File("/Users/josetarsitano/Documents/Work/Development/Eclipse/ComparateurPC/src/db/ldlc.json");
+        utils.JsonParse.reader(file, con);
     }
 }

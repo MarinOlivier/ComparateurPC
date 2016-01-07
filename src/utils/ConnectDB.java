@@ -4,6 +4,8 @@
 package utils;
 
 import java.sql.*;
+import java.util.Map;
+
 import com.mysql.jdbc.Connection;
 /**
  * @author josetarsitano
@@ -23,8 +25,21 @@ public class ConnectDB {
         return conn;
     }
     
-    public static void pushComputerOnDB(Array a, Connection c) throws SQLException {
+    public static void pushComputerOnDB(Map a, java.sql.Connection c) throws SQLException {
     	Statement s = c.createStatement();
-    	s.executeUpdate("INSERT INTO user " + "VALUES (1001, 'Simpson', 'Mr.', 'Springfield', 2001);");
+    	//System.out.println(a);
+    	
+    	String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "PowerSupply", 
+    							"price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S", 
+    							"case_pc", "airing", "OS", "brand", "soundCard"};
+    	
+    	String listComponent[] = new String[19];
+    	for (int i = 0; i < a.size(); i++) {
+    		listComponent[i] = listComponent[i] != null ? listComponent[i].replace(",", ".") : (String)a.get(component[i]);
+    		System.out.println(listComponent[i]);
+		}
+    	
+    	// TODO.
+    	//s.executeUpdate("INSERT INTO computer VALUES ('')");
     }
 }
