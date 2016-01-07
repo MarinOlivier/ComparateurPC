@@ -29,6 +29,20 @@ public class JsonParse {
 
                 Map toPush = new HashMap<>();
 
+
+                if(current.has("Name")) {
+                    String name = current.getString("Name");
+                }
+                else {
+                    String name = null;
+                }
+                if(current.has("motherBoard")) {
+                    String motherBoard = current.getString("motherBoard");
+                }
+                else{
+                    String motherBoard = null;
+                }
+
                 toPush.put("name", current.getString("Name"));
                 toPush.put("motherBoard", null);
                 toPush.put("CPU", current.getString("CPU"));
@@ -37,7 +51,7 @@ public class JsonParse {
                 toPush.put("ROM", current.getString("HDD"));
                 toPush.put("powerSupply", current.getString("Alim"));
                 toPush.put("price", current.getString("prix"));
-                toPush.put("RAM_freq", current.getString("Freq_RAM"));
+                toPush.put("RAM_freq", null);
                 toPush.put("CPU_freq", current.getString("Freq_CPU"));
                 toPush.put("GPU_freq", null);
                 toPush.put("GPU_RAM", current.getString("Ram_GPU"));

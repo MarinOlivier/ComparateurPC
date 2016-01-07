@@ -18,6 +18,9 @@ public class Main {
         utils.ConnectDB.startConnection();
 
         File file = new File("/Users/olivier/Documents/Polytech/Cours 4a Moi/POO_Projet/src/ComparateurPCv2/src/db/ldlc.json");
-        //utils.JsonParse.reader(file);
+        utils.JsonParse.reader(file,utils.ConnectDB.startConnection());
+
+
+
     }
 }

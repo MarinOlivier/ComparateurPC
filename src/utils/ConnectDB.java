@@ -10,7 +10,7 @@ import com.mysql.jdbc.Connection;
  *
  */
 public class ConnectDB {
-    public static void startConnection() {
+    public static Connection startConnection() {
         Connection conn = null;
         try {
             conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:8889/projet_poo?" + "user=root&password=root");            
@@ -19,6 +19,8 @@ public class ConnectDB {
         } catch (Exception ex) {
             System.out.println("SQLException: " + ex.getMessage());
         }
+
+        return conn;
     }
     
     public static void pushComputerOnDB(Array a, Connection c) throws SQLException {
