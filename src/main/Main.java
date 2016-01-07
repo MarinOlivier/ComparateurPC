@@ -21,7 +21,5 @@ public class Main {
         System.out.println("Hello lol!");
         Connection con = utils.ConnectDB.startConnection();
 
-        File file = new File("/Users/josetarsitano/Documents/Work/Development/Eclipse/ComparateurPC/src/db/ldlc.json");
-        utils.JsonParse.reader(file, con);
     }
 }

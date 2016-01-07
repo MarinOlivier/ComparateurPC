@@ -24,7 +24,6 @@ public class JsonParse {
             JSONObject _computer = data.getJSONObject(0);
             JSONArray computer = _computer.getJSONArray("computer");
 
-            boolean first = true;
             for (int i = 0 ; i < computer.length() ; i++){
                 JSONObject current = computer.getJSONObject(i);
 
@@ -48,11 +47,8 @@ public class JsonParse {
                 toPush.put("OS", (current.has("OS") ? current.getString("OS") : null));
                 toPush.put("brand", (current.has("marque") ? current.getString("marque") : null));
                 toPush.put("soundCard", null);
-                
-                if (first) {
-                	utils.ConnectDB.pushComputerOnDB(toPush, conn);
-                	first = false;
-                }
+
+                utils.ConnectDB.pushComputerOnDB(toPush, conn);
             }
 
         }

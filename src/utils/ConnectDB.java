@@ -26,21 +26,27 @@ public class ConnectDB {
     }
     
     public static void pushComputerOnDB(Map a, java.sql.Connection c) throws SQLException {
-    	Statement s = c.createStatement();
     	//System.out.println(a);
     	
     	String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "PowerSupply", 
     							"price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S", 
     							"case_pc", "airing", "OS", "brand", "soundCard"};
-    	
+
+        String sql = "INSERT INTO computer " +
+                "(name, motherBoard, CPU, RAM, GPU, ROM, powerSupply, price, RAM_freq, CPU_freq, GPU_freq, GPU_RAM, E_S, case_pc, airing, OS, brand, soundCard)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement preparedStatement = c.prepareStatement(sql);
+
     	String listComponent[] = new String[19];
-    	for (int i = 0; i < a.size(); i++) {
+        for (int i = 0; i < a.size(); i++) {
     		listComponent[i] = (String)a.get(component[i]);
     		listComponent[i] = listComponent[i] != null ? listComponent[i].replace(",", ".") : (String)a.get(component[i]);
     		System.out.println(listComponent[i]);
+
+            preparedStatement.setString(i+1, listComponent[i]);
 		}
-    	
-    	// TODO.
-    	//s.executeUpdate("INSERT INTO computer VALUES ('')");
+
+        preparedStatement.executeUpdate();
+
     }
 }
