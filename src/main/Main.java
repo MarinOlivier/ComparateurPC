@@ -1,5 +1,7 @@
 package main;
 
+import java.io.File;
+
 import utils.JsonParse;
 
 /**
@@ -17,7 +19,7 @@ public class Main {
         System.out.println("Hello lol!");
         utils.ConnectDB.startConnection();
 
-        String file = "/Users/olivier/Documents/Polytech/Cours 4a Moi/POO_Projet/src/ComparateurPCv2/src/db/ldlc.json";
+        File file = new File("/Users/josetarsitano/Documents/Work/Development/Eclipse/ComparateurPC/src/db/pm_eshop_wanted_articles.json");
         utils.JsonParse.reader(file);
     }
 }
