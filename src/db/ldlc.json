@@ -504,13 +504,7 @@
           "OS": "Microsoft Windows 10 Famille 64 bits",
           "marque": "LDLC",
           "boitier": "Grand Tour"
-        }
-      ]
-    }
-  ],
-  "page": [
-    {
-      "computer": [
+        },
         {
           "Name": "LDLC PC10 REVOLUTION ROUGE",
           "CPU": "Intel Core i7",
@@ -1000,13 +994,7 @@
           "OS": "Aucun",
           "marque": "LDLC",
           "boitier": "Moyen Tour"
-        }
-      ]
-    }
-  ],
-  "page": [
-    {
-      "computer": [
+        },
         {
           "Name": "PC10 PUREKILLER SE",
           "CPU": "Intel Core i5",
@@ -1501,13 +1489,7 @@
           "ES": "1 x HDMI Femelle, 2 x USB 2.0, 1 x RJ45 Femelle, 2 x USB 3.0, 1 x HDMI Femelle (Entrée)",
           "OS": "Microsoft Windows 8.1 Pro 64 bits",
           "marque": "ASUS"
-        }
-      ]
-    }
-  ],
-  "page": [
-    {
-      "computer": [
+        },
         {
           "Name": "LDLC PC BRIX-I7-4-S1H10-W7",
           "CPU": "Intel Core i7",
