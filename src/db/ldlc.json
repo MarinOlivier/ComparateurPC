@@ -1,5 +1,5 @@
 {
-  "page": [
+  "data": [
     {
       "computer": [
         {
@@ -1968,13 +1968,7 @@
           "OS": "Microsoft Windows 7 Édition Familiale Premium 64 bits",
           "marque": "LDLC",
           "boitier": "Mini PC"
-        }
-      ]
-    }
-  ],
-  "page": [
-    {
-      "computer": [
+        },
         {
           "Name": "LDLC PC BRIX-I5-4-S1H10-W10",
           "CPU": "Intel Core i5",
@@ -2449,13 +2443,7 @@
           "OS": "Aucun",
           "marque": "HardWare.fr",
           "boitier": "Moyen Tour"
-        }
-      ]
-    }
-  ],
-  "page": [
-    {
-      "computer": [
+        },
         {
           "Name": "E810-B1494",
           "CPU": "Intel Core i3",
@@ -2933,13 +2921,7 @@
           "Nb_GPU": "Aucun",
           "OS": "Microsoft Windows 8.1 Pro 64 bits",
           "marque": "HP"
-        }
-      ]
-    }
-  ],
-  "page": [
-    {
-      "computer": [
+        },
         {
           "Name": "LDLC PC BRIX-CEL3205-4-S1H10-W10",
           "CPU": "Intel Celeron",
