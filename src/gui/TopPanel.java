@@ -4,11 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.lang.reflect.Field;
 
 /**
  * Created by olivier on 07/01/2016.
  */
 public class TopPanel extends JPanel {
+
+    MyWindow _window;
 
     private JComboBox _motherBoardIn;
     private JComboBox _CPUIn;
@@ -28,26 +33,28 @@ public class TopPanel extends JPanel {
     private JComboBox _brandIn;
     private JComboBox _soundCardIn;
 
-    private String[] _motherBoardList = { "null", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _CPUList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _RAMList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _GPUList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _ROMList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _powerSupplyList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _priceList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _RAM_freqList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _GPU_freqList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _CPU_freqList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _GPU_RAMList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _E_SList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _case_PCList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _airingList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _OSList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _brandList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
-    private String[] _soundCardList = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _motherBoardList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _CPUList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _RAMList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _GPUList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _ROMList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _powerSupplyList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _priceList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _RAM_freqList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _GPU_freqList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _CPU_freqList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _GPU_RAMList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _E_SList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _case_PCList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _airingList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _OSList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _brandList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+    private String[] _soundCardList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
 
 
     public TopPanel(MyWindow window){
+
+        _window = window;
 
         setBackground(Color.gray);
         setLayout(new GridBagLayout());
@@ -95,7 +102,13 @@ public class TopPanel extends JPanel {
         _OSIn = new JComboBox(_OSList);
         _brandIn = new JComboBox(_brandList);
 
-        _CPUIn.addActionListener(new ComboBoxListner());
+        _CPUIn.addItemListener(new ComboBoxListner("CPU"));
+        _RAMIn.addItemListener(new ComboBoxListner("RAM"));
+        _ROMIn.addItemListener(new ComboBoxListner("ROM"));
+        _priceIn.addItemListener(new ComboBoxListner("price"));
+        _E_SIn.addItemListener(new ComboBoxListner("E_S"));
+        _OSIn.addItemListener(new ComboBoxListner("OS"));
+        _brandIn.addItemListener(new ComboBoxListner("brand"));
 
 
         grid.insets = new Insets(3,3,3,3);
@@ -213,6 +226,24 @@ public class TopPanel extends JPanel {
         _OSIn = new JComboBox(_OSList);
         _brandIn = new JComboBox(_brandList);
         _soundCardIn = new JComboBox(_soundCardList);
+
+        _motherBoardIn.addItemListener(new ComboBoxListner("motherBoard"));
+        _CPUIn.addItemListener(new ComboBoxListner("CPU"));
+        _RAMIn.addItemListener(new ComboBoxListner("RAM"));
+        _GPUIn.addItemListener(new ComboBoxListner("GPU"));
+        _ROMIn.addItemListener(new ComboBoxListner("ROM"));
+        _powerSupplyIn.addItemListener(new ComboBoxListner("powerSupply"));
+        _priceIn.addItemListener(new ComboBoxListner("price"));
+        _RAM_freqIn.addItemListener(new ComboBoxListner("RAM_freq"));
+        _GPU_freqIn.addItemListener(new ComboBoxListner("GPU_freq"));
+        _CPU_freqIn.addItemListener(new ComboBoxListner("CPU_freq"));
+        _GPU_RAMIn.addItemListener(new ComboBoxListner("GPU_RAM"));
+        _E_SIn.addItemListener(new ComboBoxListner("E_S"));
+        _case_PCIn.addItemListener(new ComboBoxListner("case_PC"));
+        _airingIn.addItemListener(new ComboBoxListner("airing"));
+        _OSIn.addItemListener(new ComboBoxListner("OS"));
+        _brandIn.addItemListener(new ComboBoxListner("brand"));
+        _soundCardIn.addItemListener(new ComboBoxListner("soundCard"));
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -431,11 +462,34 @@ public class TopPanel extends JPanel {
         super.paintComponent(g);
     }
 
-    class ComboBoxListner implements ActionListener {
+    class ComboBoxListner implements ItemListener {
+
+        String _criteria;
+
+        public ComboBoxListner(String criteria){
+            _criteria = criteria;
+        }
+
         @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.printf("lol");
-            System.out.println(e.getSource());
+        public void itemStateChanged(ItemEvent e) {
+            // The item affected by the event.
+            Object item = e.getItem();
+
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                try {
+                    Field field = _window.getWishedComputer().getClass().getDeclaredField("_" + _criteria);
+
+                    field.set(_window.getWishedComputer(), item.toString());
+                } catch(Exception Exc){
+                    Exc.printStackTrace();
+                }
+            }
+
+            if (e.getStateChange() == ItemEvent.DESELECTED) {
+                System.out.println(item.toString() + " deselected");
+            }
+
+            _window.repaint();
         }
     }
 }
