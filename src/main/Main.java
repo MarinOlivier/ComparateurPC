@@ -24,6 +24,5 @@ public class Main {
         Connection con = utils.ConnectDB.startConnection();
 
         MyWindow win = new MyWindow();
-
     }
 }

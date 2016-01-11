@@ -1,6 +1,6 @@
 package utils;
 
-import main.PC;
+import data.Computer;
 
 import java.util.Map;
 
@@ -9,12 +9,12 @@ import java.util.Map;
  */
 public class ComparePC {
 
-    private PC _wishPC;
+    private Computer _wishComputer;
     private Map<String, Integer> _priority;
     private boolean _expertMod;
 
-    public ComparePC(PC wishPC, boolean expertMod){
-        _wishPC = wishPC;
+    public ComparePC(Computer wishComputer, boolean expertMod){
+        _wishComputer = wishComputer;
         _expertMod = expertMod;
         this.setPriority();
     }

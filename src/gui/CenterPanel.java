@@ -8,8 +8,9 @@ import java.awt.*;
  */
 public class CenterPanel extends JPanel {
 
-    public CenterPanel(){
-        setBackground(Color.red);
+    public CenterPanel(MyWindow window){
+        setBackground(Color.WHITE);
+
     }
 
     @Override
