@@ -17,6 +17,7 @@ public class MyWindow extends JFrame {
 
     public MyWindow(){
         this.setTitle("Comparateur Computer");
+        setSize(500, 500);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setResizable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,13 +25,14 @@ public class MyWindow extends JFrame {
         _wishedComputer = new Computer();
 
         _topPanel = new TopPanel(this);
-        _centerPanel = new CenterPanel(this);
+        _centerPanel = new CenterPanel(_wishedComputer);
         _bottomPanel = new BottomPanel();
 
         add(_topPanel, BorderLayout.NORTH);
         add(_centerPanel, BorderLayout.CENTER);
         add(_bottomPanel, BorderLayout.SOUTH);
 
+        pack();
         setVisible(true);
     }
 
@@ -69,6 +71,5 @@ public class MyWindow extends JFrame {
     @Override
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
-        //_centerPanel.repaint();
     }
 }

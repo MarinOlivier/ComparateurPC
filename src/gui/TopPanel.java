@@ -1,12 +1,15 @@
 package gui;
 
+import data.Computer;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.reflect.Field;
+
+import static gui.MyWindow.*;
 
 /**
  * Created by olivier on 07/01/2016.
@@ -15,23 +18,23 @@ public class TopPanel extends JPanel {
 
     MyWindow _window;
 
-    private JComboBox _motherBoardIn;
-    private JComboBox _CPUIn;
-    private JComboBox _RAMIn;
-    private JComboBox _GPUIn;
-    private JComboBox _ROMIn;
-    private JComboBox _powerSupplyIn;
-    private JComboBox _priceIn;
-    private JComboBox _RAM_freqIn;
-    private JComboBox _GPU_freqIn;
-    private JComboBox _CPU_freqIn;
-    private JComboBox _GPU_RAMIn;
-    private JComboBox _E_SIn;
-    private JComboBox _case_PCIn;
-    private JComboBox _airingIn;
-    private JComboBox _OSIn;
-    private JComboBox _brandIn;
-    private JComboBox _soundCardIn;
+    private JComboBox<String> _motherBoardIn;
+    private JComboBox<String> _CPUIn;
+    private JComboBox<String> _RAMIn;
+    private JComboBox<String> _GPUIn;
+    private JComboBox<String> _ROMIn;
+    private JComboBox<String> _powerSupplyIn;
+    private JComboBox<String> _priceIn;
+    private JComboBox<String> _RAM_freqIn;
+    private JComboBox<String> _GPU_freqIn;
+    private JComboBox<String> _CPU_freqIn;
+    private JComboBox<String> _GPU_RAMIn;
+    private JComboBox<String> _E_SIn;
+    private JComboBox<String> _case_PCIn;
+    private JComboBox<String> _airingIn;
+    private JComboBox<String> _OSIn;
+    private JComboBox<String> _brandIn;
+    private JComboBox<String> _soundCardIn;
 
     private String[] _motherBoardList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
     private String[] _CPUList = { "null", "Bird", "Cat", "Dog", "Rabbit", "Pig" };
@@ -67,48 +70,47 @@ public class TopPanel extends JPanel {
         grid.gridy = 0;
         add(ExpertMod, grid);
 
-        ExpertMod.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String label = ExpertMod.getText();
-                removeAll();
+        ExpertMod.addActionListener(e -> {
+            String label = ExpertMod.getText();
+            removeAll();
 
-                grid.fill = GridBagConstraints.HORIZONTAL;
-                grid.weightx = 0.5;
-                grid.gridx = 2;
-                grid.gridy = 0;
-                add(ExpertMod, grid);
+            grid.fill = GridBagConstraints.HORIZONTAL;
+            grid.weightx = 0.5;
+            grid.gridx = 2;
+            grid.gridy = 0;
+            add(ExpertMod, grid);
 
-                if(label == "Expert") {
-                    ExpertMod.setText("Simple");
-                    displayExpert(grid);
-                }
-                else {
-                    ExpertMod.setText("Expert");
-                    displaySimple(grid);
-                }
+            if(label == "Expert") {
+                ExpertMod.setText("Simple");
+                _window.getCenterPanel().setMode("Expert");
+                displayExpert(grid);
+            } else {
+                ExpertMod.setText("Expert");
+                _window.getCenterPanel().setMode("Simple");
+                displaySimple(grid);
             }
+            _window.getCenterPanel().repaint();
         });
 
         displaySimple(grid);
     }
 
-    public void displaySimple(GridBagConstraints grid) {
-        _CPUIn = new JComboBox(_CPUList);
-        _RAMIn = new JComboBox(_RAMList);
-        _ROMIn = new JComboBox(_ROMList);
-        _priceIn = new JComboBox(_priceList);
-        _E_SIn = new JComboBox(_E_SList);
-        _OSIn = new JComboBox(_OSList);
-        _brandIn = new JComboBox(_brandList);
+    private void displaySimple(GridBagConstraints grid) {
+        _CPUIn = new JComboBox<>(_CPUList);
+        _RAMIn = new JComboBox<>(_RAMList);
+        _ROMIn = new JComboBox<>(_ROMList);
+        _priceIn = new JComboBox<>(_priceList);
+        _E_SIn = new JComboBox<>(_E_SList);
+        _OSIn = new JComboBox<>(_OSList);
+        _brandIn = new JComboBox<>(_brandList);
 
-        _CPUIn.addItemListener(new ComboBoxListner("CPU"));
-        _RAMIn.addItemListener(new ComboBoxListner("RAM"));
-        _ROMIn.addItemListener(new ComboBoxListner("ROM"));
-        _priceIn.addItemListener(new ComboBoxListner("price"));
-        _E_SIn.addItemListener(new ComboBoxListner("E_S"));
-        _OSIn.addItemListener(new ComboBoxListner("OS"));
-        _brandIn.addItemListener(new ComboBoxListner("brand"));
+        _CPUIn.addItemListener(new ComboBoxListener("CPU"));
+        _RAMIn.addItemListener(new ComboBoxListener("RAM"));
+        _ROMIn.addItemListener(new ComboBoxListener("ROM"));
+        _priceIn.addItemListener(new ComboBoxListener("price"));
+        _E_SIn.addItemListener(new ComboBoxListener("E_S"));
+        _OSIn.addItemListener(new ComboBoxListener("OS"));
+        _brandIn.addItemListener(new ComboBoxListener("brand"));
 
 
         grid.insets = new Insets(3,3,3,3);
@@ -117,7 +119,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 0;
         grid.gridy = 1;
-        add(new JLabel("CPU "), grid);
+        add(new JLabel("CPU ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -129,7 +131,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 2;
         grid.gridy = 1;
-        add(new JLabel("RAM "), grid);
+        add(new JLabel("RAM ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -141,7 +143,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 4;
         grid.gridy = 1;
-        add(new JLabel("ROM "), grid);
+        add(new JLabel("ROM ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -153,7 +155,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 0;
         grid.gridy = 2;
-        add(new JLabel("Price "), grid);
+        add(new JLabel("Price ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -165,7 +167,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 2;
         grid.gridy = 2;
-        add(new JLabel("E/S "), grid);
+        add(new JLabel("E/S ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -177,7 +179,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 4;
         grid.gridy = 2;
-        add(new JLabel("OS "), grid);
+        add(new JLabel("OS ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -189,7 +191,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 0;
         grid.gridy = 3;
-        add(new JLabel("Brand "), grid);
+        add(new JLabel("Brand ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -203,53 +205,51 @@ public class TopPanel extends JPanel {
         grid.gridx = 5;
         grid.gridy = 3;
         add(submit, grid);
-
-
     }
 
-    public void displayExpert(GridBagConstraints grid){
+    private void displayExpert(GridBagConstraints grid){
 
-        _motherBoardIn = new JComboBox(_motherBoardList);
-        _CPUIn = new JComboBox(_CPUList);
-        _RAMIn = new JComboBox(_RAMList);
-        _GPUIn = new JComboBox(_GPUList);
-        _ROMIn = new JComboBox(_ROMList);
-        _powerSupplyIn = new JComboBox(_powerSupplyList);
-        _priceIn = new JComboBox(_priceList);
-        _RAM_freqIn = new JComboBox(_RAM_freqList);
-        _GPU_freqIn = new JComboBox(_GPU_freqList);
-        _CPU_freqIn = new JComboBox(_CPU_freqList);
-        _GPU_RAMIn = new JComboBox(_GPU_RAMList);
-        _E_SIn = new JComboBox(_E_SList);
-        _case_PCIn = new JComboBox(_case_PCList);
-        _airingIn = new JComboBox(_airingList);
-        _OSIn = new JComboBox(_OSList);
-        _brandIn = new JComboBox(_brandList);
-        _soundCardIn = new JComboBox(_soundCardList);
+        _motherBoardIn = new JComboBox<>(_motherBoardList);
+        _CPUIn = new JComboBox<>(_CPUList);
+        _RAMIn = new JComboBox<>(_RAMList);
+        _GPUIn = new JComboBox<>(_GPUList);
+        _ROMIn = new JComboBox<>(_ROMList);
+        _powerSupplyIn = new JComboBox<>(_powerSupplyList);
+        _priceIn = new JComboBox<>(_priceList);
+        _RAM_freqIn = new JComboBox<>(_RAM_freqList);
+        _GPU_freqIn = new JComboBox<>(_GPU_freqList);
+        _CPU_freqIn = new JComboBox<>(_CPU_freqList);
+        _GPU_RAMIn = new JComboBox<>(_GPU_RAMList);
+        _E_SIn = new JComboBox<>(_E_SList);
+        _case_PCIn = new JComboBox<>(_case_PCList);
+        _airingIn = new JComboBox<>(_airingList);
+        _OSIn = new JComboBox<>(_OSList);
+        _brandIn = new JComboBox<>(_brandList);
+        _soundCardIn = new JComboBox<>(_soundCardList);
 
-        _motherBoardIn.addItemListener(new ComboBoxListner("motherBoard"));
-        _CPUIn.addItemListener(new ComboBoxListner("CPU"));
-        _RAMIn.addItemListener(new ComboBoxListner("RAM"));
-        _GPUIn.addItemListener(new ComboBoxListner("GPU"));
-        _ROMIn.addItemListener(new ComboBoxListner("ROM"));
-        _powerSupplyIn.addItemListener(new ComboBoxListner("powerSupply"));
-        _priceIn.addItemListener(new ComboBoxListner("price"));
-        _RAM_freqIn.addItemListener(new ComboBoxListner("RAM_freq"));
-        _GPU_freqIn.addItemListener(new ComboBoxListner("GPU_freq"));
-        _CPU_freqIn.addItemListener(new ComboBoxListner("CPU_freq"));
-        _GPU_RAMIn.addItemListener(new ComboBoxListner("GPU_RAM"));
-        _E_SIn.addItemListener(new ComboBoxListner("E_S"));
-        _case_PCIn.addItemListener(new ComboBoxListner("case_PC"));
-        _airingIn.addItemListener(new ComboBoxListner("airing"));
-        _OSIn.addItemListener(new ComboBoxListner("OS"));
-        _brandIn.addItemListener(new ComboBoxListner("brand"));
-        _soundCardIn.addItemListener(new ComboBoxListner("soundCard"));
+        _motherBoardIn.addItemListener(new ComboBoxListener("motherBoard"));
+        _CPUIn.addItemListener(new ComboBoxListener("CPU"));
+        _RAMIn.addItemListener(new ComboBoxListener("RAM"));
+        _GPUIn.addItemListener(new ComboBoxListener("GPU"));
+        _ROMIn.addItemListener(new ComboBoxListener("ROM"));
+        _powerSupplyIn.addItemListener(new ComboBoxListener("powerSupply"));
+        _priceIn.addItemListener(new ComboBoxListener("price"));
+        _RAM_freqIn.addItemListener(new ComboBoxListener("RAM_freq"));
+        _GPU_freqIn.addItemListener(new ComboBoxListener("GPU_freq"));
+        _CPU_freqIn.addItemListener(new ComboBoxListener("CPU_freq"));
+        _GPU_RAMIn.addItemListener(new ComboBoxListener("GPU_RAM"));
+        _E_SIn.addItemListener(new ComboBoxListener("E_S"));
+        _case_PCIn.addItemListener(new ComboBoxListener("case_PC"));
+        _airingIn.addItemListener(new ComboBoxListener("airing"));
+        _OSIn.addItemListener(new ComboBoxListener("OS"));
+        _brandIn.addItemListener(new ComboBoxListener("brand"));
+        _soundCardIn.addItemListener(new ComboBoxListener("soundCard"));
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
         grid.gridx = 0;
         grid.gridy = 1;
-        add(new JLabel("Mother Board "),grid);
+        add(new JLabel("Mother Board" , SwingConstants.RIGHT),grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -261,7 +261,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 2;
         grid.gridy = 1;
-        add(new JLabel("CPU "), grid);
+        add(new JLabel("CPU ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -273,7 +273,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 4;
         grid.gridy = 1;
-        add(new JLabel("RAM "), grid);
+        add(new JLabel("RAM ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -285,7 +285,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 0;
         grid.gridy = 2;
-        add(new JLabel("GPU "), grid);
+        add(new JLabel("GPU ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -297,7 +297,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 2;
         grid.gridy = 2;
-        add(new JLabel("ROM "), grid);
+        add(new JLabel("ROM ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -309,7 +309,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 4;
         grid.gridy = 2;
-        add(new JLabel("Power Supply "), grid);
+        add(new JLabel("Power Supply ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -321,7 +321,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 0;
         grid.gridy = 3;
-        add(new JLabel("Price "), grid);
+        add(new JLabel("Price ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -333,7 +333,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 2;
         grid.gridy = 3;
-        add(new JLabel("Frequence RAM "), grid);
+        add(new JLabel("Frequence RAM ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -345,7 +345,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 4;
         grid.gridy = 3;
-        add(new JLabel("Frequence GPU "), grid);
+        add(new JLabel("Frequence GPU ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -357,7 +357,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 0;
         grid.gridy = 4;
-        add(new JLabel("Frequence CPU "), grid);
+        add(new JLabel("Frequence CPU ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -369,7 +369,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 2;
         grid.gridy = 4;
-        add(new JLabel("RAM GPU "), grid);
+        add(new JLabel("RAM GPU ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -381,7 +381,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 4;
         grid.gridy = 4;
-        add(new JLabel("E/S "), grid);
+        add(new JLabel("E/S ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -393,7 +393,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 0;
         grid.gridy = 5;
-        add(new JLabel("Case "), grid);
+        add(new JLabel("Case ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -405,7 +405,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 2;
         grid.gridy = 5;
-        add(new JLabel("Airing "), grid);
+        add(new JLabel("Airing ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -417,7 +417,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 4;
         grid.gridy = 5;
-        add(new JLabel("OS "), grid);
+        add(new JLabel("OS ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -429,7 +429,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 0;
         grid.gridy = 6;
-        add(new JLabel("Brand "), grid);
+        add(new JLabel("Brand ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -441,7 +441,7 @@ public class TopPanel extends JPanel {
         grid.weightx = 0.5;
         grid.gridx = 2;
         grid.gridy = 6;
-        add(new JLabel("Sound Card "), grid);
+        add(new JLabel("Sound Card ", SwingConstants.RIGHT), grid);
 
         grid.fill = GridBagConstraints.HORIZONTAL;
         grid.weightx = 0.5;
@@ -462,11 +462,10 @@ public class TopPanel extends JPanel {
         super.paintComponent(g);
     }
 
-    class ComboBoxListner implements ItemListener {
-
+    class ComboBoxListener implements ItemListener {
         String _criteria;
 
-        public ComboBoxListner(String criteria){
+        public ComboBoxListener(String criteria){
             _criteria = criteria;
         }
 
@@ -478,18 +477,15 @@ public class TopPanel extends JPanel {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 try {
                     Field field = _window.getWishedComputer().getClass().getDeclaredField("_" + _criteria);
-
                     field.set(_window.getWishedComputer(), item.toString());
+
+                    _window.getCenterPanel().setWishedPC(_window.getWishedComputer());
+                    _window.getCenterPanel().repaint();
+
                 } catch(Exception Exc){
                     Exc.printStackTrace();
                 }
             }
-
-            if (e.getStateChange() == ItemEvent.DESELECTED) {
-                System.out.println(item.toString() + " deselected");
-            }
-
-            _window.repaint();
         }
     }
 }
