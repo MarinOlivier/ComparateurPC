@@ -476,10 +476,10 @@ public class TopPanel extends JPanel {
 
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 try {
-                    Field field = _window.getWishedComputer().getClass().getDeclaredField("_" + _criteria);
-                    field.set(_window.getWishedComputer(), item.toString());
+                    Field field = _window.getCenterPanel().getWishedPC().getClass().getDeclaredField("_" + _criteria);
+                    field.set(_window.getCenterPanel().getWishedPC(), item.toString());
 
-                    _window.getCenterPanel().setWishedPC(_window.getWishedComputer());
+                    _window.getCenterPanel().setWishedPC(_window.getCenterPanel().getWishedPC());
                     _window.getCenterPanel().repaint();
 
                 } catch(Exception Exc){

@@ -10,7 +10,7 @@ import java.awt.*;
  */
 public class MyWindow extends JFrame {
 
-    private Computer _wishedComputer;
+    //private Computer _wishedComputer;
     private TopPanel _topPanel;
     private CenterPanel _centerPanel;
     private BottomPanel _bottomPanel;
@@ -22,10 +22,8 @@ public class MyWindow extends JFrame {
         this.setResizable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        _wishedComputer = new Computer();
-
         _topPanel = new TopPanel(this);
-        _centerPanel = new CenterPanel(_wishedComputer);
+        _centerPanel = new CenterPanel();
         _bottomPanel = new BottomPanel();
 
         add(_topPanel, BorderLayout.NORTH);
@@ -34,14 +32,6 @@ public class MyWindow extends JFrame {
 
         pack();
         setVisible(true);
-    }
-
-    public Computer getWishedComputer() {
-        return _wishedComputer;
-    }
-
-    public void setWishedComputer(Computer wishedComputer) {
-        this._wishedComputer = wishedComputer;
     }
 
     public TopPanel getTopPanel() {

@@ -4,9 +4,11 @@
 package utils;
 
 import java.sql.*;
-import java.util.Map;
+import java.util.*;
 
 import com.mysql.jdbc.Connection;
+import data.Computer;
+
 /**
  * @author josetarsitano
  *
@@ -47,5 +49,29 @@ public class ConnectDB {
 
         preparedStatement.executeUpdate();
 
+    }
+
+    public static HashSet<HashMap<String, String>> getComputerOnDB(java.sql.Connection c) throws SQLException {
+        String selectSQL = "SELECT * FROM computer";
+        PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
+
+        ResultSet rs = preparedStatement.executeQuery(selectSQL );
+
+        String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "PowerSupply",
+                "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
+                "case_pc", "airing", "OS", "brand", "soundCard"};
+
+        HashSet<HashMap<String, String>> comptList = new HashSet<>();
+
+        while (rs.next()) {
+            HashMap<String, String> hash = new HashMap<>();
+            for(int i = 0; i  < component.length; i++){
+                hash.put(component[i], rs.getString(component[i]));
+            }
+
+            comptList.add(hash);
+        }
+
+        return comptList;
     }
 }

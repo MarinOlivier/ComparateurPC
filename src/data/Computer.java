@@ -1,5 +1,6 @@
 package data;
 
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,10 @@ public class Computer {
 
 
     public Computer(){
+
+    }
+
+    public Computer(ResultSet rs) {
 
     }
 
