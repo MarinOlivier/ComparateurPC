@@ -9,6 +9,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.sql.Connection;
@@ -166,8 +168,7 @@ public class ComputerWindow extends JFrame {
 	    mainPanel.add(computerTable, BorderLayout.EAST);
 	    mainPanel.add(new JScrollPane(computerTable));
 		add(mainPanel, BorderLayout.CENTER);
-		
-		
+
 		setVisible(true);
 	}
 }

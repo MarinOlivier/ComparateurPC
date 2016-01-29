@@ -150,10 +150,10 @@ public class CenterPanel extends JPanel {
 	    t.addMouseListener(new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
 	    		if (e.getClickCount() == 2) {
-		    		if (!_open) {
+		    		//if (!_open) {
 		    			ComputerWindow cw = new ComputerWindow(hstmp.get(_selectedRow));
-		    			_open = true;
-		    		}
+		    		//	_open = true;
+		    		//}
 	    		}
 	    	}
 	    });
@@ -192,4 +192,8 @@ public class CenterPanel extends JPanel {
         displayTableComputer(_mode);
         System.out.println("paintComponant");
     }
+
+	public void setOpen(boolean open) {
+		this._open = open;
+	}
 }
