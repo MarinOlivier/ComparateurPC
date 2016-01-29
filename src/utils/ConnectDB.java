@@ -70,7 +70,9 @@ public class ConnectDB {
             try {
                 Field field = wishedComp.getClass().getDeclaredField("_" + component[i]);
                 String value = (String)field.get(wishedComp);
-
+                
+                // TODO
+                System.out.println(value);
                 if(value != null){
                     WHERE = WHERE + "`" + component[i] + "` LIKE '" + value + "' AND ";
                 }
@@ -92,16 +94,19 @@ public class ConnectDB {
 
     public static String[] getCriteria(java.sql.Connection c, String element) throws SQLException {
 
-        String selectSQL = "SELECT DISTINCT "+ element +" FROM computer WHERE `"+ element +"` <> 'null' ORDER BY "+ element;
+        String selectSQL = "SELECT DISTINCT " + element + " FROM computer WHERE `"+ element +"` <> 'null' ORDER BY "+ element;
         PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
 
         ResultSet rs = preparedStatement.executeQuery(selectSQL );
 
         ArrayList<String> list = new ArrayList<>();
-        list.add("null");
+        list.add("Sélectionner");
         while(rs.next()){
             list.add(rs.getString(element));
         }
+        
+        
+        
         return list.toArray(new String[list.size()]);
     }
 

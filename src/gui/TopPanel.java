@@ -86,7 +86,7 @@ public class TopPanel extends JPanel {
         }
 
 
-        setBackground(Color.gray);
+        //setBackground(Color.gray);
         setLayout(new GridBagLayout());
         GridBagConstraints grid = new GridBagConstraints();
 
@@ -244,8 +244,7 @@ public class TopPanel extends JPanel {
         add(submit, grid);
     }
 
-    private void displayExpert(GridBagConstraints grid){
-
+    private void displayExpert(GridBagConstraints grid) {
         _motherBoardIn = new JComboBox<>(_motherBoardList);
         _CPUIn = new JComboBox<>(_CPUList);
         _RAMIn = new JComboBox<>(_RAMList);
@@ -537,7 +536,6 @@ public class TopPanel extends JPanel {
                 try {
                     Field field = _window.getCenterPanel().getWishedPC().getClass().getDeclaredField("_" + _criteria);
                     field.set(_window.getCenterPanel().getWishedPC(), item.toString());
-
                     _window.getCenterPanel().setWishedPC(_window.getCenterPanel().getWishedPC());
                     _window.getCenterPanel().repaint();
 
@@ -560,6 +558,7 @@ public class TopPanel extends JPanel {
             }
 
             System.out.println("compList = " + compList);
+            _window.getCenterPanel().refreshTable(compList);
 
         }
     }

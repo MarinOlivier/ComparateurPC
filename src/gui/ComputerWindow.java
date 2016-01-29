@@ -47,7 +47,7 @@ public class ComputerWindow extends JFrame {
 		}
 			
 		
-		setSize(new Dimension(450, 800));
+		setSize(new Dimension(450, 680));
 		JPanel mainPanel = new JPanel();
 		JButton reserv = new JButton("Réserver");
 		

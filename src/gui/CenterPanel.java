@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -22,11 +21,17 @@ public class CenterPanel extends JPanel {
     private String _mode;
     private String[] elts = new String[100];
     private JPanel gridPane;
-    private Computer _comp;
-    private boolean _open;
+    
+    // Données du JTable.
+    private AbstractTableModel _dataTable;
+    // Ligne sélectionnée dans la JTable.
     private int _selectedRow;
-
-    ArrayList<Computer> hstmp = null;
+    // ArrayList contenant tous les Computer en fonction de la recherche.
+    private ArrayList<Computer> _hsCmp = null;
+    // Taille de l'ArrayList.
+    private int _hsCmplength;
+    // Computer propre à la ligne sélectionnée.
+    private Computer _comp;
     
     String[] columnNameExpert = {
             "name",
@@ -59,7 +64,6 @@ public class CenterPanel extends JPanel {
             "brand"
     };
 
-
     public CenterPanel() {
         setBackground(Color.WHITE);
         setLayout(new BorderLayout());
@@ -69,23 +73,22 @@ public class CenterPanel extends JPanel {
         for(int i = 0; i < 100; i++) {
             elts[i] = String.valueOf(i);
         }
+        
+        Connection c = utils.ConnectDB.startConnection();
+        try {
+			_hsCmp = utils.ConnectDB.getAllComputerOnDB(c);
+			 setHsCmpLength(_hsCmp.size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        TableModel data = new AbstractTableModel() {
-        	private final String[] _head = { "#", "Nom", "Marque", "Description", "Prix", "Match", "Réserver" };
-        	private int _length;
-        	Connection c = utils.ConnectDB.startConnection();
+        
+		_dataTable = new AbstractTableModel() {
+        	private final String[] _head = { "#", "Nom", "Marque", "Description", "Prix", "Match"};
         	
         	@Override
 			public int getRowCount() {
-        		try {
-					 hstmp = utils.ConnectDB.getAllComputerOnDB(c);
-					 setLength(hstmp.size());
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-        		
-				return _length;
+				return _hsCmplength;
 			}
 
 			@Override
@@ -95,16 +98,12 @@ public class CenterPanel extends JPanel {
 			
 			@Override
 			public int getColumnCount() {
-				return 7;
+				return _head.length;
 			}
 			
-			public void setLength(int size) {
-				_length = size;
-			}
-
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
-				_comp = hstmp.get(rowIndex);
+				_comp = _hsCmp.get(rowIndex);
 				
 				switch (columnIndex) {
 					case 0:
@@ -130,7 +129,7 @@ public class CenterPanel extends JPanel {
 		};
 		
 		setLayout(new BorderLayout());
-	    JTable t = new JTable(data);
+	    JTable t = new JTable(_dataTable);
 	    
 	    ListSelectionModel cellSelectionModel = t.getSelectionModel();
 	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -140,6 +139,7 @@ public class CenterPanel extends JPanel {
 	    	public void valueChanged(ListSelectionEvent e) {
 	    		if (e.getValueIsAdjusting())
 	                return;
+	    		
 	            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 	            if (!lsm.isSelectionEmpty())
 	                _selectedRow = lsm.getMinSelectionIndex();
@@ -150,14 +150,10 @@ public class CenterPanel extends JPanel {
 	    t.addMouseListener(new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
 	    		if (e.getClickCount() == 2) {
-		    		//if (!_open) {
-		    			ComputerWindow cw = new ComputerWindow(hstmp.get(_selectedRow));
-		    		//	_open = true;
-		    		//}
+		    		ComputerWindow cw = new ComputerWindow(_hsCmp.get(_selectedRow));
 	    		}
 	    	}
 	    });
-	    
 	    
 	    t.getColumnModel().getColumn(0).setPreferredWidth(10);
 	    t.getColumnModel().getColumn(1).setPreferredWidth(150);
@@ -165,7 +161,6 @@ public class CenterPanel extends JPanel {
 	    t.getColumnModel().getColumn(3).setPreferredWidth(150);
 	    t.getColumnModel().getColumn(4).setPreferredWidth(20);
 	    t.getColumnModel().getColumn(5).setPreferredWidth(0);
-	    t.getColumnModel().getColumn(6).setPreferredWidth(50);
 	    add(new JScrollPane(t));
     }
 
@@ -173,6 +168,10 @@ public class CenterPanel extends JPanel {
         gridPane.add(new JLabel(mode.toString()));
         System.out.println("Display table");
     }
+    
+    public void setHsCmpLength(int size) {
+		_hsCmplength = size;
+	}
 
     public void setWishedPC(Computer wishedPC) {
         this._wishedPC = wishedPC;
@@ -185,6 +184,12 @@ public class CenterPanel extends JPanel {
     public void setMode(String mode) {
         this._mode = mode;
     }
+    
+    public void refreshTable(ArrayList<Computer> c) {
+        _hsCmp = c;
+        setHsCmpLength(_hsCmp.size());
+        _dataTable.fireTableDataChanged();
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -192,8 +197,4 @@ public class CenterPanel extends JPanel {
         displayTableComputer(_mode);
         System.out.println("paintComponant");
     }
-
-	public void setOpen(boolean open) {
-		this._open = open;
-	}
 }
