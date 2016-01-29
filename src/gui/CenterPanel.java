@@ -17,6 +17,8 @@ public class CenterPanel extends JPanel {
     private Computer _wishedPC;
     private String _mode;
     private JList _list;
+    private String[] elts = new String[100];
+    private JPanel gridPane;
 
     String[] columnNameExpert = {
             "name",
@@ -55,21 +57,20 @@ public class CenterPanel extends JPanel {
         setLayout(new BorderLayout());
         _wishedPC = new Computer();
 
-        _wishedLab = new JLabel(_wishedPC.toString());
-
-        add(_wishedLab, BorderLayout.SOUTH);
-
         _mode = "Simple";
-
-        String[] elts = new String[100];
         for(int i = 0; i < 100; i++) {
             elts[i] = String.valueOf(i);
         }
-        _list = new JList<>(elts);
-        _list.setCellRenderer(getRenderer());
-        add(new JScrollPane(_list), BorderLayout.CENTER);
+
+        gridPane = new JPanel(new GridLayout(2, 18));
+
+        //_list = new JList<>(elts);
+        //_list.setCellRenderer(getRenderer());
+        //add(new JScrollPane(_list), BorderLayout.CENTER);
 
         //displayTableComputer(_mode);
+        add(gridPane);
+
 
     }
 
@@ -92,53 +93,8 @@ public class CenterPanel extends JPanel {
     }
 
     private void displayTableComputer(String mode){
-
-        String[] columnName = null;
-        int maxBound = 0;
-
-        if(mode.equals("Simple")){
-            columnName = columnNameSimple;
-            maxBound = 7;
-        }
-        else if(mode.equals("Expert")){
-            columnName = columnNameExpert;
-            maxBound = 18;
-        }
-
-        JPanel computerGrid = new JPanel();
-        computerGrid.setLayout(new GridLayout(2, 18));
-
-        for(int i = 0 ; i < maxBound ; i++){
-            JLabel ligneNameLab = new JLabel();
-
-            ligneNameLab.setText(columnName[i]);
-            ligneNameLab.setBorder(BorderFactory.createLineBorder(Color.black));
-
-            computerGrid.add(ligneNameLab);
-        }
-
-        for(int i = 0 ; i < maxBound ; i++){
-            JLabel dataLab = new JLabel();
-
-            try {
-                Class  aClass = _wishedPC.getClass();
-                Field field = aClass.getField('_' + columnName[i]);
-
-                Object value = field.get(_wishedPC);
-                if(value == null)
-                    value = "";
-                dataLab.setText(value.toString());
-
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-
-            dataLab.setBorder(BorderFactory.createLineBorder(Color.black));
-            dataLab.setBackground(Color.white);
-
-            computerGrid.add(dataLab);
-        }
-        add(computerGrid, BorderLayout.NORTH);
+        gridPane.add(new JLabel(mode.toString()));
+        System.out.println("Display table");
     }
 
     public void setWishedPC(Computer wishedPC) {
@@ -156,8 +112,7 @@ public class CenterPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        _wishedLab.setText(_wishedPC.toString());
-        if(_wishedPC != null)
-            displayTableComputer(_mode);
+        displayTableComputer(_mode);
+        System.out.println("paintComponant");
     }
 }
