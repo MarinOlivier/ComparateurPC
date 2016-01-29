@@ -27,7 +27,7 @@ public class JsonParse {
             for (int i = 0 ; i < computer.length() ; i++){
                 JSONObject current = computer.getJSONObject(i);
 
-                Map<String, String> toPush = new HashMap<>();
+                HashMap<String, String> toPush = new HashMap<>();
 
                 toPush.put("name", (current.has("Name") ? current.getString("Name") : null));
                 toPush.put("motherBoard", (current.has("motherBoard") ? current.getString("motherBoard") : null));
@@ -47,6 +47,7 @@ public class JsonParse {
                 toPush.put("OS", (current.has("OS") ? current.getString("OS") : null));
                 toPush.put("brand", (current.has("marque") ? current.getString("marque") : null));
                 toPush.put("soundCard", null);
+                toPush.put("pict", (current.has("pict") ? current.getString("pict") : null));
 
                 utils.ConnectDB.pushComputerOnDB(toPush, conn);
             }

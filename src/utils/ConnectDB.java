@@ -36,14 +36,14 @@ public class ConnectDB {
         return conn;
     }
     
-    public static void pushComputerOnDB(Map<String, String> a, java.sql.Connection c) throws SQLException {
+    public static void pushComputerOnDB(HashMap<String, String> a, java.sql.Connection c) throws SQLException {
 
         String sql = "INSERT INTO computer " +
-                "(name, motherBoard, CPU, RAM, GPU, ROM, powerSupply, price, RAM_freq, CPU_freq, GPU_freq, GPU_RAM, E_S, case_pc, airing, OS, brand, soundCard)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "(name, motherBoard, CPU, RAM, GPU, ROM, powerSupply, price, RAM_freq, CPU_freq, GPU_freq, GPU_RAM, E_S, case_pc, airing, OS, brand, soundCard, pict)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = c.prepareStatement(sql);
 
-    	String listComponent[] = new String[19];
+    	String listComponent[] = new String[component.length];
         for (int i = 0; i < a.size(); i++) {
     		listComponent[i] = (String)a.get(component[i]);
     		if (listComponent[i] != null)
@@ -59,7 +59,7 @@ public class ConnectDB {
         String selectSQL = "SELECT * FROM computer";
         PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
 
-        ResultSet rs = preparedStatement.executeQuery(selectSQL );
+        ResultSet rs = preparedStatement.executeQuery(selectSQL);
 
         return dbToArrayList(rs);
     }
@@ -88,6 +88,21 @@ public class ConnectDB {
         ResultSet rs = preparedStatement.executeQuery(selectSQL );
 
         return dbToArrayList(rs);
+    }
+
+    public static String[] getCriteria(java.sql.Connection c, String element) throws SQLException {
+
+        String selectSQL = "SELECT DISTINCT "+ element +" FROM computer WHERE `"+ element +"` <> 'null' ORDER BY "+ element;
+        PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
+
+        ResultSet rs = preparedStatement.executeQuery(selectSQL );
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add("null");
+        while(rs.next()){
+            list.add(rs.getString(element));
+        }
+        return list.toArray(new String[list.size()]);
     }
 
 
