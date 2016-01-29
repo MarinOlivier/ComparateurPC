@@ -3,19 +3,16 @@ package gui;
 import data.Computer;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Field;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
 
 /**
  * Created by olivier on 07/01/2016.
@@ -27,7 +24,10 @@ public class CenterPanel extends JPanel {
     private JPanel gridPane;
     private Computer _comp;
     private boolean _open;
+    private int _selectedRow;
 
+    ArrayList<Computer> hstmp = null;
+    
     String[] columnNameExpert = {
             "name",
             "motherBoard",
@@ -73,7 +73,6 @@ public class CenterPanel extends JPanel {
         TableModel data = new AbstractTableModel() {
         	private final String[] _head = { "#", "Nom", "Marque", "Description", "Prix", "Match", "Réserver" };
         	private int _length;
-        	ArrayList<Computer> hstmp = null;
         	Connection c = utils.ConnectDB.startConnection();
         	
         	@Override
@@ -132,11 +131,27 @@ public class CenterPanel extends JPanel {
 		
 		setLayout(new BorderLayout());
 	    JTable t = new JTable(data);
+	    
+	    ListSelectionModel cellSelectionModel = t.getSelectionModel();
+	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+	    	@Override
+	    	public void valueChanged(ListSelectionEvent e) {
+	    		if (e.getValueIsAdjusting())
+	                return;
+	            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+	            if (!lsm.isSelectionEmpty())
+	                _selectedRow = lsm.getMinSelectionIndex();
+	      }
+
+	    });
+	    
 	    t.addMouseListener(new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
 	    		if (e.getClickCount() == 2) {
 		    		if (!_open) {
-		    			ComputerWindow cw = new ComputerWindow(_comp);
+		    			ComputerWindow cw = new ComputerWindow(hstmp.get(_selectedRow));
 		    			_open = true;
 		    		}
 	    		}
