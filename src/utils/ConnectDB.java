@@ -52,7 +52,7 @@ public class ConnectDB {
 
     }
 
-    public static HashSet<Computer> getAllComputerOnDB(java.sql.Connection c) throws SQLException {
+    public static ArrayList<Computer> getAllComputerOnDB(java.sql.Connection c) throws SQLException {
         String selectSQL = "SELECT * FROM computer";
         PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
 
@@ -62,7 +62,7 @@ public class ConnectDB {
                 "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
                 "case_PC", "airing", "OS", "brand", "soundCard"};
 
-        HashSet<Computer> comptList = new HashSet<>();
+        ArrayList<Computer> comptList = new ArrayList<>();
 
         while (rs.next()) {
             Computer comp = new Computer();
