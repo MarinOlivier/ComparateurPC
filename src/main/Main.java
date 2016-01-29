@@ -6,8 +6,8 @@ import utils.*;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import gui.MyWindow;
+
 
 /**
  * @TODO Creation BDD
@@ -22,14 +22,7 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
         System.out.println("Hello lol!");
-        Connection con = utils.ConnectDB.startConnection();
-
-        try {
-            utils.ConnectDB.getAllComputerOnDB(con);
-        } catch(SQLException sqle) {
-            sqle.printStackTrace();
-        }
-
-        MyWindow win = new MyWindow();
+        MyWindow w = new MyWindow();
+        //Connection con = utils.ConnectDB.startConnection();
     }
 }

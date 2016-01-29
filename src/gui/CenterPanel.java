@@ -3,9 +3,15 @@ package gui;
 import data.Computer;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -52,7 +58,7 @@ public class CenterPanel extends JPanel {
     };
 
 
-    public CenterPanel(){
+    public CenterPanel() {
         setBackground(Color.WHITE);
         setLayout(new BorderLayout());
         _wishedPC = new Computer();
@@ -62,28 +68,69 @@ public class CenterPanel extends JPanel {
             elts[i] = String.valueOf(i);
         }
 
-        _list = new JList<>(elts);
-        _list.setCellRenderer(getRenderer());
-        add(new JScrollPane(_list), BorderLayout.CENTER);
+        TableModel data = new AbstractTableModel() {
+        	
+        	private final String[] _head = { "#", "Nom", "Description", "Prix", "Match", "Réserver" };
+        	private int _length;
+        	ArrayList<Computer> hstmp = null;
+        	Connection c = utils.ConnectDB.startConnection();
+        	
+        	@Override
+			public int getRowCount() {
+        		try {
+					 hstmp = utils.ConnectDB.getAllComputerOnDB(c);
+					 setLength(hstmp.size());
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+        		
+				return _length;
+			}
 
+			@Override
+			public String getColumnName(int columnIndex) {
+				return _head[columnIndex];
+			}
+			
+			@Override
+			public int getColumnCount() {
+				return 6;
+			}
+			
+			public void setLength(int size) {
+				_length = size;
+			}
+
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				if (columnIndex == 0)
+					return rowIndex+1;
+				
+				if (columnIndex == 1)
+					return hstmp.get(rowIndex).getName();
+				
+				if (columnIndex == 4)
+					return 100;
+				
+				if (columnIndex == 6)
+					return 0;
+				
+				
+				
+				return 0;
+			}
+			
+		};
+		
+		setLayout(new BorderLayout());
+	    JTable t = new JTable(data);
+	    add(new JScrollPane(t));
     }
 
-    private ListCellRenderer<? super String> getRenderer() {
-        return new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel listCellRendererComponent = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,cellHasFocus);
-                listCellRendererComponent.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,Color.BLACK));
-                return listCellRendererComponent;
-            }
-
-            @Override
-            public Dimension getPreferredSize() {
-                double width = super.getPreferredSize().getWidth();
-                double height = 50;
-                return new Dimension((int)width, (int)height);
-            }
-        };
+    private void displayTableComputer(String mode){
+        gridPane.add(new JLabel(mode.toString()));
+        System.out.println("Display table");
     }
 
     public void setWishedPC(Computer wishedPC) {
@@ -101,6 +148,7 @@ public class CenterPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        displayTableComputer(_mode);
         System.out.println("paintComponant");
     }
 }

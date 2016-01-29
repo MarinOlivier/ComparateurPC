@@ -28,9 +28,7 @@ public class ConnectDB {
         return conn;
     }
     
-    public static void pushComputerOnDB(Map a, java.sql.Connection c) throws SQLException {
-    	//System.out.println(a);
-    	
+    public static void pushComputerOnDB(Map<String, String> a, java.sql.Connection c) throws SQLException {    	
     	String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "PowerSupply", 
     							"price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S", 
     							"case_pc", "airing", "OS", "brand", "soundCard"};
@@ -43,13 +41,13 @@ public class ConnectDB {
     	String listComponent[] = new String[19];
         for (int i = 0; i < a.size(); i++) {
     		listComponent[i] = (String)a.get(component[i]);
-    		listComponent[i] = listComponent[i] != null ? listComponent[i].replace(",", ".") : (String)a.get(component[i]);
+    		if (listComponent[i] != null)
+    			listComponent[i] = listComponent[i].replace(",", ".");
 
             preparedStatement.setString(i+1, listComponent[i]);
 		}
 
         preparedStatement.executeUpdate();
-
     }
 
     public static ArrayList<Computer> getAllComputerOnDB(java.sql.Connection c) throws SQLException {

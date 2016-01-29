@@ -17,8 +17,8 @@ public class MyWindow extends JFrame {
 
     public MyWindow(){
         this.setTitle("Comparateur Computer");
-        //setSize(1000, 1000);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setSize(1000, 1000);
+        //setExtendedState(JFrame.MAXIMIZED_BOTH);
         //setBounds(10,10, 900, 600);
         this.setResizable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
