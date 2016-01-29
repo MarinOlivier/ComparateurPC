@@ -20,7 +20,7 @@ public class ConnectDB {
 
     private static String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
             "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
-            "case_PC", "airing", "OS", "brand", "soundCard"};
+            "case_PC", "airing", "OS", "brand", "soundCard", "pict"};
 
 
     public static Connection startConnection() {
@@ -36,10 +36,7 @@ public class ConnectDB {
         return conn;
     }
     
-    public static void pushComputerOnDB(Map<String, String> a, java.sql.Connection c) throws SQLException {    	
-    	String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "PowerSupply", 
-    							"price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S", 
-    							"case_pc", "airing", "OS", "brand", "soundCard"};
+    public static void pushComputerOnDB(Map<String, String> a, java.sql.Connection c) throws SQLException {
 
         String sql = "INSERT INTO computer " +
                 "(name, motherBoard, CPU, RAM, GPU, ROM, powerSupply, price, RAM_freq, CPU_freq, GPU_freq, GPU_RAM, E_S, case_pc, airing, OS, brand, soundCard)" +

@@ -26,15 +26,8 @@ public class Computer {
     public String _OS;
     public String _brand;
     public String _soundCard;
+    public String _pict;
 
-
-    public Computer(){
-
-    }
-
-    public Computer(ResultSet rs) {
-
-    }
 
     public Computer(Map<String, String> mapPC){
         if(mapPC.containsKey("name"))
@@ -71,6 +64,9 @@ public class Computer {
             setBrand(mapPC.get("brand"));
         if(mapPC.containsKey("soundCard"))
             setSoundCard(mapPC.get("soundCard"));
+        if(mapPC.containsKey("pict"))
+            setPict(mapPC.get("pict"));
+
     }
 
     public String getName() {
@@ -217,6 +213,14 @@ public class Computer {
         this._soundCard = soundCard;
     }
 
+    public String getPict() {
+        return _pict;
+    }
+
+    public void setPict(String pict) {
+        this._pict = pict;
+    }
+
     @Override
     public String toString() {
         return "Computer{" +
@@ -238,6 +242,7 @@ public class Computer {
                 ", _OS='" + _OS + '\'' +
                 ", _brand='" + _brand + '\'' +
                 ", _soundCard='" + _soundCard + '\'' +
+                ", _pict='" + _pict + '\'' +
                 '}';
     }
 }
