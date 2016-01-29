@@ -3,6 +3,7 @@
  */
 package utils;
 
+import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
 
@@ -51,25 +52,29 @@ public class ConnectDB {
 
     }
 
-    public static HashSet<HashMap<String, String>> getComputerOnDB(java.sql.Connection c) throws SQLException {
+    public static HashSet<Computer> getAllComputerOnDB(java.sql.Connection c) throws SQLException {
         String selectSQL = "SELECT * FROM computer";
         PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
 
         ResultSet rs = preparedStatement.executeQuery(selectSQL );
 
-        String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "PowerSupply",
+        String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
                 "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
-                "case_pc", "airing", "OS", "brand", "soundCard"};
+                "case_PC", "airing", "OS", "brand", "soundCard"};
 
-        HashSet<HashMap<String, String>> comptList = new HashSet<>();
+        HashSet<Computer> comptList = new HashSet<>();
 
         while (rs.next()) {
-            HashMap<String, String> hash = new HashMap<>();
+            Computer comp = new Computer();
             for(int i = 0; i  < component.length; i++){
-                hash.put(component[i], rs.getString(component[i]));
+                try {
+                    Field field = comp.getClass().getDeclaredField("_" + component[i]);
+                    field.set(comp, rs.getString(component[i]));
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-            comptList.add(hash);
+            comptList.add(comp);
         }
 
         return comptList;

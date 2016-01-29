@@ -24,6 +24,12 @@ public class Main {
         System.out.println("Hello lol!");
         Connection con = utils.ConnectDB.startConnection();
 
+        try {
+            utils.ConnectDB.getAllComputerOnDB(con);
+        } catch(SQLException sqle) {
+            sqle.printStackTrace();
+        }
+
         MyWindow win = new MyWindow();
     }
 }

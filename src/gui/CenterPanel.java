@@ -62,15 +62,9 @@ public class CenterPanel extends JPanel {
             elts[i] = String.valueOf(i);
         }
 
-        gridPane = new JPanel(new GridLayout(2, 18));
-
-        //_list = new JList<>(elts);
-        //_list.setCellRenderer(getRenderer());
-        //add(new JScrollPane(_list), BorderLayout.CENTER);
-
-        //displayTableComputer(_mode);
-        add(gridPane);
-
+        _list = new JList<>(elts);
+        _list.setCellRenderer(getRenderer());
+        add(new JScrollPane(_list), BorderLayout.CENTER);
 
     }
 
@@ -92,11 +86,6 @@ public class CenterPanel extends JPanel {
         };
     }
 
-    private void displayTableComputer(String mode){
-        gridPane.add(new JLabel(mode.toString()));
-        System.out.println("Display table");
-    }
-
     public void setWishedPC(Computer wishedPC) {
         this._wishedPC = wishedPC;
     }
@@ -112,7 +101,6 @@ public class CenterPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        displayTableComputer(_mode);
         System.out.println("paintComponant");
     }
 }
