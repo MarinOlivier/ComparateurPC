@@ -28,6 +28,10 @@ public class Computer {
     public String _soundCard;
     public String _pict;
 
+    public Computer(){
+
+    }
+
 
     public Computer(Map<String, String> mapPC){
         if(mapPC.containsKey("name"))
