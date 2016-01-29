@@ -8,24 +8,24 @@ import java.util.Map;
  * Created by olivier on 10/01/2016.
  */
 public class Computer {
-    private String _name;
-    private String _motherBoard;
-    private String _CPU;
-    private String _RAM;
-    private String _GPU;
-    private String _ROM;
-    private String _powerSupply;
-    private String _price;
-    private String _RAM_freq;
-    private String _CPU_freq;
-    private String _GPU_freq;
-    private String _GPU_RAM;
-    private String _E_S;
-    private String _case_PC;
-    private String _airing;
-    private String _OS;
-    private String _brand;
-    private String _soundCard;
+    public String _name;
+    public String _motherBoard;
+    public String _CPU;
+    public String _RAM;
+    public String _GPU;
+    public String _ROM;
+    public String _powerSupply;
+    public String _price;
+    public String _RAM_freq;
+    public String _CPU_freq;
+    public String _GPU_freq;
+    public String _GPU_RAM;
+    public String _E_S;
+    public String _case_PC;
+    public String _airing;
+    public String _OS;
+    public String _brand;
+    public String _soundCard;
 
 
     public Computer(){

@@ -3,6 +3,8 @@
  */
 package utils;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
@@ -15,6 +17,12 @@ import data.Computer;
  *
  */
 public class ConnectDB {
+
+    private static String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
+            "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
+            "case_PC", "airing", "OS", "brand", "soundCard"};
+
+
     public static Connection startConnection() {
         Connection conn = null;
         try {
@@ -56,25 +64,56 @@ public class ConnectDB {
 
         ResultSet rs = preparedStatement.executeQuery(selectSQL );
 
-        String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
-                "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
-                "case_PC", "airing", "OS", "brand", "soundCard"};
+        return dbToArrayList(rs);
+    }
+    public static ArrayList<Computer> getComputerOnDB(java.sql.Connection c, Computer wishedComp) throws SQLException {
+        String WHERE = "";
 
-        ArrayList<Computer> comptList = new ArrayList<>();
+        for(int i = 0; i  < component.length; i++){
+            try {
+                Field field = wishedComp.getClass().getDeclaredField("_" + component[i]);
+                String value = (String)field.get(wishedComp);
 
-        while (rs.next()) {
-            Computer comp = new Computer();
-            for(int i = 0; i  < component.length; i++){
-                try {
-                    Field field = comp.getClass().getDeclaredField("_" + component[i]);
-                    field.set(comp, rs.getString(component[i]));
-                } catch(Exception e) {
-                    e.printStackTrace();
+                if(value != null){
+                    WHERE = WHERE + "`" + component[i] + "` LIKE '" + value + "' AND ";
                 }
+
+            } catch(Exception e) {
+                e.printStackTrace();
             }
-            comptList.add(comp);
         }
 
+        WHERE = WHERE.substring(0, WHERE.length()-5);
+        WHERE = WHERE + ";";
+
+        String selectSQL = "SELECT * FROM `computer` WHERE "+ WHERE;
+        PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
+        ResultSet rs = preparedStatement.executeQuery(selectSQL );
+
+        return dbToArrayList(rs);
+    }
+
+
+    private static ArrayList<Computer> dbToArrayList(ResultSet rs){
+
+        ArrayList<Computer> comptList = new ArrayList<>();
+        try {
+            while(rs.next()) {
+                Computer comp = new Computer();
+                for(int i = 0; i < component.length; i++) {
+                    try {
+                        Field field = comp.getClass().getDeclaredField("_" + component[i]);
+                        field.set(comp, rs.getString(component[i]));
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                comptList.add(comp);
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
         return comptList;
     }
+
 }
