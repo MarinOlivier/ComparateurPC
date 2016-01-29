@@ -4,20 +4,16 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.sql.Connection;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,23 +42,24 @@ public class ComputerWindow extends JFrame {
 		for (String i : _nameComponent) {
 			if (i != null) {
 				_component.add(i);
-				System.out.println(i);
 			} else
 				_component.add("-");
 		}
 			
 		
-		setSize(new Dimension(700, 600));
+		setSize(new Dimension(450, 800));
 		JPanel mainPanel = new JPanel();
+		JButton reserv = new JButton("Réserver");
 		
 		BufferedImage img = null;
 		JLabel label = null;
 		
-		/*try {
+		try {
 			label = new JLabel();
 			label.setBounds(0, 0, 300, 300);
 			
 			System.out.println(_comp.getPict());
+			
 			img = ImageIO.read(new URL(_comp.getPict()));
 		    Image dimg = img.getScaledInstance(label.getWidth(), label.getHeight(),
 		            Image.SCALE_DEFAULT);
@@ -72,7 +69,7 @@ public class ComputerWindow extends JFrame {
 		    label.setIcon(realImg);
 		} catch (Exception e) {
 		    e.printStackTrace();
-		}*/
+		}
 		
 		
         TableModel dataComputer = new AbstractTableModel() {
@@ -95,7 +92,6 @@ public class ComputerWindow extends JFrame {
 
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
-				
 				if (columnIndex == 0)
 					return _component.get(rowIndex);
 				
@@ -158,16 +154,14 @@ public class ComputerWindow extends JFrame {
 			}
 		};
 		
-		//setLayout(new BorderLayout());
 	    JTable computerTable = new JTable(dataComputer);
 	    
-	    
-		
-		
-	    //mainPanel.add(label, BorderLayout.WEST);
-	    mainPanel.add(computerTable, BorderLayout.EAST);
-	    mainPanel.add(new JScrollPane(computerTable));
-		add(mainPanel, BorderLayout.CENTER);
+	    mainPanel.setBackground(Color.WHITE);
+	    mainPanel.add(label);
+	    add(mainPanel, BorderLayout.NORTH);
+	    add(computerTable);
+	    add(new JScrollPane(computerTable));
+	    add(reserv, BorderLayout.SOUTH);
 
 		setVisible(true);
 	}
