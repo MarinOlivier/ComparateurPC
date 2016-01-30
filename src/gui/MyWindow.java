@@ -19,10 +19,8 @@ public class MyWindow extends JFrame {
     private CenterPanel _centerPanel;
     private BottomPanel _bottomPanel;
     
-    private GridBagConstraints _gridTmp; 
     private JMenuItem expert;
-    
-    private boolean _mode;
+    private JMenuItem changeUser;
 
     public MyWindow(){
         this.setTitle("Comparateur Computer");
@@ -33,20 +31,51 @@ public class MyWindow extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         _mb = new JMenuBar();
+        JMenu user = new JMenu("Utilisateur");
+        changeUser = new JMenuItem("Changer d'utilisateur");
+        changeUser.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO Appeler fenêtre User.
+				new UserWindow();
+			}
+        	
+        });
+        
+        user.add(changeUser);
+        
         JMenu mode = new JMenu("Mode");
         expert = new JMenuItem("Expert");
-        expert.addActionListener(new ItemListener());
+        expert.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String label = expert.getText();
+				_topPanel.removeAll();
+	            if (label == "Expert") {
+	            	expert.setText("Standard");
+	                //_centerPanel.setMode("Expert");
+	                _topPanel.displayExpert();
+	                _bottomPanel.setStatut("EXPERT mode");
+	            } else {
+	            	expert.setText("Expert");
+	            	//_centerPanel.setMode("Standard");
+	            	_topPanel.displaySimple();
+	            	_bottomPanel.setStatut("STANDARD mode");
+	            }
+	            _topPanel.revalidate();
+	            _topPanel.repaint();
+			}
+        	
+        });
         mode.add(expert);
+        _mb.add(user);
         _mb.add(mode);
         setJMenuBar(_mb);
         
         _topPanel = new TopPanel(this);
         _centerPanel = new CenterPanel();
         _bottomPanel = new BottomPanel();
-        
-        _mode = false;
-        _gridTmp = new GridBagConstraints();
-        
         
         add(_topPanel, BorderLayout.NORTH);
         add(_centerPanel, BorderLayout.CENTER);
@@ -79,28 +108,4 @@ public class MyWindow extends JFrame {
     public void setBottomPanel(BottomPanel bottomPanel) {
         this._bottomPanel = bottomPanel;
     }
-    
-    public boolean getMode() {
-    	return _mode;
-    }
-    
-    class ItemListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			String label = expert.getText();
-			_topPanel.removeAll();
-            if (label == "Expert") {
-            	expert.setText("Standard");
-                //_centerPanel.setMode("Expert");
-                _topPanel.displayExpert();
-                _bottomPanel.setStatut("EXPERT mode");
-            } else {
-            	expert.setText("Expert");
-            	//_centerPanel.setMode("Standard");
-            	_topPanel.displaySimple();
-            	_bottomPanel.setStatut("STANDARD mode");
-            }
-            _topPanel.revalidate();
-            _topPanel.repaint();
-		}
-	}
 }
