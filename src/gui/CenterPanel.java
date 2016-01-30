@@ -82,7 +82,6 @@ public class CenterPanel extends JPanel {
 			e.printStackTrace();
 		}
 
-        
 		_dataTable = new AbstractTableModel() {
         	private final String[] _head = { "#", "Nom", "Marque", "Description", "Prix", "Match"};
         	
@@ -150,7 +149,7 @@ public class CenterPanel extends JPanel {
 	    t.addMouseListener(new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
 	    		if (e.getClickCount() == 2) {
-		    		ComputerWindow cw = new ComputerWindow(_hsCmp.get(_selectedRow));
+		    		new ComputerWindow(_hsCmp.get(_selectedRow));
 	    		}
 	    	}
 	    });
@@ -191,10 +190,10 @@ public class CenterPanel extends JPanel {
         _dataTable.fireTableDataChanged();
     }
 
-    @Override
+   /* @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         displayTableComputer(_mode);
         System.out.println("paintComponant");
-    }
+    }*/
 }

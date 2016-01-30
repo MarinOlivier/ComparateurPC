@@ -3,6 +3,10 @@ package gui;
 import data.Computer;
 
 import javax.swing.*;
+import javax.swing.text.html.HTMLDocument.Iterator;
+
+import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,13 +59,18 @@ public class TopPanel extends JPanel {
     private String[] _brandList;
     private String[] _soundCardList;
 
-
-    public TopPanel(MyWindow window){
-
+    // Grille des JComboBox.
+    private GridBagConstraints _grid;
+    // Tableau des composants
+    private String[] component;
+    private String[] crit;
+    // Tableau des JComboxBox.
+    ArrayList<JComboBox<?>> arrComboBox;
+    JButton submit;
+    
+    public TopPanel(MyWindow window) {
         _window = window;
-
         Connection con = utils.ConnectDB.startConnection();
-
         try {
             _motherBoardList = utils.ConnectDB.getCriteria(con, "motherBoard");
             _CPUList = utils.ConnectDB.getCriteria(con, "CPU");
@@ -80,444 +89,121 @@ public class TopPanel extends JPanel {
             _OSList = utils.ConnectDB.getCriteria(con, "OS");
             _brandList = utils.ConnectDB.getCriteria(con, "brand");
             _soundCardList = utils.ConnectDB.getCriteria(con, "soundCard");
-
-        } catch(Exception e){
+        } catch(Exception e) {
             e.printStackTrace();
         }
+        
+        component = new String[]{"CPU", "RAM", "ROM", "Price", "OS", "Brand", "Carte Mère", "Alimentation", "Fréquence RAM", "CPU RAM", "GPU RAM", "Boitier"};
+        arrComboBox = new ArrayList<>();
 
-
-        //setBackground(Color.gray);
-        setLayout(new GridBagLayout());
-        GridBagConstraints grid = new GridBagConstraints();
-
-        JButton ExpertMod = new JButton("Expert");
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 0;
-        add(ExpertMod, grid);
-
-        ExpertMod.addActionListener(e -> {
-            String label = ExpertMod.getText();
-            removeAll();
-
-            grid.fill = GridBagConstraints.HORIZONTAL;
-            grid.weightx = 0.5;
-            grid.gridx = 5;
-            grid.gridy = 0;
-            add(ExpertMod, grid);
-
-            if(label == "Expert") {
-                ExpertMod.setText("Simple");
-                _window.getCenterPanel().setMode("Expert");
-                displayExpert(grid);
-            } else {
-                ExpertMod.setText("Expert");
-                _window.getCenterPanel().setMode("Simple");
-                displaySimple(grid);
-            }
-            _window.getCenterPanel().repaint();
-        });
-
-        displaySimple(grid);
-    }
-
-    private void displaySimple(GridBagConstraints grid) {
+        /* STANDARD MODE */
         _CPUIn = new JComboBox<>(_CPUList);
         _RAMIn = new JComboBox<>(_RAMList);
         _ROMIn = new JComboBox<>(_ROMList);
         _priceIn = new JComboBox<>(_priceList);
         _OSIn = new JComboBox<>(_OSList);
         _brandIn = new JComboBox<>(_brandList);
-        //_E_SIn = new JComboBox<>(_E_SList);
-
-        _CPUIn.setRenderer(new MyComboRenderer());
-        _RAMIn.setRenderer(new MyComboRenderer());
-        _ROMIn.setRenderer(new MyComboRenderer());
-        _priceIn.setRenderer(new MyComboRenderer());
-        _OSIn.setRenderer(new MyComboRenderer());
-        _brandIn.setRenderer(new MyComboRenderer());
-        //_E_SIn.setRenderer(new MyComboRenderer());
-
-        _CPUIn.addItemListener(new ComboBoxListener("CPU"));
-        _RAMIn.addItemListener(new ComboBoxListener("RAM"));
-        _ROMIn.addItemListener(new ComboBoxListener("ROM"));
-        _priceIn.addItemListener(new ComboBoxListener("price"));
-        _OSIn.addItemListener(new ComboBoxListener("OS"));
-        _brandIn.addItemListener(new ComboBoxListener("brand"));
-        //_E_SIn.addItemListener(new ComboBoxListener("E_S"));
-
-
-        grid.insets = new Insets(3,3,3,3);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 0;
-        grid.gridy = 1;
-        add(new JLabel("CPU ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 1;
-        grid.gridy = 1;
-        add(_CPUIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 2;
-        grid.gridy = 1;
-        add(new JLabel("RAM ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 3;
-        grid.gridy = 1;
-        add(_RAMIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 4;
-        grid.gridy = 1;
-        add(new JLabel("ROM ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 1;
-        add(_ROMIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 0;
-        grid.gridy = 2;
-        add(new JLabel("Price ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 1;
-        grid.gridy = 2;
-        add(_priceIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 2;
-        grid.gridy = 2;
-        add(new JLabel("OS ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 3;
-        grid.gridy = 2;
-        add(_OSIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 4;
-        grid.gridy = 2;
-        add(new JLabel("Brand ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 2;
-        add(_brandIn, grid);
-
-        /*grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 2;
-        grid.gridy = 2;
-        add(new JLabel("E/S ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 3;
-        grid.gridy = 2;
-        add(_E_SIn, grid);*/
-
-        JButton submit = new JButton("Submit");
-        submit.addActionListener(new SubmitListener());
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 3;
-        add(submit, grid);
-    }
-
-    private void displayExpert(GridBagConstraints grid) {
+        
+        /*EXPERT MODE*/
         _motherBoardIn = new JComboBox<>(_motherBoardList);
-        _CPUIn = new JComboBox<>(_CPUList);
-        _RAMIn = new JComboBox<>(_RAMList);
-        _GPUIn = new JComboBox<>(_GPUList);
-        _ROMIn = new JComboBox<>(_ROMList);
         _powerSupplyIn = new JComboBox<>(_powerSupplyList);
-        _priceIn = new JComboBox<>(_priceList);
         _RAM_freqIn = new JComboBox<>(_RAM_freqList);
         _CPU_freqIn = new JComboBox<>(_CPU_freqList);
         _GPU_RAMIn = new JComboBox<>(_GPU_RAMList);
         _case_PCIn = new JComboBox<>(_case_PCList);
-        _OSIn = new JComboBox<>(_OSList);
-        _brandIn = new JComboBox<>(_brandList);
-        //_GPU_freqIn = new JComboBox<>(_GPU_freqList);
-        //_E_SIn = new JComboBox<>(_E_SList);
-        //_airingIn = new JComboBox<>(_airingList);
-        //_soundCardIn = new JComboBox<>(_soundCardList);
-
-
-        _motherBoardIn.setRenderer(new MyComboRenderer());
-        _CPUIn.setRenderer(new MyComboRenderer());
-        _RAMIn.setRenderer(new MyComboRenderer());
-        _GPUIn.setRenderer(new MyComboRenderer());
-        _ROMIn.setRenderer(new MyComboRenderer());
-        _powerSupplyIn.setRenderer(new MyComboRenderer());
-        _priceIn.setRenderer(new MyComboRenderer());
-        _RAM_freqIn.setRenderer(new MyComboRenderer());
-        _CPU_freqIn.setRenderer(new MyComboRenderer());
-        _GPU_RAMIn.setRenderer(new MyComboRenderer());
-        _case_PCIn.setRenderer(new MyComboRenderer());
-        _OSIn.setRenderer(new MyComboRenderer());
-        _brandIn.setRenderer(new MyComboRenderer());
-        //_GPU_freqIn.setRenderer(new MyComboRenderer());
-        //_E_SIn.setRenderer(new MyComboRenderer());
-        //_airingIn.setRenderer(new MyComboRenderer());
-        //_soundCardIn.setRenderer(new MyComboRenderer());
-
-
-        _motherBoardIn.addItemListener(new ComboBoxListener("motherBoard"));
-        _CPUIn.addItemListener(new ComboBoxListener("CPU"));
-        _RAMIn.addItemListener(new ComboBoxListener("RAM"));
-        _GPUIn.addItemListener(new ComboBoxListener("GPU"));
-        _ROMIn.addItemListener(new ComboBoxListener("ROM"));
-        _powerSupplyIn.addItemListener(new ComboBoxListener("powerSupply"));
-        _priceIn.addItemListener(new ComboBoxListener("price"));
-        _RAM_freqIn.addItemListener(new ComboBoxListener("RAM_freq"));
-        _CPU_freqIn.addItemListener(new ComboBoxListener("CPU_freq"));
-        _GPU_RAMIn.addItemListener(new ComboBoxListener("GPU_RAM"));
-        _case_PCIn.addItemListener(new ComboBoxListener("case_PC"));
-        _OSIn.addItemListener(new ComboBoxListener("OS"));
-        _brandIn.addItemListener(new ComboBoxListener("brand"));
-        //_GPU_freqIn.addItemListener(new ComboBoxListener("GPU_freq"));
-        //_E_SIn.addItemListener(new ComboBoxListener("E_S"));
-        //_airingIn.addItemListener(new ComboBoxListener("airing"));
-        //_soundCardIn.addItemListener(new ComboBoxListener("soundCard"));
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 0;
-        grid.gridy = 1;
-        add(new JLabel("Mother Board" , SwingConstants.RIGHT),grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 1;
-        grid.gridy = 1;
-        add(_motherBoardIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 2;
-        grid.gridy = 1;
-        add(new JLabel("CPU ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 3;
-        grid.gridy = 1;
-        add(_CPUIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 4;
-        grid.gridy = 1;
-        add(new JLabel("RAM ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 1;
-        add(_RAMIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 0;
-        grid.gridy = 2;
-        add(new JLabel("GPU ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 1;
-        grid.gridy = 2;
-        add(_GPUIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 2;
-        grid.gridy = 2;
-        add(new JLabel("ROM ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 3;
-        grid.gridy = 2;
-        add(_ROMIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 4;
-        grid.gridy = 2;
-        add(new JLabel("Power Supply ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 2;
-        add(_powerSupplyIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 0;
-        grid.gridy = 3;
-        add(new JLabel("Price ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 1;
-        grid.gridy = 3;
-        add(_priceIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 2;
-        grid.gridy = 3;
-        add(new JLabel("Frequence RAM ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 3;
-        grid.gridy = 3;
-        add(_RAM_freqIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 4;
-        grid.gridy = 3;
-        add(new JLabel("Frequence CPU ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 3;
-        add(_CPU_freqIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 0;
-        grid.gridy = 4;
-        add(new JLabel("RAM GPU ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 1;
-        grid.gridy = 4;
-        add(_GPU_RAMIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 2;
-        grid.gridy = 4;
-        add(new JLabel("Case ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 3;
-        grid.gridy = 4;
-        add(_case_PCIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 4;
-        grid.gridy = 4;
-        add(new JLabel("OS ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 4;
-        add(_OSIn, grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 0;
-        grid.gridy = 5;
-        add(new JLabel("Brand ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 1;
-        grid.gridy = 5;
-        add(_brandIn, grid);
-
-         /*grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 4;
-        grid.gridy = 5;
-        add(new JLabel("Frequence GPU ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 5;
-        add(_GPU_freqIn, grid);*/
-
-        /*grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 0;
-        grid.gridy = 6;
-        add(new JLabel("E/S ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 1;
-        grid.gridy = 6;
-        add(_E_SIn, grid);*/
-
-        /*grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 2;
-        grid.gridy = 6;
-        add(new JLabel("Airing ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 3;
-        grid.gridy = 6;
-        add(_airingIn, grid);*/
-
-        /*grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 4;
-        grid.gridy = 6;
-        add(new JLabel("Sound Card ", SwingConstants.RIGHT), grid);
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 6;
-        add(_soundCardIn, grid);*/
-
-        JButton submit = new JButton("Submit");
+        
+        /* Ajout des JComboBox dans le tableau */
+        arrComboBox.add(_CPUIn);
+        arrComboBox.add(_RAMIn);
+        arrComboBox.add(_ROMIn);
+        arrComboBox.add(_priceIn);
+        arrComboBox.add(_OSIn);
+        arrComboBox.add(_brandIn);
+        arrComboBox.add(_motherBoardIn);
+        arrComboBox.add(_powerSupplyIn);
+        arrComboBox.add(_RAM_freqIn);
+        arrComboBox.add(_CPU_freqIn);
+        arrComboBox.add(_GPU_RAMIn);
+        arrComboBox.add(_case_PCIn);
+        
+        for (int l = 0; l < arrComboBox.size(); l++) {
+        	arrComboBox.get(l).setRenderer(new MyComboRenderer());
+        	arrComboBox.get(l).addItemListener(new ComboBoxListener(component[l]));
+        }
+        
+        //setBackground(Color.gray);
+        setLayout(new GridBagLayout());
+        _grid = new GridBagConstraints();
+        
+        submit = new JButton("Submit");
         submit.addActionListener(new SubmitListener());
-
-        grid.fill = GridBagConstraints.HORIZONTAL;
-        grid.weightx = 0.5;
-        grid.gridx = 5;
-        grid.gridy = 7;
-        add(submit, grid);
+        
+        displaySimple();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
+    public void displaySimple() {
+        _grid.insets = new Insets(3,3,3,3);
+        
+        int k = 0;
+        for (int i = 1; i <= 2; i++) {
+        	for (int j = 0; j <= 5; j++) {
+        		_grid.fill = GridBagConstraints.HORIZONTAL;
+                _grid.weightx = 0.5;
+                _grid.gridx = j;
+                _grid.gridy = i;                
+                if (j%2 == 0) {
+                	add(new JLabel(component[k], SwingConstants.RIGHT), _grid);
+                } else {
+                	add(arrComboBox.get(k-1), _grid);
+                	k--;
+                }
+                k++;
+        	}
+		}
+
+        /* Bouton Submit */
+        _grid.fill = GridBagConstraints.HORIZONTAL;
+        _grid.weightx = 0.5;
+        _grid.gridx = 5;
+        _grid.gridy = 3;
+        add(submit, _grid);
+    }
+
+    public void displayExpert() {
+    	int k = 0;
+        for (int i = 1; i < 5; i++) {
+        	for (int j = 0; j <= 5; j++) {
+        		if (i == 5 && j == 1)
+        			break;
+        		_grid.fill = GridBagConstraints.HORIZONTAL;
+                _grid.weightx = 0.5;
+                _grid.gridx = j;
+                _grid.gridy = i;
+                if (j%2 == 0) {
+                	add(new JLabel(component[k], SwingConstants.RIGHT), _grid);
+                } else {
+                	add(arrComboBox.get(k-1), _grid);
+                	k--;
+                }
+                k++;
+        	}
+		}
+
+        /* Bouton Submit */
+        _grid.fill = GridBagConstraints.HORIZONTAL;
+        _grid.weightx = 0.5;
+        _grid.gridx = 5;
+        _grid.gridy = 7;
+        add(submit, _grid);
+    }
+
+    
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
+    }
+    
+    public GridBagConstraints getGrid() {
+    	return _grid;
     }
 
     class ComboBoxListener implements ItemListener {
