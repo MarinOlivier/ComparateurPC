@@ -61,9 +61,7 @@ public class ComputerWindow extends JFrame {
 		try {
 			label = new JLabel();
 			label.setBounds(0, 0, 300, 300);
-			
-			System.out.println(_comp.getPict());
-			
+            
 			img = ImageIO.read(new URL(_comp.getPict()));
 		    Image dimg = img.getScaledInstance(label.getWidth(), label.getHeight(),
 		            Image.SCALE_DEFAULT);
