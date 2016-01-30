@@ -37,7 +37,6 @@ public class ConnectDB {
     }
     
     public static void pushComputerOnDB(HashMap<String, String> a, java.sql.Connection c) throws SQLException {
-
         String sql = "INSERT INTO computer " +
                 "(name, motherBoard, CPU, RAM, GPU, ROM, powerSupply, price, RAM_freq, CPU_freq, GPU_freq, GPU_RAM, E_S, case_pc, airing, OS, brand, soundCard, pict)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

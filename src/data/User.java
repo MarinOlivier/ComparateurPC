@@ -1,5 +1,8 @@
 package data;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 /**
  * Created by olivier on 16/12/2015.
  */

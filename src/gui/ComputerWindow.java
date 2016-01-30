@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -167,7 +169,6 @@ public class ComputerWindow extends JFrame {
 	}
 
 	class MyButton extends JButton {
-
 		public MyButton(String txt) {
 			super(txt);
             setRolloverEnabled(true);
@@ -210,5 +211,15 @@ public class ComputerWindow extends JFrame {
         public Insets getMargin() {
             return new Insets(5, 10, 10, 10);
         }
+    }
+	
+	// TODO !!
+	public void pushReservOnDB(java.sql.Connection c, String idComputer) throws SQLException {
+    	String sql = "INSERT INTO reserve " +
+                "(id_computer)" +
+                " VALUES (?)";
+        PreparedStatement preparedStatement = c.prepareStatement(sql);
+        preparedStatement.setString(0, idComputer);
+        preparedStatement.executeUpdate();
     }
 }
