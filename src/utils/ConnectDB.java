@@ -73,7 +73,7 @@ public class ConnectDB {
                 
                 // TODO
                 System.out.println(value);
-                if(value != null){
+                if(value != null && !Objects.equals(value, "Sélectionner")){
                     WHERE = WHERE + "`" + component[i] + "` LIKE '" + value + "' AND ";
                 }
 
@@ -82,10 +82,16 @@ public class ConnectDB {
             }
         }
 
-        WHERE = WHERE.substring(0, WHERE.length()-5);
-        WHERE = WHERE + ";";
+        String selectSQL;
+        if(WHERE.equals("")) {
+            selectSQL = "SELECT * FROM `computer`;";
+        } else {
+            WHERE = WHERE.substring(0, WHERE.length()-5);
+            WHERE = WHERE + ";";
 
-        String selectSQL = "SELECT * FROM `computer` WHERE "+ WHERE;
+            selectSQL = "SELECT * FROM `computer` WHERE "+ WHERE;
+        }
+
         PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
         ResultSet rs = preparedStatement.executeQuery(selectSQL );
 
