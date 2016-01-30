@@ -4,13 +4,9 @@ import data.Computer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,7 +14,6 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Created by olivier on 07/01/2016.
@@ -39,37 +34,7 @@ public class CenterPanel extends JPanel {
     private int _hsCmplength;
     // Computer propre à la ligne sélectionnée.
     private Computer _comp;
-    
-    String[] columnNameExpert = {
-            "name",
-            "motherBoard",
-            "CPU",
-            "RAM",
-            "GPU",
-            "ROM",
-            "powerSupply",
-            "price",
-            "RAM_freq",
-            "CPU_freq",
-            "GPU_freq",
-            "GPU_RAM",
-            "E_S",
-            "case_PC",
-            "airing",
-            "OS",
-            "brand",
-            "soundCard"
-    };
 
-    String[] columnNameSimple = {
-            "CPU",
-            "RAM",
-            "ROM",
-            "price",
-            "E_S",
-            "OS",
-            "brand"
-    };
 
     public CenterPanel() {
         setBackground(Color.WHITE);
@@ -227,11 +192,4 @@ public class CenterPanel extends JPanel {
         setHsCmpLength(_hsCmp.size());
         _dataTable.fireTableDataChanged();
     }
-
-   /* @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        displayTableComputer(_mode);
-        System.out.println("paintComponant");
-    }*/
 }
