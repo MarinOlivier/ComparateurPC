@@ -4,6 +4,9 @@ import data.Computer;
 import sun.awt.Graphics2Delegate;
 
 import javax.swing.*;
+
+import com.apple.eawt.UserSessionListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +24,7 @@ public class MyWindow extends JFrame {
     
     private JMenuItem expert;
     private JMenuItem changeUser;
+    private JMenuItem reservList;
 
     public MyWindow(){
         this.setTitle("Comparateur Computer");
@@ -32,6 +36,15 @@ public class MyWindow extends JFrame {
         
         _mb = new JMenuBar();
         JMenu user = new JMenu("Utilisateur");
+        reservList = new JMenuItem("Réservations");
+        reservList.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ReservUserWindow();
+				
+			}
+		});
+        user.add(reservList);
         changeUser = new JMenuItem("Changer d'utilisateur");
         changeUser.addActionListener(new ActionListener() {
 
@@ -42,7 +55,6 @@ public class MyWindow extends JFrame {
 			}
         	
         });
-        
         user.add(changeUser);
         
         JMenu mode = new JMenu("Mode");
