@@ -2,16 +2,23 @@ package gui;
 
 import data.Computer;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by olivier on 07/01/2016.
@@ -83,8 +90,9 @@ public class CenterPanel extends JPanel {
 		}
 
 		_dataTable = new AbstractTableModel() {
-        	private final String[] _head = { "#", "Nom", "Marque", "Description", "Prix", "Match"};
-        	
+        	private final String[] _head = { "#", "Image", "Nom", "Marque", "Description", "Prix", "Match"};
+
+
         	@Override
 			public int getRowCount() {
 				return _hsCmplength;
@@ -99,28 +107,30 @@ public class CenterPanel extends JPanel {
 			public int getColumnCount() {
 				return _head.length;
 			}
-			
-			@Override
+
+            @Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
 				_comp = _hsCmp.get(rowIndex);
 				
 				switch (columnIndex) {
 					case 0:
 						return rowIndex+1;
-						
-					case 1:
+                    case 1:
+                        break;
+
+					case 2:
 						return _comp.getName();
 						
-					case 2:
+					case 3:
 						return _comp.getBrand();
 						
-					case 3:
+					case 4:
 						return _comp.getCPU() + ", " + _comp.getRAM() + ", " + _comp.getROM();
 				
-					case 4:
+					case 5:
 						return _comp.getPrice();
 						
-					case 5:
+					case 6:
 						return 100 + "%";
 				}
 				return null;
@@ -129,22 +139,54 @@ public class CenterPanel extends JPanel {
 		
 		setLayout(new BorderLayout());
 	    JTable t = new JTable(_dataTable);
-	    
+
+		t.setDefaultRenderer(Object.class, new TableCellRenderer() {
+			private DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				JLabel c = (JLabel)DEFAULT_RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                if(column == 1) {
+                    JLabel label = null;
+                    try {
+                        BufferedImage img = null;
+                        label = new JLabel();
+                        label.setBounds(0, 0, 90, 90);
+
+                        img = ImageIO.read(new URL(_comp.getPict()));
+                        Image dimg = img.getScaledInstance(label.getWidth(), label.getHeight(),
+                                Image.SCALE_DEFAULT);
+
+                        ImageIcon realImg = new ImageIcon(dimg);
+
+                        label.setIcon(realImg);
+
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    value = label;
+                    return label;
+                }
+                else
+                    return c;
+			}
+		});
+
+        t.setRowHeight(100);
+
 	    ListSelectionModel cellSelectionModel = t.getSelectionModel();
 	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-	    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-	    	@Override
-	    	public void valueChanged(ListSelectionEvent e) {
-	    		if (e.getValueIsAdjusting())
-	                return;
-	    		
-	            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-	            if (!lsm.isSelectionEmpty())
-	                _selectedRow = lsm.getMinSelectionIndex();
-	      }
+	    cellSelectionModel.addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting())
+                return;
 
-	    });
+            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+            if (!lsm.isSelectionEmpty())
+                _selectedRow = lsm.getMinSelectionIndex();
+      });
 	    
 	    t.addMouseListener(new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
@@ -155,17 +197,13 @@ public class CenterPanel extends JPanel {
 	    });
 	    
 	    t.getColumnModel().getColumn(0).setPreferredWidth(10);
-	    t.getColumnModel().getColumn(1).setPreferredWidth(150);
-	    t.getColumnModel().getColumn(2).setPreferredWidth(0);
-	    t.getColumnModel().getColumn(3).setPreferredWidth(150);
-	    t.getColumnModel().getColumn(4).setPreferredWidth(20);
-	    t.getColumnModel().getColumn(5).setPreferredWidth(0);
+	    t.getColumnModel().getColumn(1).setPreferredWidth(90);
+	    t.getColumnModel().getColumn(2).setPreferredWidth(150);
+	    t.getColumnModel().getColumn(3).setPreferredWidth(0);
+	    t.getColumnModel().getColumn(4).setPreferredWidth(150);
+	    t.getColumnModel().getColumn(5).setPreferredWidth(20);
+	    t.getColumnModel().getColumn(6).setPreferredWidth(0);
 	    add(new JScrollPane(t));
-    }
-
-    private void displayTableComputer(String mode){
-        gridPane.add(new JLabel(mode.toString()));
-        System.out.println("Display table");
     }
     
     public void setHsCmpLength(int size) {
