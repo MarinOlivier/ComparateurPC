@@ -3,10 +3,10 @@
  */
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Image;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
@@ -49,8 +49,8 @@ public class ComputerWindow extends JFrame {
 		
 		setSize(new Dimension(450, 680));
 		JPanel mainPanel = new JPanel();
-		JButton reserv = new JButton("Réserver");
-		
+		MyButton reserv = new MyButton("Réserver");
+
 		BufferedImage img = null;
 		JLabel label = null;
 		
@@ -165,4 +165,50 @@ public class ComputerWindow extends JFrame {
 
 		setVisible(true);
 	}
+
+	class MyButton extends JButton {
+
+		public MyButton(String txt) {
+			super(txt);
+            setRolloverEnabled(true);
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D)g;
+			g2.setColor(new Color(9, 194, 9));
+			Rectangle2D rect = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
+			g2.fill(rect);
+
+			g2.setFont(new Font("Arial", Font.ROMAN_BASELINE, 20));
+			FontMetrics fm = g2.getFontMetrics();
+			int stringWidth = fm.stringWidth(getText());
+			int stringAccent = fm.getAscent();
+			// get the position of the leftmost character in the baseline
+			int x = getWidth() / 2 - stringWidth / 2;
+			int y = getHeight() / 2 + stringAccent / 2;
+			g2.setPaint(Color.WHITE);
+			g2.drawString(getText(), x, y);
+
+
+            if(getModel().isRollover()){
+                g2.setColor(new Color(9, 151, 9));
+                g2.fill(rect);
+                g2.setPaint(Color.WHITE);
+                g2.drawString(getText(), x, y);
+
+                if(getModel().isPressed()) {
+                    g2.setColor(new Color(7, 84, 7));
+                    g2.fill(rect);
+                    g2.setPaint(Color.WHITE);
+                    g2.drawString(getText(), x, y);
+                }
+            }
+		}
+
+        @Override
+        public Insets getMargin() {
+            return new Insets(5, 10, 10, 10);
+        }
+    }
 }
