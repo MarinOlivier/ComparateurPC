@@ -196,7 +196,7 @@ public class ComputerWindow extends JFrame {
             addMouseListener(new MouseAdapter() {
             	public void mouseReleased(MouseEvent e) {
             		try {
-						utils.ConnectDB.pushReservOnDB(_idComp);
+						utils.ConnectDB.pushReservOnDB(243, _idComp+1, _comp.getName());
 						setVisible(false);
 					} catch (SQLException e1) {
 						e1.printStackTrace();

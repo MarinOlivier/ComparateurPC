@@ -138,13 +138,14 @@ public class ConnectDB {
         return comptList;
     }
     
-    public static void pushReservOnDB(int idComp) throws SQLException {
+    public static void pushReservOnDB(int idUser, int idComp, String nameComp) throws SQLException {
     	String sql = "INSERT INTO reserve " +
-                "(id_user, id_computer)" +
-                " VALUES (?, ?)";
+                "(id_user, id_computer, name_computer)" +
+                " VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = _con.prepareStatement(sql);
-        preparedStatement.setInt(1, 243);
+        preparedStatement.setInt(1, idUser);
         preparedStatement.setInt(2, idComp);
+        preparedStatement.setString(3, nameComp);
         preparedStatement.executeUpdate();
     }
     
@@ -159,6 +160,29 @@ public class ConnectDB {
             verif = rs.getInt(2);
         
         return verif == idComp;
+    }
+    
+    public static ArrayList<String[]> getReservation() throws SQLException {
+    	String selectSQL;
+        selectSQL = "SELECT * FROM reserve";
+        PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
+        ResultSet rs = preparedStatement.executeQuery(selectSQL);
+
+        String[] nameCompList = new String[100];
+        String[] dateList = new String[100];
+        int i = 0;
+        while (rs.next()) { 
+	        nameCompList[i] = rs.getString(3);
+	        dateList[i] = rs.getString(4);
+	        i++;
+        }
+        
+        ArrayList<String[]> arrReserv = new ArrayList<>();
+        arrReserv.add(nameCompList);
+        arrReserv.add(dateList);
+        
+        System.out.println(arrReserv);
+        return arrReserv;
     }
 
 }

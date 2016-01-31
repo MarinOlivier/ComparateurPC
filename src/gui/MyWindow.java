@@ -10,6 +10,8 @@ import com.apple.eawt.UserSessionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by olivier on 16/12/2015.
@@ -40,7 +42,12 @@ public class MyWindow extends JFrame {
         reservList.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ReservUserWindow();
+				try {
+					new ReservUserWindow(utils.ConnectDB.getReservation());
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 		});
