@@ -198,6 +198,7 @@ public class ComputerWindow extends JFrame {
             		try {
 						utils.ConnectDB.pushReservOnDB(243, _idComp+1, _comp.getName());
 						setVisible(false);
+						
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}

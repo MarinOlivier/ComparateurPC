@@ -38,14 +38,13 @@ public class MyWindow extends JFrame {
         
         _mb = new JMenuBar();
         JMenu user = new JMenu("Utilisateur");
-        reservList = new JMenuItem("Réservations");
+        reservList = new JMenuItem("Liste des souhaits");
         reservList.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					new ReservUserWindow(utils.ConnectDB.getReservation());
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				

@@ -181,7 +181,6 @@ public class ConnectDB {
         arrReserv.add(nameCompList);
         arrReserv.add(dateList);
         
-        System.out.println(arrReserv);
         return arrReserv;
     }
 

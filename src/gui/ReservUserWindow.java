@@ -19,7 +19,7 @@ import javax.swing.table.TableModel;
  * @param <T>
  *
  */
-public class ReservUserWindow<T> extends JFrame {
+public class ReservUserWindow extends JFrame {
 	ArrayList<String[]> _arrReserv;
 	
 	public ReservUserWindow(ArrayList<String[]> arrR) {
