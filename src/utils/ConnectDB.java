@@ -17,6 +17,7 @@ import data.Computer;
  *
  */
 public class ConnectDB {
+	static Connection _con = utils.ConnectDB.startConnection();
 
     private static String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
             "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
@@ -64,7 +65,7 @@ public class ConnectDB {
     }
     public static ArrayList<Computer> getComputerOnDB(java.sql.Connection c, Computer wishedComp) throws SQLException {
         String WHERE = "";
-
+        
         for(int i = 0; i  < component.length; i++){
             try {
                 Field field = wishedComp.getClass().getDeclaredField("_" + component[i]);
@@ -117,7 +118,6 @@ public class ConnectDB {
 
 
     private static ArrayList<Computer> dbToArrayList(ResultSet rs){
-
         ArrayList<Computer> comptList = new ArrayList<>();
         try {
             while(rs.next()) {
@@ -136,6 +136,29 @@ public class ConnectDB {
             e.printStackTrace();
         }
         return comptList;
+    }
+    
+    public static void pushReservOnDB(int idComp) throws SQLException {
+    	String sql = "INSERT INTO reserve " +
+                "(id_user, id_computer)" +
+                " VALUES (?, ?)";
+        PreparedStatement preparedStatement = _con.prepareStatement(sql);
+        preparedStatement.setInt(1, 243);
+        preparedStatement.setInt(2, idComp);
+        preparedStatement.executeUpdate();
+    }
+    
+    public static boolean verifReserv(int idUser, int idComp) throws SQLException {
+    	String selectSQL;
+        selectSQL = "SELECT id_user,id_computer FROM reserve WHERE id_user = " + idUser + " AND id_computer = " + idComp;
+        PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
+        ResultSet rs = preparedStatement.executeQuery(selectSQL);
+
+        int verif = 0;
+        while (rs.next())
+            verif = rs.getInt(2);
+        
+        return verif == idComp;
     }
 
 }

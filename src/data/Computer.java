@@ -1,5 +1,6 @@
 package data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,52 +27,23 @@ public class Computer {
     public String _soundCard;
 
     public String _pict;
+    
+    private static String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
+            "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
+            "case_PC", "airing", "OS", "brand", "soundCard", "pict"};
 
     public Computer(){
 
     }
 
 
-    public Computer(Map<String, String> mapPC) {
-        if(mapPC.containsKey("name"))
-            setName(mapPC.get("name"));
-        if(mapPC.containsKey("motherBoard"))
-            setMotherBoard(mapPC.get("motherBoard"));
-        if(mapPC.containsKey("CPU"))
-            setCPU(mapPC.get("CPU"));
-        if(mapPC.containsKey("RAM"))
-            setRAM(mapPC.get("RAM"));
-        if(mapPC.containsKey("GPU"))
-            setGPU(mapPC.get("GPU"));
-        if(mapPC.containsKey("ROM"))
-            setROM(mapPC.get("ROM"));
-        if(mapPC.containsKey("powerSupply"))
-            setPowerSupply(mapPC.get("powerSupply"));
-        if(mapPC.containsKey("price"))
-            setPrice(mapPC.get("price"));
-        if(mapPC.containsKey("RAM_freq"))
-            setRAM_freq(mapPC.get("RAM_freq"));
-        if(mapPC.containsKey("CPU_freq"))
-            setCPU_freq(mapPC.get("CPU_freq"));
-        if(mapPC.containsKey("GPU_freq"))
-            setGPU_freq(mapPC.get("GPU_freq"));
-        if(mapPC.containsKey("E_S"))
-            setE_S(mapPC.get("E_S"));
-        if(mapPC.containsKey("case_PC"))
-            setCase_PC(mapPC.get("case_PC"));
-        if(mapPC.containsKey("airing"))
-            setAiring(mapPC.get("airing"));
-        if(mapPC.containsKey("OS"))
-            setOS(mapPC.get("OS"));
-        if(mapPC.containsKey("brand"))
-            setBrand(mapPC.get("brand"));
-        if(mapPC.containsKey("soundCard"))
-            setSoundCard(mapPC.get("soundCard"));
-        if(mapPC.containsKey("pict"))
-            setPict(mapPC.get("pict"));
-
+    public Computer(HashMap<String, String> mapPC) {
+    	for (int i = 0; i < component.length; i++) {
+    		if (mapPC.containsKey(component[i]))
+    			setName(mapPC.get(component[i]));
+		}
     }
-
+    
     public String getName() {
         return _name;
     }

@@ -19,7 +19,7 @@ public class ComparePC {
         this.setPriority();
     }
 
-    private void setPriority(){
+    private void setPriority() {
         _priority.put("motherBoard", 1);
         _priority.put("CPU", 1);
         _priority.put("RAM", 1);

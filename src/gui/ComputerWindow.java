@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,14 +35,16 @@ import data.Computer;
  */
 public class ComputerWindow extends JFrame {
 	private Computer _comp;
+	private static int _idComp;
 	
 	private ArrayList<String> _component;
 	private String[] _nameComponent = {"Nom", "Marque", "Carte Mère", "CPU", "Fréquence CPU", "RAM", "Fréquence RAM", "GPU", "Fréquence GPU", 
 		"RAM GPU", "Disque Dur", "Système d'exploitation", "Alimentation", "Carte Son", "E/S", "Boitier", "Refroidissement", 
 		 "Prix"};
 	
-	public ComputerWindow(Computer p) {
+	public ComputerWindow(Computer p, int id) {
 		_comp = p;
+		_idComp = id;
 		_component = new ArrayList<>();
 		for (String i : _nameComponent) {
 			if (i != null) {
@@ -54,6 +57,17 @@ public class ComputerWindow extends JFrame {
 		setSize(new Dimension(450, 680));
 		JPanel mainPanel = new JPanel();
 		MyButton reserv = new MyButton("Réserver");
+		
+		/* On vérifie si l'utilsateur n'a pas déjà réservé
+		 * cet ordinateur, si c'est le cas on disable 
+		 * le bouton Réserver
+		 */
+		try {
+			if (utils.ConnectDB.verifReserv(243, _idComp+1))
+				reserv.setVisible(false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 		BufferedImage img = null;
 		JLabel label = null;
@@ -179,6 +193,16 @@ public class ComputerWindow extends JFrame {
 		public MyButton(String txt) {
 			super(txt);
             setRolloverEnabled(true);
+            addMouseListener(new MouseAdapter() {
+            	public void mouseReleased(MouseEvent e) {
+            		try {
+						utils.ConnectDB.pushReservOnDB(_idComp);
+						setVisible(false);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+            	}
+            });
 		}
 
 		@Override
@@ -218,15 +242,5 @@ public class ComputerWindow extends JFrame {
         public Insets getMargin() {
             return new Insets(5, 10, 10, 10);
         }
-    }
-	
-	// TODO !!
-	public void pushReservOnDB(java.sql.Connection c, String idComputer) throws SQLException {
-    	String sql = "INSERT INTO reserve " +
-                "(id_computer)" +
-                " VALUES (?)";
-        PreparedStatement preparedStatement = c.prepareStatement(sql);
-        preparedStatement.setString(0, idComputer);
-        preparedStatement.executeUpdate();
     }
 }

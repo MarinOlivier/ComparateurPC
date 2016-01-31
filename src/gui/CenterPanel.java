@@ -110,7 +110,7 @@ public class CenterPanel extends JPanel {
 		setLayout(new BorderLayout());
 	    JTable t = new JTable(_dataTable);
 
-		t.setDefaultRenderer(Object.class, new TableCellRenderer() {
+		/*t.setDefaultRenderer(Object.class, new TableCellRenderer() {
 			private DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
 
 			@Override
@@ -180,7 +180,7 @@ public class CenterPanel extends JPanel {
 			}
 		});
 
-        t.setRowHeight(100);
+        t.setRowHeight(100);*/
 
 	    ListSelectionModel cellSelectionModel = t.getSelectionModel();
 	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -197,7 +197,7 @@ public class CenterPanel extends JPanel {
 	    t.addMouseListener(new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
 	    		if (e.getClickCount() == 2) {
-		    		new ComputerWindow(_hsCmp.get(_selectedRow));
+		    		new ComputerWindow(_hsCmp.get(_selectedRow), _selectedRow);
 	    		}
 	    	}
 	    });
