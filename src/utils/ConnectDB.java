@@ -63,6 +63,7 @@ public class ConnectDB {
 
         return dbToArrayList(rs);
     }
+    
     public static ArrayList<Computer> getComputerOnDB(java.sql.Connection c, Computer wishedComp) throws SQLException {
         String WHERE = "";
         
@@ -96,6 +97,37 @@ public class ConnectDB {
         ResultSet rs = preparedStatement.executeQuery(selectSQL );
 
         return dbToArrayList(rs);
+    }
+    
+    public static Computer getOneComputer(int idComputer) throws SQLException {
+    	String selectSQL = "SELECT * FROM computer WHERE = " + idComputer;
+    	PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
+    	ResultSet rs = preparedStatement.executeQuery(selectSQL);
+    	
+    	Computer tmp = new Computer();
+    	while(rs.next()) {
+    		tmp.setName(rs.getString("name"));
+    		tmp.setBrand(rs.getString("brand"));
+    		tmp.setMotherBoard(rs.getString("motherBoard"));
+    		tmp.setCPU(rs.getString("CPU"));
+    		tmp.setCPU_freq(rs.getString("CPU_freq"));
+    		tmp.setGPU(rs.getString("GPU"));
+    		tmp.setGPU_freq(rs.getString("GPU_freq"));
+    		tmp.setGPU_RAM(rs.getString("GPU_RAM"));
+    		tmp.setRAM(rs.getString("RAM"));
+    		tmp.setRAM_freq(rs.getString("RAM_freq"));
+    		tmp.setAiring(rs.getString("airing"));
+    		tmp.setCase_PC(rs.getString("case_pc"));
+    		tmp.setE_S(rs.getString("E_S"));
+    		tmp.setOS(rs.getString("OS"));
+    		tmp.setPict(rs.getString("pict"));
+    		tmp.setPowerSupply(rs.getString("powerSupply"));
+    		tmp.setPrice(rs.getString("price"));
+    		tmp.setROM(rs.getString("ROM"));
+    		tmp.setSoundCard(rs.getString("soundCard"));
+    	}
+    	
+    	return tmp;
     }
 
     public static String[] getCriteria(java.sql.Connection c, String element) throws SQLException {
@@ -149,17 +181,18 @@ public class ConnectDB {
         preparedStatement.executeUpdate();
     }
     
+    // TODO INSERER nameComputer dans LA TABLE reserve.
     public static boolean verifReserv(int idUser, int idComp) throws SQLException {
     	String selectSQL;
         selectSQL = "SELECT id_user,id_computer FROM reserve WHERE id_user = " + idUser + " AND id_computer = " + idComp;
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
         ResultSet rs = preparedStatement.executeQuery(selectSQL);
 
-        int verif = 0;
+        int verifIdComp = 0;
         while (rs.next())
-            verif = rs.getInt(2);
+        	verifIdComp = rs.getInt(2);
         
-        return verif == idComp;
+        return verifIdComp == idComp;
     }
     
     public static ArrayList<String[]> getReservation() throws SQLException {
@@ -168,16 +201,19 @@ public class ConnectDB {
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
         ResultSet rs = preparedStatement.executeQuery(selectSQL);
 
+        String[] idCompList = new String[100];
         String[] nameCompList = new String[100];
         String[] dateList = new String[100];
         int i = 0;
-        while (rs.next()) { 
+        while (rs.next()) {
+        	idCompList[i] = rs.getString(2);
 	        nameCompList[i] = rs.getString(3);
 	        dateList[i] = rs.getString(4);
 	        i++;
         }
         
         ArrayList<String[]> arrReserv = new ArrayList<>();
+        arrReserv.add(idCompList);
         arrReserv.add(nameCompList);
         arrReserv.add(dateList);
         

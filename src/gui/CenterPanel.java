@@ -57,7 +57,7 @@ public class CenterPanel extends JPanel {
 
 
 		_dataTable = new AbstractTableModel() {
-        	private final String[] _head = { "#", "Image", "Nom", "Marque", "Description", "Prix", "Match"};
+        	private final String[] _head = { "#", "Nom", "Marque", "Description", "Prix", "Match"};
 
 
         	@Override
@@ -82,22 +82,20 @@ public class CenterPanel extends JPanel {
 				switch (columnIndex) {
 					case 0:
 						return rowIndex+1;
-                    case 1:
-                        break;
 
-					case 2:
+					case 1:
 						return _comp.getName();
 						
-					case 3:
+					case 2:
 						return _comp.getBrand();
 						
-					case 4:
+					case 3:
 						return _comp.getCPU() + ", " + _comp.getRAM() + ", " + _comp.getROM();
 				
-					case 5:
+					case 4:
 						return _comp.getPrice();
 						
-					case 6:
+					case 5:
                         if(rowIndex == 0)
 						    return 100 + "%";
                         else if(rowIndex == 1)
@@ -156,7 +154,7 @@ public class CenterPanel extends JPanel {
 
                     return pane;
                 } else if(column == 6) {*/
-                if(column == 6) {
+                if(column == 5) {
                     JLabel label = new JLabel(value.toString(), SwingConstants.CENTER);
                     JPanel pane = new JPanel(new BorderLayout());
                     if(Integer.parseInt(value.toString().replace(value.toString().substring(value.toString().length()-1), "")) >= 90){
@@ -197,7 +195,7 @@ public class CenterPanel extends JPanel {
             ListSelectionModel lsm = (ListSelectionModel)e.getSource();
             if (!lsm.isSelectionEmpty())
                 _selectedRow = lsm.getMinSelectionIndex();
-      });
+	    });
 	    
 	    t.addMouseListener(new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
@@ -207,13 +205,12 @@ public class CenterPanel extends JPanel {
 	    	}
 	    });
 	    
-	    t.getColumnModel().getColumn(0).setPreferredWidth(10);
-	    t.getColumnModel().getColumn(1).setPreferredWidth(90);
-	    t.getColumnModel().getColumn(2).setPreferredWidth(150);
-	    t.getColumnModel().getColumn(3).setPreferredWidth(0);
-	    t.getColumnModel().getColumn(4).setPreferredWidth(150);
-	    t.getColumnModel().getColumn(5).setPreferredWidth(20);
-	    t.getColumnModel().getColumn(6).setPreferredWidth(0);
+	    t.getColumnModel().getColumn(0).setPreferredWidth(10);	    
+	    t.getColumnModel().getColumn(1).setPreferredWidth(150);
+	    t.getColumnModel().getColumn(2).setPreferredWidth(0);
+	    t.getColumnModel().getColumn(3).setPreferredWidth(150);
+	    t.getColumnModel().getColumn(4).setPreferredWidth(20);
+	    t.getColumnModel().getColumn(5).setPreferredWidth(0);
 
         add(new BestPane(getWidth(), _hsBest), BorderLayout.NORTH);
 	    add(new JScrollPane(t), BorderLayout.CENTER);
