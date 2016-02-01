@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class CenterPanel extends JPanel {
     private Computer _wishedPC;
     private String _mode;
-    private String[] elts = new String[100];
     private JPanel gridPane;
     
     // Données du JTable.
@@ -30,6 +29,7 @@ public class CenterPanel extends JPanel {
     private int _selectedRow;
     // ArrayList contenant tous les Computer en fonction de la recherche.
     private ArrayList<Computer> _hsCmp = null;
+    private ArrayList<Computer> _hsBest = null;
     // Taille de l'ArrayList.
     private int _hsCmplength;
     // Computer propre à la ligne sélectionnée.
@@ -42,9 +42,6 @@ public class CenterPanel extends JPanel {
         _wishedPC = new Computer();
 
         _mode = "Simple";
-        for(int i = 0; i < 100; i++) {
-            elts[i] = String.valueOf(i);
-        }
         
         Connection c = utils.ConnectDB.startConnection();
         try {
@@ -53,6 +50,11 @@ public class CenterPanel extends JPanel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+
+        _hsBest = new ArrayList<>(_hsCmp.subList(0, 3));
+        _hsCmp= new ArrayList<>(_hsCmp.subList(3, _hsCmp.size()));
+
 
 		_dataTable = new AbstractTableModel() {
         	private final String[] _head = { "#", "Image", "Nom", "Marque", "Description", "Prix", "Match"};
@@ -110,23 +112,23 @@ public class CenterPanel extends JPanel {
 		setLayout(new BorderLayout());
 	    JTable t = new JTable(_dataTable);
 
-		/*t.setDefaultRenderer(Object.class, new TableCellRenderer() {
+		t.setDefaultRenderer(Object.class, new TableCellRenderer() {
 			private DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				Component c = DEFAULT_RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                if (row % 2 == 0) {
+                /*if (row % 2 == 0) {
                     c.setBackground(Color.WHITE);
                     c.setForeground(Color.BLACK);
 
                 } else {
                     c.setBackground(Color.LIGHT_GRAY);
                     c.setForeground(Color.BLACK);
-                }
+                }*/
 
-                if(column == 1) {
+                /*if(column == 1) {
                     JLabel label = null;
                     JPanel pane = new JPanel();
                     try {
@@ -153,7 +155,8 @@ public class CenterPanel extends JPanel {
                     }
 
                     return pane;
-                } else if(column == 6) {
+                } else if(column == 6) {*/
+                if(column == 6) {
                     JLabel label = new JLabel(value.toString(), SwingConstants.CENTER);
                     JPanel pane = new JPanel(new BorderLayout());
                     if(Integer.parseInt(value.toString().replace(value.toString().substring(value.toString().length()-1), "")) >= 90){
@@ -165,13 +168,15 @@ public class CenterPanel extends JPanel {
                         label.setForeground(new Color(255, 34, 23));
                     }
 
-                    label.setFont(new Font("Arial", Font.CENTER_BASELINE, 16));
+                    label.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
 
                     pane.add(label, BorderLayout.CENTER);
-                    if(row%2 == 0)
+
+                    pane.setBackground(Color.WHITE);
+                    /*if(row%2 == 0)
                         pane.setBackground(Color.WHITE);
                     else
-                        pane.setBackground(Color.LIGHT_GRAY);
+                        pane.setBackground(Color.LIGHT_GRAY);*/
 
                     return pane;
                 }
@@ -180,7 +185,7 @@ public class CenterPanel extends JPanel {
 			}
 		});
 
-        t.setRowHeight(100);*/
+        //t.setRowHeight(100);
 
 	    ListSelectionModel cellSelectionModel = t.getSelectionModel();
 	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -209,7 +214,9 @@ public class CenterPanel extends JPanel {
 	    t.getColumnModel().getColumn(4).setPreferredWidth(150);
 	    t.getColumnModel().getColumn(5).setPreferredWidth(20);
 	    t.getColumnModel().getColumn(6).setPreferredWidth(0);
-	    add(new JScrollPane(t));
+
+        add(new BestPane(getWidth(), _hsBest), BorderLayout.NORTH);
+	    add(new JScrollPane(t), BorderLayout.CENTER);
     }
     
     public void setHsCmpLength(int size) {
@@ -232,5 +239,6 @@ public class CenterPanel extends JPanel {
         _hsCmp = c;
         setHsCmpLength(_hsCmp.size());
         _dataTable.fireTableDataChanged();
+
     }
 }
