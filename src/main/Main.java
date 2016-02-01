@@ -21,6 +21,6 @@ import gui.MyWindow;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        MyWindow w = new MyWindow();//pushor
+        MyWindow w = new MyWindow();
     }
 }
