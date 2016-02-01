@@ -39,8 +39,7 @@ public class CenterPanel extends JPanel {
         _wishedPC = new Computer();
 
         _mode = "Simple";
-        
-        Connection c = utils.ConnectDB.startConnection();
+
         try {
 			_hsCmp = utils.ConnectDB.getAllComputerOnDB();
 			 setHsCmpLength(_hsCmp.size());
@@ -50,7 +49,7 @@ public class CenterPanel extends JPanel {
 
 
         _hsBest = new ArrayList<>(_hsCmp.subList(0, 3));
-        _hsCmp= new ArrayList<>(_hsCmp.subList(3, _hsCmp.size()));
+        _hsCmp = new ArrayList<>(_hsCmp.subList(3, _hsCmp.size()));
 
 
 		_dataTable = new AbstractTableModel() {

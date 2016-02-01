@@ -25,8 +25,13 @@ import data.Computer;
  *
  */
 public class ReservUserWindow extends JFrame {
-	ArrayList<String[]> _arrReserv;
+	private static ArrayList<String[]> _arrReserv;
 	private int _selectedRow;
+
+    private static String[] _idComp;
+    private static String[] _nameComp;
+    private static String[] _dateComp;
+
     private static AbstractTableModel _dataReservUser;
     private static JTable _reservUserTable;
 
@@ -35,15 +40,15 @@ public class ReservUserWindow extends JFrame {
 		setTitle("Réservations de ");
 		
 		_arrReserv = arrR;
-		String[] idComp = _arrReserv.get(0);
-		String[] nameComp = _arrReserv.get(1);
-		String[] dateComp = _arrReserv.get(2);
+		_idComp = _arrReserv.get(0);
+		_nameComp = _arrReserv.get(1);
+		_dateComp = _arrReserv.get(2);
 		_dataReservUser = new AbstractTableModel() {
         	private final String[] _head = {"#", "Ordinateur", "Date"};
         	
         	@Override
 			public int getRowCount() {
-				return nameComp.length;
+				return _nameComp.length;
 			}
 
 			@Override
@@ -59,11 +64,11 @@ public class ReservUserWindow extends JFrame {
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
 				if (columnIndex == 0)
-					return idComp[rowIndex];
+					return _idComp[rowIndex];
 				if (columnIndex == 1)
-					return nameComp[rowIndex];
+					return _nameComp[rowIndex];
 				if (columnIndex == 2)
-					return dateComp[rowIndex];
+					return _dateComp[rowIndex];
 				
 				return null;
 			}
@@ -80,9 +85,7 @@ public class ReservUserWindow extends JFrame {
 	    		if (e.getClickCount() == 2) {
 	    			Computer tmp = new Computer();
 					try {
-                        System.out.println("idComp[_selectedRow] :" + idComp[_selectedRow]);
-						tmp = utils.ConnectDB.getOneComputer(idComp[_selectedRow]);
-                        System.out.println("ID :" + tmp.getId());
+						tmp = utils.ConnectDB.getOneComputer(_idComp[_selectedRow]);
 						new ComputerWindow(tmp);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
@@ -105,8 +108,13 @@ public class ReservUserWindow extends JFrame {
 		});
 	}
 
-    /*public static void refreshTable() {
+    public static void setArrReserv(ArrayList<String[]> a) {
+        _arrReserv = a;
+        System.out.println(_arrReserv.get(0)[1]);
+        _idComp = _arrReserv.get(0);
+        _nameComp = _arrReserv.get(1);
+        _dateComp = _arrReserv.get(2);
+
         _dataReservUser.fireTableDataChanged();
-        _reservUserTable.repaint();
-    }*/
+    }
 }

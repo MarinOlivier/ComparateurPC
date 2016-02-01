@@ -67,7 +67,6 @@ public class TopPanel extends JPanel {
     
     public TopPanel(MyWindow window) {
         _window = window;
-        Connection con = utils.ConnectDB.startConnection();
         try {
             _motherBoardList = utils.ConnectDB.getCriteria("motherBoard");
             _CPUList = utils.ConnectDB.getCriteria("CPU");
@@ -127,8 +126,7 @@ public class TopPanel extends JPanel {
         	arrComboBox.get(l).setRenderer(new MyComboRenderer());
         	arrComboBox.get(l).addItemListener(new ComboBoxListener(component[l]));
         }
-        
-        //setBackground(Color.gray);
+
         setLayout(new GridBagLayout());
         _grid = new GridBagConstraints();
         
