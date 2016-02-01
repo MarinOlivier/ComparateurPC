@@ -3,9 +3,6 @@ package gui;
 import data.Computer;
 
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument.Iterator;
-
-import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -72,23 +69,23 @@ public class TopPanel extends JPanel {
         _window = window;
         Connection con = utils.ConnectDB.startConnection();
         try {
-            _motherBoardList = utils.ConnectDB.getCriteria(con, "motherBoard");
-            _CPUList = utils.ConnectDB.getCriteria(con, "CPU");
-            _RAMList = utils.ConnectDB.getCriteria(con, "RAM");
-            _GPUList = utils.ConnectDB.getCriteria(con, "GPU");
-            _ROMList = utils.ConnectDB.getCriteria(con, "ROM");
-            _powerSupplyList = utils.ConnectDB.getCriteria(con, "powerSupply");
-            _priceList = utils.ConnectDB.getCriteria(con, "price");
-            _RAM_freqList = utils.ConnectDB.getCriteria(con, "RAM_freq");
-            _GPU_freqList = utils.ConnectDB.getCriteria(con, "GPU_freq");
-            _CPU_freqList = utils.ConnectDB.getCriteria(con, "CPU_freq");
-            _GPU_RAMList = utils.ConnectDB.getCriteria(con, "GPU_RAM");
-            _E_SList = utils.ConnectDB.getCriteria(con, "E_S");
-            _case_PCList = utils.ConnectDB.getCriteria(con, "case_PC");
-            _airingList = utils.ConnectDB.getCriteria(con, "airing");
-            _OSList = utils.ConnectDB.getCriteria(con, "OS");
-            _brandList = utils.ConnectDB.getCriteria(con, "brand");
-            _soundCardList = utils.ConnectDB.getCriteria(con, "soundCard");
+            _motherBoardList = utils.ConnectDB.getCriteria("motherBoard");
+            _CPUList = utils.ConnectDB.getCriteria("CPU");
+            _RAMList = utils.ConnectDB.getCriteria("RAM");
+            _GPUList = utils.ConnectDB.getCriteria("GPU");
+            _ROMList = utils.ConnectDB.getCriteria("ROM");
+            _powerSupplyList = utils.ConnectDB.getCriteria("powerSupply");
+            _priceList = utils.ConnectDB.getCriteria("price");
+            _RAM_freqList = utils.ConnectDB.getCriteria("RAM_freq");
+            _GPU_freqList = utils.ConnectDB.getCriteria("GPU_freq");
+            _CPU_freqList = utils.ConnectDB.getCriteria("CPU_freq");
+            _GPU_RAMList = utils.ConnectDB.getCriteria("GPU_RAM");
+            _E_SList = utils.ConnectDB.getCriteria("E_S");
+            _case_PCList = utils.ConnectDB.getCriteria("case_PC");
+            _airingList = utils.ConnectDB.getCriteria("airing");
+            _OSList = utils.ConnectDB.getCriteria("OS");
+            _brandList = utils.ConnectDB.getCriteria("brand");
+            _soundCardList = utils.ConnectDB.getCriteria("soundCard");
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -238,7 +235,7 @@ public class TopPanel extends JPanel {
             Connection con = utils.ConnectDB.startConnection();
             ArrayList<Computer> compList = new ArrayList<>();
             try {
-                compList = utils.ConnectDB.getComputerOnDB(con, _window.getCenterPanel().getWishedPC());
+                compList = utils.ConnectDB.getComputerOnDB(_window.getCenterPanel().getWishedPC());
             } catch(Exception ex) {
                 ex.printStackTrace();
             }

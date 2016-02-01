@@ -2,7 +2,6 @@ package gui;
 
 import data.Computer;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -10,8 +9,6 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -45,7 +42,7 @@ public class CenterPanel extends JPanel {
         
         Connection c = utils.ConnectDB.startConnection();
         try {
-			_hsCmp = utils.ConnectDB.getAllComputerOnDB(c);
+			_hsCmp = utils.ConnectDB.getAllComputerOnDB();
 			 setHsCmpLength(_hsCmp.size());
 		} catch (Exception e) {
 			e.printStackTrace();

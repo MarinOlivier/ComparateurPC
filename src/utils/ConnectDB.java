@@ -3,8 +3,6 @@
  */
 package utils;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
@@ -37,11 +35,11 @@ public class ConnectDB {
         return conn;
     }
     
-    public static void pushComputerOnDB(HashMap<String, String> a, java.sql.Connection c) throws SQLException {
+    public static void pushComputerOnDB(HashMap<String, String> a) throws SQLException {
         String sql = "INSERT INTO computer " +
                 "(name, motherBoard, CPU, RAM, GPU, ROM, powerSupply, price, RAM_freq, CPU_freq, GPU_freq, GPU_RAM, E_S, case_pc, airing, OS, brand, soundCard, pict)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement preparedStatement = c.prepareStatement(sql);
+        PreparedStatement preparedStatement = _con.prepareStatement(sql);
 
     	String listComponent[] = new String[component.length];
         for (int i = 0; i < a.size(); i++) {
@@ -55,16 +53,16 @@ public class ConnectDB {
         preparedStatement.executeUpdate();
     }
 
-    public static ArrayList<Computer> getAllComputerOnDB(java.sql.Connection c) throws SQLException {
+    public static ArrayList<Computer> getAllComputerOnDB() throws SQLException {
         String selectSQL = "SELECT * FROM computer";
-        PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
+        PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
 
         ResultSet rs = preparedStatement.executeQuery(selectSQL);
 
         return dbToArrayList(rs);
     }
     
-    public static ArrayList<Computer> getComputerOnDB(java.sql.Connection c, Computer wishedComp) throws SQLException {
+    public static ArrayList<Computer> getComputerOnDB(Computer wishedComp) throws SQLException {
         String WHERE = "";
         
         for(int i = 0; i  < component.length; i++){
@@ -93,7 +91,7 @@ public class ConnectDB {
             selectSQL = "SELECT * FROM `computer` WHERE "+ WHERE;
         }
 
-        PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
+        PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
         ResultSet rs = preparedStatement.executeQuery(selectSQL );
 
         return dbToArrayList(rs);
@@ -130,10 +128,10 @@ public class ConnectDB {
     	return tmp;
     }
 
-    public static String[] getCriteria(java.sql.Connection c, String element) throws SQLException {
+    public static String[] getCriteria(String element) throws SQLException {
 
         String selectSQL = "SELECT DISTINCT " + element + " FROM computer WHERE `"+ element +"` <> 'null' ORDER BY "+ element;
-        PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
+        PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
 
         ResultSet rs = preparedStatement.executeQuery(selectSQL );
 

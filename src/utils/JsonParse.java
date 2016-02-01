@@ -3,10 +3,7 @@ package utils;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.sql.Connection;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.json.*;
 
@@ -49,7 +46,7 @@ public class JsonParse {
                 toPush.put("soundCard", null);
                 toPush.put("pict", (current.has("pict") ? current.getString("pict") : null));
 
-                utils.ConnectDB.pushComputerOnDB(toPush, conn);
+                utils.ConnectDB.pushComputerOnDB(toPush);
             }
 
         }

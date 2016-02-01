@@ -21,8 +21,6 @@ import gui.MyWindow;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        System.out.println("Hello lol!");
         MyWindow w = new MyWindow();
-        //Connection con = utils.ConnectDB.startConnection();
     }
 }
