@@ -197,7 +197,7 @@ public class CenterPanel extends JPanel {
 	    t.addMouseListener(new MouseAdapter() {
 	    	public void mouseClicked(MouseEvent e) {
 	    		if (e.getClickCount() == 2) {
-		    		new ComputerWindow(_hsCmp.get(_selectedRow), _selectedRow);
+		    		new ComputerWindow(_hsCmp.get(_selectedRow));
 	    		}
 	    	}
 	    });

@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.*;
 
 import com.mysql.jdbc.Connection;
+import com.sun.deploy.util.SystemUtils;
 import data.Computer;
 
 /**
@@ -17,7 +18,7 @@ import data.Computer;
 public class ConnectDB {
 	static Connection _con = utils.ConnectDB.startConnection();
 
-    private static String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
+    private static String component[] = {"id", "name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
             "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
             "case_PC", "airing", "OS", "brand", "soundCard", "pict"};
 
@@ -41,6 +42,7 @@ public class ConnectDB {
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = _con.prepareStatement(sql);
 
+        /* Remplacement des virgules qui créent des conflits pour les requetes. */
     	String listComponent[] = new String[component.length];
         for (int i = 0; i < a.size(); i++) {
     		listComponent[i] = (String)a.get(component[i]);
@@ -97,13 +99,16 @@ public class ConnectDB {
         return dbToArrayList(rs);
     }
     
-    public static Computer getOneComputer(int idComputer) throws SQLException {
-    	String selectSQL = "SELECT * FROM computer WHERE = " + idComputer;
+    public static Computer getOneComputer(String idComputer) throws SQLException {
+        int newIdComputer = Integer.parseInt(idComputer);
+    	String selectSQL = "SELECT * FROM computer WHERE id = " + newIdComputer;
     	PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
     	ResultSet rs = preparedStatement.executeQuery(selectSQL);
     	
     	Computer tmp = new Computer();
+
     	while(rs.next()) {
+            tmp.setId(rs.getString("id"));
     		tmp.setName(rs.getString("name"));
     		tmp.setBrand(rs.getString("brand"));
     		tmp.setMotherBoard(rs.getString("motherBoard"));
@@ -124,7 +129,7 @@ public class ConnectDB {
     		tmp.setROM(rs.getString("ROM"));
     		tmp.setSoundCard(rs.getString("soundCard"));
     	}
-    	
+
     	return tmp;
     }
 
@@ -168,21 +173,31 @@ public class ConnectDB {
         return comptList;
     }
     
-    public static void pushReservOnDB(int idUser, int idComp, String nameComp) throws SQLException {
+    public static void pushReservOnDB(int idUser, String idComp, String nameComp) throws SQLException {
+        int newIdComputer = Integer.parseInt(idComp);
     	String sql = "INSERT INTO reserve " +
                 "(id_user, id_computer, name_computer)" +
                 " VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = _con.prepareStatement(sql);
         preparedStatement.setInt(1, idUser);
-        preparedStatement.setInt(2, idComp);
+        preparedStatement.setInt(2, newIdComputer);
         preparedStatement.setString(3, nameComp);
         preparedStatement.executeUpdate();
     }
-    
-    // TODO INSERER nameComputer dans LA TABLE reserve.
-    public static boolean verifReserv(int idUser, int idComp) throws SQLException {
+
+    public static void removeReservOnDB(int idUser, String idComp) throws SQLException {
+        int newIdComputer = Integer.parseInt(idComp);
+        String sql = "DELETE FROM reserve WHERE id_user = ? AND id_computer = ?";
+        PreparedStatement preparedStatement = _con.prepareStatement(sql);
+        preparedStatement.setInt(1, idUser);
+        preparedStatement.setInt(2, newIdComputer);
+        preparedStatement.executeUpdate();
+    }
+
+    public static boolean verifReserv(int idUser, String idComp) throws SQLException {
+        int newIdComputer = Integer.parseInt(idComp);
     	String selectSQL;
-        selectSQL = "SELECT id_user,id_computer FROM reserve WHERE id_user = " + idUser + " AND id_computer = " + idComp;
+        selectSQL = "SELECT id_user,id_computer FROM reserve WHERE id_user = " + idUser + " AND id_computer = " + newIdComputer;
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
         ResultSet rs = preparedStatement.executeQuery(selectSQL);
 
@@ -190,7 +205,7 @@ public class ConnectDB {
         while (rs.next())
         	verifIdComp = rs.getInt(2);
         
-        return verifIdComp == idComp;
+        return verifIdComp == newIdComputer;
     }
     
     public static ArrayList<String[]> getReservation() throws SQLException {

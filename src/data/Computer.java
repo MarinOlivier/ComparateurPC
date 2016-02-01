@@ -7,6 +7,7 @@ import java.util.Map;
  * Created by olivier on 10/01/2016.
  */
 public class Computer {
+    public String _id;
     public String _name;
     public String _motherBoard;
     public String _CPU;
@@ -28,14 +29,13 @@ public class Computer {
 
     public String _pict;
     
-    private static String component[] = {"name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
+    private static String component[] = {"id", "name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
             "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
             "case_PC", "airing", "OS", "brand", "soundCard", "pict"};
 
     public Computer(){
 
     }
-
 
     public Computer(HashMap<String, String> mapPC) {
     	for (int i = 0; i < component.length; i++) {
@@ -196,10 +196,19 @@ public class Computer {
         this._pict = pict;
     }
 
+    public String getId() {
+        return _id;
+    }
+
+    public void setId(String id) {
+        _id = id;
+    }
+
     @Override
     public String toString() {
         return "Computer{" +
-                "_name='" + _name + '\'' +
+                "_id=" + _id +
+                ", _name='" + _name + '\'' +
                 ", _motherBoard='" + _motherBoard + '\'' +
                 ", _CPU='" + _CPU + '\'' +
                 ", _RAM='" + _RAM + '\'' +

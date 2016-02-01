@@ -22,13 +22,15 @@ import data.Computer;
 
 /**
  * @author josetarsitano
- * @param <T>
  *
  */
 public class ReservUserWindow extends JFrame {
 	ArrayList<String[]> _arrReserv;
 	private int _selectedRow;
-	public ReservUserWindow(ArrayList<String[]> arrR) {
+    private static AbstractTableModel _dataReservUser;
+    private static JTable _reservUserTable;
+
+    public ReservUserWindow(ArrayList<String[]> arrR) {
 		setSize(new Dimension(450, 450));
 		setTitle("Réservations de ");
 		
@@ -36,7 +38,7 @@ public class ReservUserWindow extends JFrame {
 		String[] idComp = _arrReserv.get(0);
 		String[] nameComp = _arrReserv.get(1);
 		String[] dateComp = _arrReserv.get(2);
-		TableModel dataReservUser = new AbstractTableModel() {
+		_dataReservUser = new AbstractTableModel() {
         	private final String[] _head = {"#", "Ordinateur", "Date"};
         	
         	@Override
@@ -67,28 +69,44 @@ public class ReservUserWindow extends JFrame {
 			}
 		};
 		
-	    JTable reservUserTable = new JTable(dataReservUser);
-	    reservUserTable.getColumnModel().getColumn(0).setPreferredWidth(0);
-	    reservUserTable.getColumnModel().getColumn(1).setPreferredWidth(100);
-	    add(new JScrollPane(reservUserTable));
+	    _reservUserTable = new JTable(_dataReservUser);
+	    _reservUserTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    _reservUserTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+	    add(new JScrollPane(_reservUserTable));
 	    setVisible(true);
 	    
-	    reservUserTable.addMouseListener(new MouseAdapter() {
+	    _reservUserTable.addMouseListener(new MouseAdapter() {
 	    	public void mouseReleased(MouseEvent e) {
 	    		if (e.getClickCount() == 2) {
-	    			Computer tmp;
-	    			
+	    			Computer tmp = new Computer();
 					try {
-						//TODO
-						tmp = utils.ConnectDB.getOneComputer(1);
-						new ComputerWindow(tmp, 1);
+                        System.out.println("idComp[_selectedRow] :" + idComp[_selectedRow]);
+						tmp = utils.ConnectDB.getOneComputer(idComp[_selectedRow]);
+                        System.out.println("ID :" + tmp.getId());
+						new ComputerWindow(tmp);
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
         			
 	    		}
 	    	}
 		});
+
+		ListSelectionModel cellSelectionModel = _reservUserTable.getSelectionModel();
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		cellSelectionModel.addListSelectionListener(e -> {
+			if (e.getValueIsAdjusting())
+				return;
+
+			ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+			if (!lsm.isSelectionEmpty())
+				_selectedRow = lsm.getMinSelectionIndex();
+		});
 	}
+
+    /*public static void refreshTable() {
+        _dataReservUser.fireTableDataChanged();
+        _reservUserTable.repaint();
+    }*/
 }

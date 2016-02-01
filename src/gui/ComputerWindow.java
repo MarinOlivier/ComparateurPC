@@ -11,8 +11,6 @@ import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -35,16 +33,14 @@ import data.Computer;
  */
 public class ComputerWindow extends JFrame {
 	private Computer _comp;
-	private static int _idComp;
-	
+	private MyButton reserv;
 	private ArrayList<String> _component;
-	private String[] _nameComponent = {"Nom", "Marque", "Carte Mère", "CPU", "Fréquence CPU", "RAM", "Fréquence RAM", "GPU", "Fréquence GPU", 
+	private String[] _nameComponent = {"Nom", "Marque", "Carte Mère", "CPU", "Fréquence CPU", "RAM", "Fréquence RAM", "GPU", "Fréquence GPU",
 		"RAM GPU", "Disque Dur", "Système d'exploitation", "Alimentation", "Carte Son", "E/S", "Boitier", "Refroidissement", 
 		 "Prix"};
 	
-	public ComputerWindow(Computer p, int id) {
+	public ComputerWindow(Computer p) {
 		_comp = p;
-		_idComp = id;
 		_component = new ArrayList<>();
 		for (String i : _nameComponent) {
 			if (i != null) {
@@ -56,15 +52,17 @@ public class ComputerWindow extends JFrame {
 		
 		setSize(new Dimension(450, 680));
 		JPanel mainPanel = new JPanel();
-		MyButton reserv = new MyButton("Réserver");
+		reserv = new MyButton("Réserver");
 		
 		/* On vérifie si l'utilsateur n'a pas déjà réservé
 		 * cet ordinateur, si c'est le cas on disable 
 		 * le bouton Réserver
 		 */
 		try {
-			if (utils.ConnectDB.verifReserv(243, _idComp+1))
-				reserv.setVisible(false);
+			if (utils.ConnectDB.verifReserv(243, _comp.getId())) {
+				reserv.setText("Annuler Réservation");
+				repaint();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -196,9 +194,15 @@ public class ComputerWindow extends JFrame {
             addMouseListener(new MouseAdapter() {
             	public void mouseReleased(MouseEvent e) {
             		try {
-						utils.ConnectDB.pushReservOnDB(243, _idComp+1, _comp.getName());
-						setVisible(false);
-						
+						if (reserv.getText() == "Réserver") {
+							utils.ConnectDB.pushReservOnDB(243, _comp.getId(), _comp.getName());
+							reserv.setText("Annuler Réservation");
+						} else {
+							utils.ConnectDB.removeReservOnDB(243, _comp.getId());
+							reserv.setText("Réserver");
+						}
+						//gui.ReservUserWindow.refreshTable();
+						repaint();
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
@@ -208,8 +212,12 @@ public class ComputerWindow extends JFrame {
 
 		@Override
 		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
-			g2.setColor(new Color(9, 194, 9));
+			if (reserv.getText() == "Réserver")
+				g2.setColor(new Color(9, 194, 9));
+			else
+				g2.setColor(Color.RED);
 			Rectangle2D rect = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
 			g2.fill(rect);
 
@@ -224,7 +232,7 @@ public class ComputerWindow extends JFrame {
 			g2.drawString(getText(), x, y);
 
 
-            if(getModel().isRollover()){
+            if (getModel().isRollover()) {
                 g2.setColor(new Color(9, 151, 9));
                 g2.fill(rect);
                 g2.setPaint(Color.WHITE);

@@ -70,7 +70,7 @@ public class BestPane extends JPanel {
         p.addMouseListener(new MouseAdapter() {
         	public void mouseClicked(MouseEvent e) {
         		if (e.getClickCount() == 2)
-        			new ComputerWindow(_hsBest.get(index), 1);
+        			new ComputerWindow(_hsBest.get(index));
         	}
 		});
     }
