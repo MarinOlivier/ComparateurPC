@@ -47,6 +47,10 @@ public class BestPane extends JPanel {
         addMiniPanel(second, secondLabel, 1);
         addMiniPanel(third, thirdLabel, 2);
 
+        first.addMouseListener(new BestMouseListener(0));
+        second.addMouseListener(new BestMouseListener(1));
+        third.addMouseListener(new BestMouseListener(2));
+
         add(first);
         add(second);
         add(third);
@@ -78,13 +82,6 @@ public class BestPane extends JPanel {
         
         p.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 10),
                 BorderFactory.createLineBorder(Color.black)));
-        
-        p.addMouseListener(new MouseAdapter() {
-        	public void mouseClicked(MouseEvent e) {
-        		if (e.getClickCount() == 2)
-        			new ComputerWindow(_hsBest.get(index));
-        	}
-		});
     }
 
     public void paintComponent(Graphics g) {
@@ -104,5 +101,30 @@ public class BestPane extends JPanel {
     @Override
     public Dimension getPreferredSize() {
         return new Dimension((int)_parentWidth, 300);
+    }
+
+    class BestMouseListener extends MouseAdapter {
+
+        private int _index;
+
+        public BestMouseListener(int index) {
+            _index = index;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2)
+                new ComputerWindow(_hsBest.get(_index));
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            System.out.println("BestMouseListener.mouseEntered");
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            System.out.println("BestMouseListener.mouseExited");
+        }
     }
 }
