@@ -28,27 +28,20 @@ public class ReservUserWindow extends JFrame {
 	private static ArrayList<String[]> _arrReserv;
 	private int _selectedRow;
 
-    private static String[] _idComp;
-    private static String[] _nameComp;
-    private static String[] _dateComp;
-
     private static AbstractTableModel _dataReservUser;
     private static JTable _reservUserTable;
 
     public ReservUserWindow(ArrayList<String[]> arrR) {
-		setSize(new Dimension(450, 450));
+		setSize(new Dimension(750, 200));
 		setTitle("Réservations de ");
 		
 		_arrReserv = arrR;
-		_idComp = _arrReserv.get(0);
-		_nameComp = _arrReserv.get(1);
-		_dateComp = _arrReserv.get(2);
 		_dataReservUser = new AbstractTableModel() {
-        	private final String[] _head = {"#", "Ordinateur", "Date"};
+        	private final String[] _head = {"#", "Ordinateur", "Date", "Prix"};
         	
         	@Override
 			public int getRowCount() {
-				return _nameComp.length;
+				return _arrReserv.get(0).length;
 			}
 
 			@Override
@@ -64,11 +57,13 @@ public class ReservUserWindow extends JFrame {
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
 				if (columnIndex == 0)
-					return _idComp[rowIndex];
+					return _arrReserv.get(0)[rowIndex];
 				if (columnIndex == 1)
-					return _nameComp[rowIndex];
+					return _arrReserv.get(1)[rowIndex];
 				if (columnIndex == 2)
-					return _dateComp[rowIndex];
+					return _arrReserv.get(2)[rowIndex];
+				if (columnIndex == 3)
+					return _arrReserv.get(3)[rowIndex];
 				
 				return null;
 			}
@@ -85,7 +80,7 @@ public class ReservUserWindow extends JFrame {
 	    		if (e.getClickCount() == 2) {
 	    			Computer tmp = new Computer();
 					try {
-						tmp = utils.ConnectDB.getOneComputer(_idComp[_selectedRow]);
+						tmp = utils.ConnectDB.getOneComputer(_arrReserv.get(0)[_selectedRow]);
 						new ComputerWindow(tmp);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
@@ -110,11 +105,6 @@ public class ReservUserWindow extends JFrame {
 
     public static void setArrReserv(ArrayList<String[]> a) {
         _arrReserv = a;
-        System.out.println(_arrReserv.get(0)[1]);
-        _idComp = _arrReserv.get(0);
-        _nameComp = _arrReserv.get(1);
-        _dateComp = _arrReserv.get(2);
-
         _dataReservUser.fireTableDataChanged();
     }
 }

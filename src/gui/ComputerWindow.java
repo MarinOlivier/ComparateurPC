@@ -195,14 +195,13 @@ public class ComputerWindow extends JFrame {
             	public void mouseReleased(MouseEvent e) {
             		try {
 						if (reserv.getText() == "Réserver") {
-							utils.ConnectDB.pushReservOnDB(243, _comp.getId(), _comp.getName());
+							utils.ConnectDB.pushReservOnDB(243, _comp.getId(), _comp.getName(), _comp.getPrice());
 							reserv.setText("Annuler Réservation");
 						} else {
 							utils.ConnectDB.removeReservOnDB(243, _comp.getId());
 							reserv.setText("Réserver");
 						}
 						gui.ReservUserWindow.setArrReserv(utils.ConnectDB.getReservation());
-						repaint();
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}

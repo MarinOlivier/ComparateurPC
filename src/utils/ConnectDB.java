@@ -173,15 +173,16 @@ public class ConnectDB {
         return comptList;
     }
     
-    public static void pushReservOnDB(int idUser, String idComp, String nameComp) throws SQLException {
+    public static void pushReservOnDB(int idUser, String idComp, String nameComp, String priceComp) throws SQLException {
         int newIdComputer = Integer.parseInt(idComp);
     	String sql = "INSERT INTO reserve " +
-                "(id_user, id_computer, name_computer)" +
-                " VALUES (?, ?, ?)";
+                "(id_user, id_computer, name_computer, price_computer)" +
+                " VALUES (?, ?, ?, ?)";
         PreparedStatement preparedStatement = _con.prepareStatement(sql);
         preparedStatement.setInt(1, idUser);
         preparedStatement.setInt(2, newIdComputer);
         preparedStatement.setString(3, nameComp);
+        preparedStatement.setString(4, priceComp);
         preparedStatement.executeUpdate();
     }
 
@@ -217,11 +218,13 @@ public class ConnectDB {
         String[] idCompList = new String[100];
         String[] nameCompList = new String[100];
         String[] dateList = new String[100];
+        String[] priceList = new String[100];
         int i = 0;
         while (rs.next()) {
         	idCompList[i] = rs.getString(2);
 	        nameCompList[i] = rs.getString(3);
 	        dateList[i] = rs.getString(4);
+            priceList[i] = rs.getString(5);
 	        i++;
         }
         
@@ -229,6 +232,7 @@ public class ConnectDB {
         arrReserv.add(idCompList);
         arrReserv.add(nameCompList);
         arrReserv.add(dateList);
+        arrReserv.add(priceList);
         
         return arrReserv;
     }
