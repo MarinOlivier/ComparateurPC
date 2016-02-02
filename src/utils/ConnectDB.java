@@ -151,7 +151,6 @@ public class ConnectDB {
         return list.toArray(new String[list.size()]);
     }
 
-
     private static ArrayList<Computer> dbToArrayList(ResultSet rs){
         ArrayList<Computer> comptList = new ArrayList<>();
         try {
@@ -235,6 +234,10 @@ public class ConnectDB {
         arrReserv.add(priceList);
         
         return arrReserv;
+    }
+
+    public static void pushUserOnDB(String username, String password) {
+
     }
 
 }

@@ -115,22 +115,22 @@ public class CenterPanel extends JPanel {
 				Component c = DEFAULT_RENDERER.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
                 if (column == 5) {
+                    int castedValue = Integer.parseInt(value.toString().replace(value.toString().substring(value.toString().length()-1), ""));
                     JLabel label = new JLabel(value.toString(), SwingConstants.CENTER);
                     JPanel pane = new JPanel(new BorderLayout());
-                    if (Integer.parseInt(value.toString().replace(value.toString().substring(value.toString().length()-1), "")) >= 90){
+                    if (castedValue >= 90)
                         label.setForeground(Color.GREEN);
-                    } else if(Integer.parseInt(value.toString().replace(value.toString().substring(value.toString().length()-1), "")) < 90
-                            && Integer.parseInt(value.toString().replace(value.toString().substring(value.toString().length()-1), "")) >= 70) {
+                    else if (castedValue < 90 && castedValue >= 70)
                         label.setForeground(new Color(255, 132, 38));
-                    } else if(Integer.parseInt(value.toString().replace(value.toString().substring(value.toString().length()-1), "")) < 70) {
+                    else if (castedValue < 70)
                         label.setForeground(new Color(255, 34, 23));
-                    }
 
                     label.setFont(new Font("Arial", Font.CENTER_BASELINE, 12));
 
                     pane.add(label, BorderLayout.CENTER);
 
-                    pane.setBackground(Color.WHITE);
+                    if (isSelected)
+                        pane.setBackground(new Color(9, 80, 208));
 
                     return pane;
                 }
