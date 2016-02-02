@@ -7,10 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by olivier on 31/01/2016.
@@ -92,6 +94,7 @@ public class BestPane extends JPanel {
 
             price.get(index).setText(_hsBest.get(index).getPrice());
             p.add(price.get(index), BorderLayout.SOUTH);
+
         }
         
         p.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 10),
@@ -127,9 +130,11 @@ public class BestPane extends JPanel {
     class BestMouseListener extends MouseAdapter {
 
         private int _index;
+        private Font _defaultFont;
 
         public BestMouseListener(int index) {
             _index = index;
+            _defaultFont = title.get(_index).getFont();
         }
 
         @Override
@@ -140,12 +145,42 @@ public class BestPane extends JPanel {
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            System.out.println("BestMouseListener.mouseEntered");
+            switch(_index){
+                case 0:
+                    first.setBackground(new Color(196, 196, 196));
+                    break;
+                case 1:
+                    second.setBackground(new Color(196, 196, 196));
+                    break;
+                case 2:
+                    third.setBackground(new Color(196, 196, 196));
+                    break;
+            }
+
+            Font font = _defaultFont;
+            Map attributes = font.getAttributes();
+            attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
+            title.get(_index).setFont(font.deriveFont(attributes));
+            price.get(_index).setFont(font.deriveFont(attributes));
+
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            System.out.println("BestMouseListener.mouseExited");
+            switch(_index){
+                case 0:
+                    first.setBackground(new Color(238, 238, 238));
+                    break;
+                case 1:
+                    second.setBackground(new Color(238, 238, 238));
+                    break;
+                case 2:
+                    third.setBackground(new Color(238, 238, 238));
+                    break;
+            }
+
+            title.get(_index).setFont(_defaultFont);
+            price.get(_index).setFont(_defaultFont);
         }
     }
 }
