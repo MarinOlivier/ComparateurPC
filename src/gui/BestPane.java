@@ -4,7 +4,6 @@ import data.Computer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -29,23 +28,30 @@ public class BestPane extends JPanel {
     private JLabel secondLabel;
     private JLabel thirdLabel;
 
+    private ArrayList<JLabel> title = new ArrayList<>();
+    private ArrayList<JLabel> image = new ArrayList<>();
+    private ArrayList<JLabel> price = new ArrayList<>();
+
     public BestPane(float parentWidth, ArrayList<Computer> hsBest) {
 
         _parentWidth = parentWidth;
         _hsBest = hsBest;
 
         setLayout(new GridLayout(1, 3));
+
         first = new JPanel(new BorderLayout());
         second = new JPanel(new BorderLayout());
         third = new JPanel(new BorderLayout());
-       
-        firstLabel = new JLabel("", SwingConstants.CENTER);
-        secondLabel = new JLabel("", SwingConstants.CENTER);
-        thirdLabel = new JLabel("", SwingConstants.CENTER);
-        
-        addMiniPanel(first, firstLabel, 0);
-        addMiniPanel(second, secondLabel, 1);
-        addMiniPanel(third, thirdLabel, 2);
+
+        for(int i = 0 ; i < 3 ; i++) {
+            title.add(i, new JLabel("", SwingConstants.CENTER));
+            image.add(i, new JLabel("", SwingConstants.CENTER));
+            price.add(i, new JLabel("", SwingConstants.CENTER));
+        }
+
+        addMiniPanel(0, first);
+        addMiniPanel(1, second);
+        addMiniPanel(2, third);
 
         first.addMouseListener(new BestMouseListener(0));
         second.addMouseListener(new BestMouseListener(1));
@@ -63,22 +69,30 @@ public class BestPane extends JPanel {
         _hsBest = arc;
     }
 
-    public void addMiniPanel(JPanel p, JLabel l, int index) {
+    public void addMiniPanel(int index, JPanel p) {
+
     	BufferedImage img = null;
-		try {
-			l.setBounds(0, 0, 200, 200);
-			img = ImageIO.read(new URL(_hsBest.get(index).getPict()));
-			Image dimg = img.getScaledInstance(l.getWidth(), l.getHeight(),
-		            Image.SCALE_DEFAULT);
-			ImageIcon realImg = new ImageIcon(dimg);
-			l.setIcon(realImg);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		p.add(new JLabel(_hsBest.get(index).getName(), SwingConstants.CENTER), BorderLayout.NORTH);
-        p.add(l, BorderLayout.CENTER);
-        p.add(new JLabel(_hsBest.get(index).getPrice(), SwingConstants.CENTER), BorderLayout.SOUTH);
+        if(index < _hsBest.size()) {
+            try {
+                image.get(index).setBounds(0, 0, 200, 200);
+                img = ImageIO.read(new URL(_hsBest.get(index).getPict()));
+                Image dimg = img.getScaledInstance(image.get(index).getWidth(), image.get(index).getHeight(),
+                        Image.SCALE_DEFAULT);
+                ImageIcon realImg = new ImageIcon(dimg);
+                image.get(index).setIcon(realImg);
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+
+
+            title.get(index).setText(_hsBest.get(index).getName());
+            p.add(title.get(index), BorderLayout.NORTH);
+
+            p.add(image.get(index), BorderLayout.CENTER);
+
+            price.get(index).setText(_hsBest.get(index).getPrice());
+            p.add(price.get(index), BorderLayout.SOUTH);
+        }
         
         p.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 10),
                 BorderFactory.createLineBorder(Color.black)));
@@ -90,10 +104,17 @@ public class BestPane extends JPanel {
 
     //TODO
     public void refreshBestPanel(ArrayList<Computer> alc) {
+
+        for(int i = 0 ; i < 3 ; i++) {
+            title.get(i).setText(null);
+            image.get(i).setIcon(null);
+            price.get(i).setText(null);
+        }
+
         setHsBest(alc);
-        addMiniPanel(first, firstLabel, 0);
-        addMiniPanel(second, secondLabel, 1);
-        addMiniPanel(third, thirdLabel, 2);
+        addMiniPanel(0, first);
+        addMiniPanel(1, second);
+        addMiniPanel(2, third);
         repaint();
 
     }

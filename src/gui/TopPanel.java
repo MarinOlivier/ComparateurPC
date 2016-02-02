@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -247,9 +248,18 @@ public class TopPanel extends JPanel {
                 ex.printStackTrace();
             }
 
-            System.out.println("compList = " + compList);
-            _window.getCenterPanel().refreshTable(compList);
-            _window.getCenterPanel().getBestPanel().refreshBestPanel(compList);
+            ArrayList<Computer> hsBest;
+            ArrayList<Computer> hsCmp;
+            if(compList.size() > 3) {
+                hsBest = new ArrayList<>(compList.subList(0, 3));
+                hsCmp = new ArrayList<>(compList.subList(3, compList.size()));
+            } else {
+                hsBest = compList;
+                hsCmp = new ArrayList<>();
+            }
+
+            _window.getCenterPanel().refreshTable(hsCmp);
+            _window.getCenterPanel().getBestPanel().refreshBestPanel(hsBest);
 
         }
     }
