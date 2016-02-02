@@ -29,7 +29,7 @@ public class MyWindow extends JFrame {
     private JMenuItem reservList;
 
     public MyWindow(){
-        this.setTitle("Comparateur Computer");
+        this.setTitle("Comparateur d'ordinateurs");
         setSize(1000, 1000);
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
         //setBounds(10,10, 900, 600);
@@ -72,13 +72,12 @@ public class MyWindow extends JFrame {
 				_topPanel.removeAll();
 	            if (label == "Expert") {
 	            	expert.setText("Standard");
-	                //_centerPanel.setMode("Expert");
 	                _topPanel.displayExpert();
 	                _bottomPanel.setStatut("EXPERT mode");
 	            } else {
 	            	expert.setText("Expert");
-	            	//_centerPanel.setMode("Standard");
 	            	_topPanel.displaySimple();
+
 	            	_bottomPanel.setStatut("STANDARD mode");
 	            }
 	            _topPanel.revalidate();

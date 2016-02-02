@@ -230,7 +230,6 @@ public class ComputerWindow extends JFrame {
 			g2.setPaint(Color.WHITE);
 			g2.drawString(getText(), x, y);
 
-
             if (getModel().isRollover()) {
                 g2.setColor(new Color(9, 151, 9));
                 g2.fill(rect);

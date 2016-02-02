@@ -60,13 +60,15 @@ public class TopPanel extends JPanel {
     private GridBagConstraints _grid;
     // Tableau des composants
     private String[] component;
-    private String[] crit;
+    // Tableau des composants avec les noms adaptés pour récupérer les attributs du _whishedPC.
+    private String[] componentAdaptedToRequest;
     // Tableau des JComboxBox.
     ArrayList<JComboBox<?>> arrComboBox;
     JButton submit;
     
     public TopPanel(MyWindow window) {
         _window = window;
+
         try {
             _motherBoardList = utils.ConnectDB.getCriteria("motherBoard");
             _CPUList = utils.ConnectDB.getCriteria("CPU");
@@ -89,7 +91,9 @@ public class TopPanel extends JPanel {
             e.printStackTrace();
         }
         
-        component = new String[]{"CPU", "RAM", "ROM", "Price", "OS", "Brand", "Carte Mère", "Alimentation", "Fréquence RAM", "CPU RAM", "GPU RAM", "Boitier"};
+        component = new String[]{"CPU", "RAM", "Disque dur", "Système d'exploitation", "Marque", "Boitier", "Prix",
+                                "Carte Mère", "Fréquence CPU", "Fréquence RAM", "Carte graphique", "RAM GPU", "Alimentation"};
+        componentAdaptedToRequest = new String[]{"CPU", "RAM", "ROM", "OS", "brand", "case_PC", "price", "motherBoard", "CPU_freq", "RAM_freq", "GPU", "GPU_RAM", "powerSupply"};
         arrComboBox = new ArrayList<>();
 
         /* STANDARD MODE */
@@ -99,38 +103,43 @@ public class TopPanel extends JPanel {
         _priceIn = new JComboBox<>(_priceList);
         _OSIn = new JComboBox<>(_OSList);
         _brandIn = new JComboBox<>(_brandList);
-        
+        _case_PCIn = new JComboBox<>(_case_PCList);
+
         /*EXPERT MODE*/
         _motherBoardIn = new JComboBox<>(_motherBoardList);
         _powerSupplyIn = new JComboBox<>(_powerSupplyList);
         _RAM_freqIn = new JComboBox<>(_RAM_freqList);
         _CPU_freqIn = new JComboBox<>(_CPU_freqList);
+        _GPUIn = new JComboBox<>(_GPUList);
         _GPU_RAMIn = new JComboBox<>(_GPU_RAMList);
-        _case_PCIn = new JComboBox<>(_case_PCList);
+
         
         /* Ajout des JComboBox dans le tableau */
         arrComboBox.add(_CPUIn);
         arrComboBox.add(_RAMIn);
         arrComboBox.add(_ROMIn);
-        arrComboBox.add(_priceIn);
         arrComboBox.add(_OSIn);
         arrComboBox.add(_brandIn);
-        arrComboBox.add(_motherBoardIn);
-        arrComboBox.add(_powerSupplyIn);
-        arrComboBox.add(_RAM_freqIn);
-        arrComboBox.add(_CPU_freqIn);
-        arrComboBox.add(_GPU_RAMIn);
         arrComboBox.add(_case_PCIn);
+        arrComboBox.add(_priceIn);
+
+        arrComboBox.add(_motherBoardIn);
+        arrComboBox.add(_CPU_freqIn);
+        arrComboBox.add(_RAM_freqIn);
+        arrComboBox.add(_GPUIn);
+        arrComboBox.add(_GPU_RAMIn);
+        arrComboBox.add(_powerSupplyIn);
+
         
         for (int l = 0; l < arrComboBox.size(); l++) {
         	arrComboBox.get(l).setRenderer(new MyComboRenderer());
-        	arrComboBox.get(l).addItemListener(new ComboBoxListener(component[l]));
+        	arrComboBox.get(l).addItemListener(new ComboBoxListener(componentAdaptedToRequest[l]));
         }
 
         setLayout(new GridBagLayout());
         _grid = new GridBagConstraints();
         
-        submit = new JButton("Submit");
+        submit = new JButton("Rechercher");
         submit.addActionListener(new SubmitListener());
         
         displaySimple();
@@ -140,8 +149,10 @@ public class TopPanel extends JPanel {
         _grid.insets = new Insets(3,3,3,3);
         
         int k = 0;
-        for (int i = 1; i <= 2; i++) {
+        for (int i = 1; i <= 3; i++) {
         	for (int j = 0; j <= 5; j++) {
+                if (i == 3 && j == 2)
+                    break;
         		_grid.fill = GridBagConstraints.HORIZONTAL;
                 _grid.weightx = 0.5;
                 _grid.gridx = j;
@@ -160,15 +171,15 @@ public class TopPanel extends JPanel {
         _grid.fill = GridBagConstraints.HORIZONTAL;
         _grid.weightx = 0.5;
         _grid.gridx = 5;
-        _grid.gridy = 3;
+        _grid.gridy = 4;
         add(submit, _grid);
     }
 
     public void displayExpert() {
     	int k = 0;
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= 5; i++) {
         	for (int j = 0; j <= 5; j++) {
-        		if (i == 5 && j == 1)
+        		if (i == 5 && j == 2)
         			break;
         		_grid.fill = GridBagConstraints.HORIZONTAL;
                 _grid.weightx = 0.5;
@@ -192,7 +203,6 @@ public class TopPanel extends JPanel {
         add(submit, _grid);
     }
 
-    
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
     }
@@ -220,7 +230,7 @@ public class TopPanel extends JPanel {
                     _window.getCenterPanel().setWishedPC(_window.getCenterPanel().getWishedPC());
                     _window.getCenterPanel().repaint();
 
-                } catch(Exception Exc){
+                } catch (Exception Exc){
                     Exc.printStackTrace();
                 }
             }
@@ -230,7 +240,6 @@ public class TopPanel extends JPanel {
     class SubmitListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Connection con = utils.ConnectDB.startConnection();
             ArrayList<Computer> compList = new ArrayList<>();
             try {
                 compList = utils.ConnectDB.getComputerOnDB(_window.getCenterPanel().getWishedPC());
@@ -240,6 +249,7 @@ public class TopPanel extends JPanel {
 
             System.out.println("compList = " + compList);
             _window.getCenterPanel().refreshTable(compList);
+            _window.getCenterPanel().getBestPanel().refreshBestPanel(compList);
 
         }
     }

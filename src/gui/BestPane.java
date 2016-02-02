@@ -21,19 +21,27 @@ public class BestPane extends JPanel {
     private float _parentWidth;
     private ArrayList<Computer> _hsBest;
 
+    private JPanel first;
+    private JPanel second;
+    private JPanel third;
+
+    private JLabel firstLabel;
+    private JLabel secondLabel;
+    private JLabel thirdLabel;
+
     public BestPane(float parentWidth, ArrayList<Computer> hsBest) {
 
         _parentWidth = parentWidth;
         _hsBest = hsBest;
 
         setLayout(new GridLayout(1, 3));
-        JPanel first = new JPanel(new BorderLayout());
-        JPanel second = new JPanel(new BorderLayout());
-        JPanel third = new JPanel(new BorderLayout());
+        first = new JPanel(new BorderLayout());
+        second = new JPanel(new BorderLayout());
+        third = new JPanel(new BorderLayout());
        
-        JLabel firstLabel = new JLabel("", SwingConstants.CENTER);
-        JLabel secondLabel = new JLabel("", SwingConstants.CENTER);
-        JLabel thirdLabel = new JLabel("", SwingConstants.CENTER);
+        firstLabel = new JLabel("", SwingConstants.CENTER);
+        secondLabel = new JLabel("", SwingConstants.CENTER);
+        thirdLabel = new JLabel("", SwingConstants.CENTER);
         
         addMiniPanel(first, firstLabel, 0);
         addMiniPanel(second, secondLabel, 1);
@@ -46,7 +54,11 @@ public class BestPane extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
         setBackground(Color.WHITE);
     }
-    
+
+    public void setHsBest(ArrayList<Computer> arc) {
+        _hsBest = arc;
+    }
+
     public void addMiniPanel(JPanel p, JLabel l, int index) {
     	BufferedImage img = null;
 		try {
@@ -73,6 +85,20 @@ public class BestPane extends JPanel {
         			new ComputerWindow(_hsBest.get(index));
         	}
 		});
+    }
+
+    public void paintComponent(Graphics g) {
+
+    }
+
+    //TODO
+    public void refreshBestPanel(ArrayList<Computer> alc) {
+        setHsBest(alc);
+        addMiniPanel(first, firstLabel, 0);
+        addMiniPanel(second, secondLabel, 1);
+        addMiniPanel(third, thirdLabel, 2);
+        repaint();
+
     }
 
     @Override

@@ -19,7 +19,8 @@ public class CenterPanel extends JPanel {
     private Computer _wishedPC;
     private String _mode;
     private JPanel gridPane;
-    
+    private BestPane _bestPanel;
+
     // Données du JTable.
     private AbstractTableModel _dataTable;
     // Ligne sélectionnée dans la JTable.
@@ -77,7 +78,7 @@ public class CenterPanel extends JPanel {
 				
 				switch (columnIndex) {
 					case 0:
-						return rowIndex+1;
+						return rowIndex+4;
 
 					case 1:
 						return _comp.getName();
@@ -167,10 +168,15 @@ public class CenterPanel extends JPanel {
 	    t.getColumnModel().getColumn(4).setPreferredWidth(20);
 	    t.getColumnModel().getColumn(5).setPreferredWidth(0);
 
-        add(new BestPane(getWidth(), _hsBest), BorderLayout.NORTH);
+        _bestPanel = new BestPane(getWidth(), _hsBest);
+        add(_bestPanel, BorderLayout.NORTH);
 	    add(new JScrollPane(t), BorderLayout.CENTER);
     }
-    
+
+    public BestPane getBestPanel() {
+        return _bestPanel;
+    }
+
     public void setHsCmpLength(int size) {
 		_hsCmplength = size;
 	}
@@ -191,6 +197,5 @@ public class CenterPanel extends JPanel {
         _hsCmp = c;
         setHsCmpLength(_hsCmp.size());
         _dataTable.fireTableDataChanged();
-
     }
 }
