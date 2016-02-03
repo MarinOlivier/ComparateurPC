@@ -48,7 +48,7 @@ public class UserWindow extends JFrame {
 				
 			}
 		});
-
+        // LOL
         _mainPanel.add(new JLabel("Nom d'utilisateur :"));
         _mainPanel.add(_usernameField);
         _mainPanel.add(new JLabel("Mot de passe :"));
