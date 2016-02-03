@@ -7,6 +7,7 @@ import com.sun.xml.internal.fastinfoset.util.CharArray;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.reflect.Field;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -25,23 +26,21 @@ public class UserWindow extends JFrame {
     private JLabel _passwordLabel;
     private JPanel _mainPanel;
     private JButton _connexion;
-    private JPanel _formPanel;
-    private JPanel _subPanel;
+    private JButton _addUser;
     private JLabel _msgAlert;
 
     private String _password;
 
     public UserWindow() {
-        setSize(300, 170);
+        setSize(300, 180);
         setResizable(false);
-        _formPanel = new JPanel(new GridLayout(2, 2, 2, 2));
-        _subPanel = new JPanel(new GridLayout(2, 2, 2, 2));
         _usernameField = new JTextField(10);
         _passwordField = new JPasswordField(10);
         _connexion = new JButton("Connexion");
+        _addUser = new JButton("Ajouter utilisateur");
 
         _msgAlert = new JLabel("");
-        _msgAlert.setVisible(false);
+        _msgAlert.setSize(50, 10);
         _msgAlert.setForeground(Color.RED);
 
         _connexion.addActionListener(new ActionListener() {
@@ -51,8 +50,7 @@ public class UserWindow extends JFrame {
                     _password = String.valueOf(_passwordField.getPassword());
                     System.out.println(_password);
                 } else {
-                    _msgAlert.setText("Nom d'utilisateur ET/OU Mot de passe vide");
-                    _msgAlert.setVisible(true);
+                    _msgAlert.setText("Mot de passe incorrect");
                 }
             }
         });
@@ -70,17 +68,45 @@ public class UserWindow extends JFrame {
         _passwordLabel = new JLabel("Mot de passe :");
         _passwordLabel.setLabelFor(_passwordField);
 
-        _formPanel.add(_usernameLabel);
-        _formPanel.add(_usernameField);
-        _formPanel.add(_passwordLabel);
-        _formPanel.add(_passwordField);
+        _mainPanel = new JPanel(new GridBagLayout());
 
-        _subPanel.add(_msgAlert, BorderLayout.NORTH);
-        _subPanel.add(_connexion, BorderLayout.SOUTH);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridheight = 1;
+        gbc.gridwidth = 1;
 
-        _mainPanel = new JPanel();
-        _mainPanel.add(_formPanel, BorderLayout.NORTH);
-        _mainPanel.add(_subPanel, BorderLayout.SOUTH);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        _mainPanel.add(_usernameLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        _mainPanel.add(_usernameField, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        _mainPanel.add(_passwordLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        _mainPanel.add(_passwordField, gbc);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        _mainPanel.add(_msgAlert, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        _mainPanel.add(_connexion, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        //_mainPanel.add(_addUser, gbc);
 
         _mainPanel.setBorder(BorderFactory.createTitledBorder("Connexion"));
 
