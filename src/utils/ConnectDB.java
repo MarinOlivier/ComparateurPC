@@ -241,18 +241,57 @@ public class ConnectDB {
         return arrReserv;
     }
 
-    public static void pushUserOnDB(String username, String password) {
-        MessageDigest mda = null;
-        try {
-            mda = MessageDigest.getInstance("SHA-512", "BC");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
+    public static data.User getUserOnDB(String username, String password) throws SQLException {
+        String selectSQL = "SELECT * FROM user";
+        PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
+        ResultSet rs = preparedStatement.executeQuery(selectSQL);
+
+        data.User user = new data.User();
+        while (rs.next()) {
+            user.setUserId(rs.getInt(1));
+            user.setUsername(rs.getString(2));
+            user.setRole(rs.getString(3));
+            user.setPassword(rs.getString(4));
+            user.setSalt(rs.getInt(5));
         }
-        byte [] hashedPassword = mda.digest(password.getBytes());
-        String.format("%0128x", new BigInteger(1, hashedPassword));
-        System.out.println(hashedPassword);
+
+        return user;
     }
 
+    public static void pushUserOnDB(String username, String role, String password) throws SQLException {
+        MessageDigest md = null;
+
+        /* Génération d'un nombre aléatoire en 1 et 999999999. */
+        Random rand = new Random();
+        int salt = rand.nextInt(999999999 - 1 + 1) + 1;
+        password += salt;
+
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        md.update(password.getBytes());
+
+        byte byteData[] = md.digest();
+
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        System.out.println("Hex format : " + sb.toString());
+
+        String sql = "INSERT INTO user " +
+                "(username, role, password, salt)" +
+                " VALUES (?, ?, ?, ?)";
+        PreparedStatement preparedStatement = _con.prepareStatement(sql);
+        preparedStatement.setString(1, username);
+        preparedStatement.setString(2, role);
+        preparedStatement.setString(3, password);
+        preparedStatement.setInt(4, salt);
+        preparedStatement.executeUpdate();
+    }
 }

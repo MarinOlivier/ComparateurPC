@@ -3,6 +3,8 @@
  */
 package gui;
 
+import com.sun.xml.internal.fastinfoset.util.CharArray;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -10,6 +12,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.xml.stream.events.Characters;
 
 /**
  * @author josetarsitano
@@ -21,7 +24,6 @@ public class UserWindow extends JFrame {
     private JPanel _mainPanel;
     private JButton _connexion;
 
-    private String _username;
     private String _password;
 
 	public UserWindow() {
@@ -34,10 +36,11 @@ public class UserWindow extends JFrame {
         _connexion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                _username = _usernameField.getText();
-                _password = String.copyValueOf(_passwordField.getPassword());
-                System.out.println(_username + _password);
-                utils.ConnectDB.pushUserOnDB(_username, _password);
+                if (_passwordField.getPassword().length != 0) {
+                    _password = String.valueOf(_passwordField.getPassword());
+                    System.out.println(_password);
+                } else
+                    System.out.println("Password vide.");
             }
         });
 
