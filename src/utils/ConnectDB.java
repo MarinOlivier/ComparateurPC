@@ -4,6 +4,11 @@
 package utils;
 
 import java.lang.reflect.Field;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.Security;
 import java.sql.*;
 import java.util.*;
 
@@ -237,7 +242,17 @@ public class ConnectDB {
     }
 
     public static void pushUserOnDB(String username, String password) {
-
+        MessageDigest mda = null;
+        try {
+            mda = MessageDigest.getInstance("SHA-512", "BC");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        }
+        byte [] hashedPassword = mda.digest(password.getBytes());
+        String.format("%0128x", new BigInteger(1, hashedPassword));
+        System.out.println(hashedPassword);
     }
 
 }
