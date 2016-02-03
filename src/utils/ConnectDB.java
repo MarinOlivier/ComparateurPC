@@ -293,13 +293,20 @@ public class ConnectDB {
         return Objects.equals(usernameTmp, username) && Objects.equals(sb.toString(), passwordTmp);
     }
 
+    public static boolean isUserExist(String username) throws SQLException {
+        String selectSQL = "SELECT id FROM user WHERE username = '" + username + "'";
+        PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
+        ResultSet rs = preparedStatement.executeQuery(selectSQL);
+
+        return rs.next();
+    }
+
     public static void pushUserOnDB(String username, String role, String password) throws SQLException {
         MessageDigest md = null;
 
         /* Génération d'un nombre aléatoire en 1 et 999999999. */
         Random rand = new Random();
-        //int salt = rand.nextInt(999999999 - 1 + 1) + 1;
-        int salt = 12;
+        int salt = rand.nextInt(999999999 - 1 + 1) + 1;
         password += salt;
 
         try {
@@ -321,14 +328,14 @@ public class ConnectDB {
         System.out.println("Hex format : " + sb.toString());
         System.out.println("Salt : " + salt);
 
-        /*String sql = "INSERT INTO user " +
+        String sql = "INSERT INTO user " +
                 "(username, role, password, salt)" +
                 " VALUES (?, ?, ?, ?)";
         PreparedStatement preparedStatement = _con.prepareStatement(sql);
         preparedStatement.setString(1, username);
         preparedStatement.setString(2, role);
-        preparedStatement.setString(3, password);
+        preparedStatement.setString(3, sb.toString());
         preparedStatement.setInt(4, salt);
-        preparedStatement.executeUpdate();*/
+        preparedStatement.executeUpdate();
     }
 }
