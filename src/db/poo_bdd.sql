@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost:8889
--- Généré le :  Lun 01 Février 2016 à 09:42
+-- Généré le :  Mer 03 Février 2016 à 17:33
 -- Version du serveur :  5.5.38
 -- Version de PHP :  5.5.14
 
@@ -215,21 +215,17 @@ CREATE TABLE `reserve` (
   `id_user` int(10) unsigned DEFAULT NULL,
   `id_computer` int(10) unsigned DEFAULT NULL,
   `name_computer` varchar(255) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `price_computer` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `reserve`
 --
 
-INSERT INTO `reserve` (`id_user`, `id_computer`, `name_computer`, `date`) VALUES
-(243, 12, 'AG270 2QC 3K-002EU', '2016-01-31 10:54:59'),
-(243, 13, 'PC STREAM', '2016-01-31 12:03:04'),
-(243, 15, 'PC7 NEXTGEN', '2016-01-31 12:06:04'),
-(243, 143, 'M3X13ET#ABF', '2016-01-31 12:10:50'),
-(243, 138, 'LDLC PC BRIX-I5-4-S1-W10', '2016-01-31 12:10:59'),
-(243, 1, 'PC7 BATTLEBOX™ TITAN Z EDITION', '2016-01-31 15:50:49'),
-(243, 36, 'HFR_PUSER_GPUFLEX_10', '2016-02-01 07:24:11');
+INSERT INTO `reserve` (`id_user`, `id_computer`, `name_computer`, `date`, `price_computer`) VALUES
+(243, 6, 'PC7 PHANTOM', '2016-02-02 08:01:50', '3 189€95'),
+(243, 3, 'PC7 MAX4K', '2016-02-02 15:05:27', '3 249€95');
 
 -- --------------------------------------------------------
 
@@ -238,11 +234,20 @@ INSERT INTO `reserve` (`id_user`, `id_computer`, `name_computer`, `date`) VALUES
 --
 
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
+`id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `role` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `salt` int(11) NOT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `role`, `password`, `salt`) VALUES
+(1, 'kalash', 'admin', 'a8a6d3dcba1983ee199a03efff8518e954fdce9876a830523e9ee3ee471a70d8', 12),
+(2, 'alainsamuel', 'user', 'grenade', 43);
 
 --
 -- Index pour les tables exportées
@@ -261,6 +266,12 @@ ALTER TABLE `reserve`
  ADD UNIQUE KEY `id_user` (`id_user`,`id_computer`);
 
 --
+-- Index pour la table `user`
+--
+ALTER TABLE `user`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`);
+
+--
 -- AUTO_INCREMENT pour les tables exportées
 --
 
@@ -269,3 +280,8 @@ ALTER TABLE `reserve`
 --
 ALTER TABLE `computer`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=156;
+--
+-- AUTO_INCREMENT pour la table `user`
+--
+ALTER TABLE `user`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
