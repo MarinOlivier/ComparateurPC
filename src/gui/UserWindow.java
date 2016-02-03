@@ -3,17 +3,11 @@
  */
 package gui;
 
-import com.sun.xml.internal.fastinfoset.util.CharArray;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.reflect.Field;
+import java.sql.SQLException;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.xml.stream.events.Characters;
 
 /**
  * @author josetarsitano
@@ -48,7 +42,11 @@ public class UserWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (_passwordField.getPassword().length != 0) {
                     _password = String.valueOf(_passwordField.getPassword());
-                    System.out.println(_password);
+                    try {
+                        System.out.println("LOL: " + utils.ConnectDB.checkUser(_usernameField.getText(), _password));
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
                 } else {
                     _msgAlert.setText("Mot de passe incorrect");
                 }

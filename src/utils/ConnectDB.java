@@ -4,16 +4,12 @@
 package utils;
 
 import java.lang.reflect.Field;
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.Security;
 import java.sql.*;
 import java.util.*;
 
 import com.mysql.jdbc.Connection;
-import com.sun.deploy.util.SystemUtils;
 import data.Computer;
 
 /**
@@ -258,12 +254,52 @@ public class ConnectDB {
         return user;
     }
 
+    public static boolean checkUser(String username, String password) throws SQLException {
+        String selectSQL = "SELECT username, password, salt FROM user WHERE username = '" + username + "'";
+        PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
+        ResultSet rs = preparedStatement.executeQuery(selectSQL);
+
+        int salt = 0;
+        String usernameTmp = null;
+        String passwordTmp = null;
+        while (rs.next()) {
+            usernameTmp = rs.getString("username");
+            passwordTmp = rs.getString("password");
+            salt = rs.getInt("salt");
+        }
+
+        if (salt == 0)
+            return false;
+
+        password += salt;
+
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        md.update(password.getBytes());
+
+        byte byteData[] = md.digest();
+
+        //convert the byte to hex format method 1
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return Objects.equals(usernameTmp, username) && Objects.equals(sb.toString(), passwordTmp);
+    }
+
     public static void pushUserOnDB(String username, String role, String password) throws SQLException {
         MessageDigest md = null;
 
         /* Génération d'un nombre aléatoire en 1 et 999999999. */
         Random rand = new Random();
-        int salt = rand.nextInt(999999999 - 1 + 1) + 1;
+        //int salt = rand.nextInt(999999999 - 1 + 1) + 1;
+        int salt = 12;
         password += salt;
 
         try {
@@ -283,8 +319,9 @@ public class ConnectDB {
         }
 
         System.out.println("Hex format : " + sb.toString());
+        System.out.println("Salt : " + salt);
 
-        String sql = "INSERT INTO user " +
+        /*String sql = "INSERT INTO user " +
                 "(username, role, password, salt)" +
                 " VALUES (?, ?, ?, ?)";
         PreparedStatement preparedStatement = _con.prepareStatement(sql);
@@ -292,6 +329,6 @@ public class ConnectDB {
         preparedStatement.setString(2, role);
         preparedStatement.setString(3, password);
         preparedStatement.setInt(4, salt);
-        preparedStatement.executeUpdate();
+        preparedStatement.executeUpdate();*/
     }
 }
