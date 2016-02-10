@@ -32,7 +32,7 @@ public class UserWindow extends JFrame {
     private String _password;
 
     public UserWindow() {
-        setSize(500, 170);
+        setSize(320, 170);
         setResizable(false);
         _formIsDisplay = false;
         _usernameField = new JTextField(10);
@@ -40,7 +40,6 @@ public class UserWindow extends JFrame {
         _connexion = new JButton("Connexion");
 
         _msgAlert = new JLabel("");
-        _msgAlert.setSize(50, 10);
         _msgAlert.setForeground(Color.RED);
 
         _addUser = new JButton("Créer utilisateur");
@@ -68,14 +67,13 @@ public class UserWindow extends JFrame {
                 if(!_formIsDisplay) {
                     add(_addUserPanel);
                     setLayout(new GridLayout(2, 1));
-                    setSize(500, 340);
+                    setSize(320, 340);
                     setVisible(true);
                     _formIsDisplay = true;
-                }
-                else {
+                } else {
                     remove(_addUserPanel);
                     setLayout(new GridLayout(1, 1));
-                    setSize(500, 170);
+                    setSize(320, 170);
                     setVisible(true);
                     _formIsDisplay = false;
                 }
@@ -122,11 +120,9 @@ public class UserWindow extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         _mainPanel.add(_msgAlert, gbc);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
+
         gbc.gridx = 0;
         gbc.gridy = 3;
         _mainPanel.add(_connexion, gbc);
@@ -173,7 +169,6 @@ public class UserWindow extends JFrame {
             _comfirmPassLabel.setLabelFor(_comfirmField);
 
             _msgAlert = new JLabel("");
-            _msgAlert.setSize(50, 10);
             _msgAlert.setForeground(Color.RED);
 
             _createButton = new JButton("Création");
@@ -182,16 +177,17 @@ public class UserWindow extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (_passwordField.getPassword().length == 0 || _comfirmField.getPassword().length == 0 || _usernameField.getText().length() == 0) {
-                        _msgAlert.setText("Veuillez remplir tous les champs");
+                        _msgAlert.setText("Veuillez remplir tous les champs.");
                         System.out.println(_password);
-                    } else if(!(Arrays.equals(_passwordField.getPassword(), _comfirmField.getPassword()))){
-                        _msgAlert.setText("Les mots de passes ne correspondent pas");
+                    } else if (!(Arrays.equals(_passwordField.getPassword(), _comfirmField.getPassword()))){
+                        _msgAlert.setText("Les mots de passe sont différents");
                     } else {
                         try {
-                            if(!(ConnectDB.isUserExist(_usernameField.getText())))
+                            if (!(ConnectDB.isUserExist(_usernameField.getText()))) {
                                 ConnectDB.pushUserOnDB(_usernameField.getText(), "user", String.valueOf(_passwordField.getPassword()));
-                            else
-                                _msgAlert.setText("Utilisateur existant");
+                                setSize(320, 170);
+                            } else
+                                _msgAlert.setText("Nom d'utilisateur déjà utilisé.");
                         } catch(SQLException e1) {
                             e1.printStackTrace();
                         }
@@ -247,8 +243,6 @@ public class UserWindow extends JFrame {
             gbc.gridx = 0;
             gbc.gridy = 4;
             add(_createButton, gbc);
-
-
         }
     }
 }

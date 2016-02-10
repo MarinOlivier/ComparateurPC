@@ -4,6 +4,9 @@ import data.Computer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -35,7 +38,6 @@ public class BestPane extends JPanel {
     private ArrayList<JLabel> price = new ArrayList<>();
 
     public BestPane(float parentWidth, ArrayList<Computer> hsBest) {
-
         _parentWidth = parentWidth;
         _hsBest = hsBest;
 
@@ -63,7 +65,7 @@ public class BestPane extends JPanel {
         add(second);
         add(third);
 
-        setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+        setBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7));
         setBackground(Color.WHITE);
     }
 
@@ -72,9 +74,8 @@ public class BestPane extends JPanel {
     }
 
     public void addMiniPanel(int index, JPanel p) {
-
     	BufferedImage img = null;
-        if(index < _hsBest.size()) {
+        if (index < _hsBest.size()) {
             try {
                 image.get(index).setBounds(0, 0, 200, 200);
                 img = ImageIO.read(new URL(_hsBest.get(index).getPict()));
@@ -86,7 +87,6 @@ public class BestPane extends JPanel {
                 e.printStackTrace();
             }
 
-
             title.get(index).setText(_hsBest.get(index).getName());
             p.add(title.get(index), BorderLayout.NORTH);
 
@@ -94,11 +94,11 @@ public class BestPane extends JPanel {
 
             price.get(index).setText(_hsBest.get(index).getPrice());
             p.add(price.get(index), BorderLayout.SOUTH);
-
+            p.setBackground(new Color(255, 255, 255));
         }
-        
-        p.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 10),
-                BorderFactory.createLineBorder(Color.black)));
+
+        p.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 7),
+                BorderFactory.createLineBorder(new Color(217, 217, 217))));
     }
 
     public void paintComponent(Graphics g) {
@@ -119,7 +119,6 @@ public class BestPane extends JPanel {
         addMiniPanel(1, second);
         addMiniPanel(2, third);
         repaint();
-
     }
 
     @Override
@@ -128,7 +127,6 @@ public class BestPane extends JPanel {
     }
 
     class BestMouseListener extends MouseAdapter {
-
         private int _index;
         private Font _defaultFont;
 
@@ -147,13 +145,16 @@ public class BestPane extends JPanel {
         public void mouseEntered(MouseEvent e) {
             switch(_index){
                 case 0:
-                    first.setBackground(new Color(196, 196, 196));
+                    first.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 7),
+                            BorderFactory.createLineBorder(new Color(14, 105, 255))));
                     break;
                 case 1:
-                    second.setBackground(new Color(196, 196, 196));
+                    second.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 7),
+                            BorderFactory.createLineBorder(new Color(14, 105, 255))));
                     break;
                 case 2:
-                    third.setBackground(new Color(196, 196, 196));
+                    third.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 7),
+                            BorderFactory.createLineBorder(new Color(14, 105, 255))));
                     break;
             }
 
@@ -169,13 +170,16 @@ public class BestPane extends JPanel {
         public void mouseExited(MouseEvent e) {
             switch(_index){
                 case 0:
-                    first.setBackground(new Color(238, 238, 238));
+                    first.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 7),
+                            BorderFactory.createLineBorder(new Color(217, 217, 217))));
                     break;
                 case 1:
-                    second.setBackground(new Color(238, 238, 238));
+                    second.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 7),
+                            BorderFactory.createLineBorder(new Color(217, 217, 217))));
                     break;
                 case 2:
-                    third.setBackground(new Color(238, 238, 238));
+                    third.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 7),
+                            BorderFactory.createLineBorder(new Color(217, 217, 217))));
                     break;
             }
 
