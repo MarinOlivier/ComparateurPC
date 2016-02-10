@@ -231,13 +231,21 @@ public class ComputerWindow extends JFrame {
 			g2.drawString(getText(), x, y);
 
             if (getModel().isRollover()) {
-                g2.setColor(new Color(9, 151, 9));
-                g2.fill(rect);
-                g2.setPaint(Color.WHITE);
-                g2.drawString(getText(), x, y);
+				if (reserv.getText() == "Annuler Réservation"){
+					g2.setColor(new Color(200, 0, 0));
+				} else {
+					g2.setColor(new Color(9, 151, 9));
+				}
+				g2.fill(rect);
+				g2.setPaint(Color.WHITE);
+				g2.drawString(getText(), x, y);
 
                 if(getModel().isPressed()) {
-                    g2.setColor(new Color(7, 84, 7));
+					if (reserv.getText() == "Annuler Réservation"){
+						g2.setColor(new Color(120, 0, 0));
+					} else {
+						g2.setColor(new Color(7, 84, 7));
+					}
                     g2.fill(rect);
                     g2.setPaint(Color.WHITE);
                     g2.drawString(getText(), x, y);
