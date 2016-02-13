@@ -21,6 +21,8 @@ import gui.MyWindow;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        MyWindow w = new MyWindow();
+        //MyWindow w = new MyWindow();
+        Test test = new Test();
+        test.run();
     }
 }

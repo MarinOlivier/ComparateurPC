@@ -1,12 +1,17 @@
 package data;
 
+import utils.ComparePC;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by olivier on 10/01/2016.
  */
-public class Computer {
+public class Computer implements Comparable<Computer> {
     public String _id;
     public String _name;
     public String _motherBoard;
@@ -211,15 +216,15 @@ public class Computer {
                 ", _name='" + _name + '\'' +
                 ", _motherBoard='" + _motherBoard + '\'' +
                 ", _CPU='" + _CPU + '\'' +
-                ", _RAM='" + _RAM + '\'' +
+                ", _RAM='" + _RAM + '\'' +                      // Done
                 ", _GPU='" + _GPU + '\'' +
-                ", _ROM='" + _ROM + '\'' +
-                ", _powerSupply='" + _powerSupply + '\'' +
-                ", _price='" + _price + '\'' +
-                ", _RAM_freq='" + _RAM_freq + '\'' +
-                ", _CPU_freq='" + _CPU_freq + '\'' +
+                ", _ROM='" + _ROM + '\'' +                      // Done
+                ", _powerSupply='" + _powerSupply + '\'' +      // Done
+                ", _price='" + _price + '\'' +                  // Done
+                ", _RAM_freq='" + _RAM_freq + '\'' +            // Done
+                ", _CPU_freq='" + _CPU_freq + '\'' +            // Done
                 ", _GPU_freq='" + _GPU_freq + '\'' +
-                ", _GPU_RAM='" + _GPU_RAM + '\'' +
+                ", _GPU_RAM='" + _GPU_RAM + '\'' +              // Done
                 ", _E_S='" + _E_S + '\'' +
                 ", _case_PC='" + _case_PC + '\'' +
                 ", _airing='" + _airing + '\'' +
@@ -228,5 +233,29 @@ public class Computer {
                 ", _soundCard='" + _soundCard + '\'' +
                 ", _pict='" + _pict + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Computer o) {
+        ComparePC comparePC = new ComparePC(this);
+        for(int i = 0; i < component.length; i++) {
+            if(!component[i].equals("id") && !component[i].equals("name") && !component[i].equals("pict") && !component[i].equals("brand")) {
+                try {
+                    Field field = this.getClass().getDeclaredField("_" + component[i]);
+                    if(field.get(this) != null && field.get(o) != null){
+                        // Cond à enlever après les tests, juste pour controller sur que ce fait la reflexion le temps de tout coder
+                        if(field.getName().equals("_CPU_freq") || field.getName().equals("_RAM") || field.getName().equals("_ROM") || field.getName().equals("_powerSupply") || field.getName().equals("_price") || field.getName().equals("_RAM_freq") || field.getName().equals("_GPU_RAM")){
+                            // meth => compareXXX(o);
+                            Method meth = comparePC.getClass().getDeclaredMethod("compare" + field.getName().substring(1, field.getName().length()), Computer.class);
+                            System.out.println(meth.invoke(comparePC, o));
+                        }
+                    }
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return 0;
     }
 }
