@@ -237,6 +237,8 @@ public class Computer implements Comparable<Computer> {
 
     @Override
     public int compareTo(Computer o) {
+        double distance = 0;
+        int matching;
         ComparePC comparePC = new ComparePC(this);
         for(int i = 0; i < component.length; i++) {
             if(!component[i].equals("id") && !component[i].equals("name") && !component[i].equals("pict") && !component[i].equals("brand")) {
@@ -247,7 +249,7 @@ public class Computer implements Comparable<Computer> {
                         if(field.getName().equals("_CPU_freq") || field.getName().equals("_RAM") || field.getName().equals("_ROM") || field.getName().equals("_powerSupply") || field.getName().equals("_price") || field.getName().equals("_RAM_freq") || field.getName().equals("_GPU_RAM")){
                             // meth => compareXXX(o);
                             Method meth = comparePC.getClass().getDeclaredMethod("compare" + field.getName().substring(1, field.getName().length()), Computer.class);
-                            System.out.println(meth.invoke(comparePC, o));
+                            distance = distance + Double.valueOf(meth.invoke(comparePC, o).toString()); // Bizarre mais pas trouvé d'autre moyen
                         }
                     }
 
@@ -256,6 +258,24 @@ public class Computer implements Comparable<Computer> {
                 }
             }
         }
-        return 0;
+        System.out.println("distance = " + distance);
+        matching = matching(distance);
+        System.out.println("matching = " + matching);
+
+        return matching;
+    }
+
+    private int matching(Double distance) {
+        int maxScale = 400;
+        int matching;
+
+        if(distance > maxScale)
+            matching = 0;
+        else {
+            double alpha = -(100.0 / maxScale)*distance;
+            alpha = alpha + 100.0;
+            matching = (int)alpha;
+        }
+        return matching;
     }
 }

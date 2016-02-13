@@ -22,6 +22,6 @@ public class Test {
         }
 
         Computer wished = comp.get(0); // Prend le premier comme réf
-        wished.compareTo(comp.get(19));
+        wished.compareTo(comp.get(5));
     }
 }
