@@ -246,7 +246,7 @@ public class Computer implements Comparable<Computer> {
                     Field field = this.getClass().getDeclaredField("_" + component[i]);
                     if(field.get(this) != null && field.get(o) != null){
                         // Cond à enlever après les tests, juste pour controller sur que ce fait la reflexion le temps de tout coder
-                        if(field.getName().equals("_CPU_freq") || field.getName().equals("_RAM") || field.getName().equals("_ROM") || field.getName().equals("_powerSupply") || field.getName().equals("_price") || field.getName().equals("_RAM_freq") || field.getName().equals("_GPU_RAM")){
+                        if(field.getName().equals("_CPU") || field.getName().equals("_RAM") || field.getName().equals("_ROM") || field.getName().equals("_powerSupply") || field.getName().equals("_price") || field.getName().equals("_RAM_freq") || field.getName().equals("_GPU_RAM")){
                             // meth => compareXXX(o);
                             Method meth = comparePC.getClass().getDeclaredMethod("compare" + field.getName().substring(1, field.getName().length()), Computer.class);
                             distance = distance + Double.valueOf(meth.invoke(comparePC, o).toString()); // Bizarre mais pas trouvé d'autre moyen

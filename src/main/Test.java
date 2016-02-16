@@ -21,7 +21,7 @@ public class Test {
             e.printStackTrace();
         }
 
-        Computer wished = comp.get(0); // Prend le premier comme réf
-        wished.compareTo(comp.get(5));
+        Computer wished = comp.get(7); // Prend le premier comme réf
+        wished.compareTo(comp.get(20));
     }
 }

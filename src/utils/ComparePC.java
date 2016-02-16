@@ -11,14 +11,30 @@ public class ComparePC {
 
     private Computer _wished;
     private HashMap<String, Integer> _priority;
+    private String[] _CPUs = new String[] {"Intel Core i7", "Intel Xeon E5", "Intel Core i5", "AMD FX 8-Core", "Intel Xeon E3", "Intel Core i3", "AMD FirePro APU",
+                                            "AMD E2 Quad-Core APU", "AMD FX Quad-Core", "AMD A10 Quad-Core APU", "Intel Celeron", "AMD A4 Quad-Core APU", "AMD A8 Quad-Core APU",
+                                            "Intel Pentium"};
+    private HashMap<String, Double> _CPUList;
 
     public ComparePC(Computer wished) {
         _wished = wished;
         _priority = new HashMap<>();
+        _CPUList = new HashMap<>();
         setPriority();
     }
 
     private void setPriority() {
+        // Nombre de CPU.
+        double nbCPU = 14.;
+        // Coefficient pour l'évaluation.
+        double coeffCPU = 16.;
+        double CPUEvaluation = nbCPU*coeffCPU;
+        // Ajout des coefficients dans la _CPUList.
+        for (String s : _CPUs) {
+            _CPUList.put(s, CPUEvaluation);
+            CPUEvaluation -= coeffCPU;
+        }
+
         _priority.put("motherBoard", 1);
         _priority.put("CPU", 1);
         _priority.put("RAM", 1);
@@ -39,12 +55,43 @@ public class ComparePC {
 
     }
 
-    public double compareCPU_freq(Computer o) {
-        double priority = 1*_priority.get("CPU_freq");
-        double current = extractCPU_freqValue(o);
-        double wished = extractCPU_freqValue(_wished);
+    /**
+     *
+     * @param  c computer,
+     * @return   distance du CPU + distance de la CPU_freq.
+     */
+    public double compareCPU(Computer c) {
+        /* CPU */
+        double priorityCPU = 1*_priority.get("CPU");
+        double currentCPU = extractValueFromCPU(c);
+        double wishedCPU = extractValueFromCPU(_wished);
 
-        return Math.abs(wished - current)*priority;
+        /* CPU_freq */
+        double priorityCPU_freq = 1*_priority.get("CPU_freq");
+        double currentCPU_freq = extractCPU_freqValue(c);
+        double wishedCPU_freq = extractCPU_freqValue(_wished);
+
+        /* Calcul des distances pour chaque élément du CPU */
+        double distCPU = Math.abs(wishedCPU - currentCPU);
+        double distCPU_freq = Math.abs(wishedCPU_freq - currentCPU_freq);
+
+        return (distCPU+distCPU_freq)*priorityCPU*priorityCPU_freq;
+    }
+
+    /**
+     *
+     * @param   c computer,
+     * @return    valeur du CPU.
+     */
+    public double extractValueFromCPU(Computer c) {
+        for (String s : _CPUs) {
+            if (c.getCPU().equals(s)) {
+                System.out.println("CPU MATCHED: " + _CPUList.get(s));
+                return _CPUList.get(s);
+            }
+        }
+
+        return -1;
     }
 
     public double compareRAM(Computer o) {
