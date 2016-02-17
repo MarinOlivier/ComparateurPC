@@ -11,15 +11,62 @@ public class ComparePC {
 
     private Computer _wished;
     private HashMap<String, Integer> _priority;
-    private String[] _CPUs = new String[] {"Intel Core i7", "Intel Xeon E5", "Intel Core i5", "AMD FX 8-Core", "Intel Xeon E3", "Intel Core i3", "AMD FirePro APU",
-                                            "AMD E2 Quad-Core APU", "AMD FX Quad-Core", "AMD A10 Quad-Core APU", "Intel Celeron", "AMD A4 Quad-Core APU", "AMD A8 Quad-Core APU",
-                                            "Intel Pentium"};
+    /* Classés dans l'ordre du meilleur au pire */
+    private String[] _CPUs = new String[] {
+            "Intel Core i7",
+            "Intel Xeon E5",
+            "Intel Core i5",
+            "AMD FX 8-Core",
+            "Intel Xeon E3",
+            "Intel Core i3",
+            "AMD FirePro APU",
+            "AMD E2 Quad-Core APU",
+            "AMD FX Quad-Core",
+            "AMD A10 Quad-Core APU",
+            "Intel Celeron",
+            "AMD A4 Quad-Core APU",
+            "AMD A8 Quad-Core APU",
+            "Intel Pentium"};
+
     private HashMap<String, Double> _CPUList;
+    private HashMap<String, Double> _GPUList;
 
     public ComparePC(Computer wished) {
         _wished = wished;
         _priority = new HashMap<>();
         _CPUList = new HashMap<>();
+        _GPUList = new HashMap<>();
+
+        /* Valeurs benchmark */
+        _GPUList.put("NVIDIA GeForce GTX TITAN X", 10.835);
+        _GPUList.put("NVIDIA GeForce GTX 980", 9.735);
+        _GPUList.put("2 x NVIDIA GeForce GTX 980", 10.);
+        _GPUList.put("NVIDIA GeForce GTX 980 Ti", 11.588);
+        _GPUList.put("NVIDIA GeForce GTX 970M", 4.132);
+        _GPUList.put("NVIDIA GeForce GTX 970", 8.674);
+        _GPUList.put("NVIDIA GeForce GTX 960M", 1.677);
+        _GPUList.put("Intel HD Graphics 530", 1.009);
+        _GPUList.put("AMD Radeon R9 390X", 7.107);
+        _GPUList.put("Intel HD Graphics 4600", 0.709);
+        _GPUList.put("NVIDIA GeForce GTX 860M", 1.579);
+        _GPUList.put("NVIDIA GeForce GTX 960", 5.956);
+        _GPUList.put("Intel HD Graphics P4600", 0.604);
+        _GPUList.put("NVIDIA GeForce GTX 950", 5.248);
+        _GPUList.put("Intel HD Graphics 4400", 0.546);
+        _GPUList.put("NVIDIA GeForce GTX 760", 4.955);
+        _GPUList.put("AMD FirePro A320", 1.743);
+        _GPUList.put("AMD Radeon R9 380", 5.525);
+        _GPUList.put("NVIDIA Quadro K620", 2.262);
+        _GPUList.put("Intel HD Graphics 5500", 0.560);
+        _GPUList.put("NVIDIA GeForce 820A", 0.661);
+        _GPUList.put("NVIDIA GeForce GTX 745", 2.155);
+        _GPUList.put("NVIDIA GeForce GT 720", 0.748);
+        _GPUList.put("AMD Radeon R2", 0.295);
+        _GPUList.put("AMD Radeon R7", 0.963);
+        _GPUList.put("Intel HD Graphics", 0.232);
+        _GPUList.put("AMD Radeon R3", 0.373);
+        _GPUList.put("AMD Radeon R7 370", 4.223);
+
         setPriority();
     }
 
@@ -38,7 +85,7 @@ public class ComparePC {
         _priority.put("motherBoard", 1);
         _priority.put("CPU", 1);
         _priority.put("RAM", 1);
-        _priority.put("GPU", 2);
+        _priority.put("GPU", 1);
         _priority.put("ROM", 2);
         _priority.put("powerSupply", 3);
         _priority.put("price", 1);
@@ -63,8 +110,8 @@ public class ComparePC {
     public double compareCPU(Computer c) {
         /* CPU */
         double priorityCPU = 1*_priority.get("CPU");
-        double currentCPU = extractValueFromCPU(c);
-        double wishedCPU = extractValueFromCPU(_wished);
+        double currentCPU = extractValueOfCPU(c);
+        double wishedCPU = extractValueOfCPU(_wished);
 
         /* CPU_freq */
         double priorityCPU_freq = 1*_priority.get("CPU_freq");
@@ -81,13 +128,41 @@ public class ComparePC {
     /**
      *
      * @param   c computer,
-     * @return    valeur du CPU.
+     * @return  valeur du CPU.
      */
-    public double extractValueFromCPU(Computer c) {
+    public double extractValueOfCPU(Computer c) {
         for (String s : _CPUs) {
             if (c.getCPU().equals(s)) {
-                System.out.println("CPU MATCHED: " + _CPUList.get(s));
                 return _CPUList.get(s);
+            }
+        }
+
+        return -1;
+    }
+
+    /**
+     *
+     * @param  c computer,
+     * @return   distance du GPU.
+     */
+    public double compareGPU(Computer c) {
+        /* GPU */
+        double priorityGPU = 1*_priority.get("GPU");
+        double currentGPU = extractValueOfGPU(c);
+        double wishedGPU = extractValueOfGPU(_wished);
+
+        return Math.abs(wishedGPU - currentGPU)*priorityGPU;
+    }
+    /**
+     *
+     * @param   c computer,
+     * @return  valeur du GPU.
+     */
+    public double extractValueOfGPU(Computer c) {
+        for (HashMap.Entry<String, Double> entry : _GPUList.entrySet()) {
+            if (c.getGPU().equals(entry.getKey())) {
+                // *100 pour que la valeur ait un impact sur le matching. Sinon aucune diff.
+                return entry.getValue()*100;
             }
         }
 
@@ -160,7 +235,14 @@ public class ComparePC {
     }
 
     private static double extractROMValue(Computer comp) {
-        return Double.valueOf(comp.getROM().substring(0, comp.getROM().length()-4));
+        String typeROM = comp.getROM().substring(comp.getROM().length()-3, comp.getROM().length());
+
+        /* On considère que le SSD est mieux que le HDD
+        *  donc on multiplie par 1.5 la distance. */
+        if (typeROM == "HDD")
+            return Double.valueOf(comp.getROM().substring(0, comp.getROM().length()-4));
+        else
+            return Double.valueOf(comp.getROM().substring(0, comp.getROM().length()-4))*1.5;
     }
 
     private static double extractPowerSupplyValue(Computer comp) {

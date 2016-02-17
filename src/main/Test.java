@@ -21,7 +21,11 @@ public class Test {
             e.printStackTrace();
         }
 
-        Computer wished = comp.get(7); // Prend le premier comme réf
-        wished.compareTo(comp.get(20));
+        Computer current = comp.get(2);
+        for (int i = 1; i < 100; i++) {
+            Computer wished = comp.get(i);
+            System.out.print(i + ". " + comp.get(i).getCPU() + " " + comp.get(i).getGPU() + "                            ");
+            wished.compareTo(current);
+        }
     }
 }
