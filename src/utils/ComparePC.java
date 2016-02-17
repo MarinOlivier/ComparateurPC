@@ -161,8 +161,8 @@ public class ComparePC {
     public double extractValueOfGPU(Computer c) {
         for (HashMap.Entry<String, Double> entry : _GPUList.entrySet()) {
             if (c.getGPU().equals(entry.getKey())) {
-                // *100 pour que la valeur ait un impact sur le matching. Sinon aucune diff.
-                return entry.getValue()*100;
+                // *10 pour que la valeur ait un impact sur le matching. Sinon aucune diff.
+                return entry.getValue()*10.;
             }
         }
 
