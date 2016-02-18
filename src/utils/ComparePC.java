@@ -122,13 +122,21 @@ public class ComparePC {
         double distCPU = Math.abs(wishedCPU - currentCPU);
         double distCPU_freq = Math.abs(wishedCPU_freq - currentCPU_freq);
 
+        /* On considère que la distance MAX du CPU est 25 */
+        if (distCPU > 25)
+            distCPU = 25.;
+
+        /* On considère que la distance MAX de la CPU_freq est 25 */
+        if (distCPU_freq > 25)
+            distCPU_freq = 25.;
+
         return (distCPU+distCPU_freq)*priorityCPU*priorityCPU_freq;
     }
 
     /**
      *
      * @param   c computer,
-     * @return  valeur du CPU.
+     * @return    valeur du CPU.
      */
     public double extractValueOfCPU(Computer c) {
         for (String s : _CPUs) {
@@ -143,7 +151,7 @@ public class ComparePC {
     /**
      *
      * @param  c computer,
-     * @return   distance du GPU.
+     * @return   distance du GPU + distance de la GPU_RAM.
      */
     public double compareGPU(Computer c) {
         /* GPU */
@@ -151,12 +159,30 @@ public class ComparePC {
         double currentGPU = extractValueOfGPU(c);
         double wishedGPU = extractValueOfGPU(_wished);
 
-        return Math.abs(wishedGPU - currentGPU)*priorityGPU;
+        /* GPU_RAM */
+        double priorityGPU_RAM = 1*_priority.get("GPU_RAM");
+        double currentGPU_RAM = extractGPU_RAM(c);
+        double wishedGPU_RAM = extractGPU_RAM(_wished);
+
+        /* Calcul des distances pour chaque élément du GPU */
+        double distGPU = Math.abs(wishedGPU - currentGPU);
+        double distGPU_RAM = Math.abs(wishedGPU_RAM - currentGPU_RAM);
+
+        /* On considère que la distance MAX du GPU est 30 */
+        if (distGPU > 30)
+            distGPU = 30.;
+
+        /* On considère que la distance MAX de la GPU_RAM est 20 */
+        if (distGPU_RAM > 20)
+            distGPU_RAM = 20.;
+
+        return (distGPU+distGPU_RAM)*priorityGPU*priorityGPU_RAM;
     }
+
     /**
      *
      * @param   c computer,
-     * @return  valeur du GPU.
+     * @return    valeur du GPU.
      */
     public double extractValueOfGPU(Computer c) {
         for (HashMap.Entry<String, Double> entry : _GPUList.entrySet()) {
@@ -169,15 +195,35 @@ public class ComparePC {
         return -1;
     }
 
-    public double compareRAM(Computer o) {
-        double priority = 1*_priority.get("RAM");
-        double current = extractRAMValue(o);
-        double wished = extractRAMValue(_wished);
+    /**
+     *
+     * @param   c computer,
+     * @return    distance de la RAM + distance de la RAM_freq.
+     */
+    public double compareRAM(Computer c) {
+        /* RAM */
+        double priorityRAM = 1*_priority.get("RAM");
+        double currentRAM = extractRAMValue(c);
+        double wishedRAM = extractRAMValue(_wished);
 
-        if(current > wished)
-            return 0;
-        else
-            return (wished - current)*priority;
+        /* RAM_freq */
+        double priorityRAM_freq = 1*_priority.get("RAM_freq");
+        double currentRAM_freq = extractRAM_freqValue(c);
+        double wishedRAM_freq = extractRAM_freqValue(_wished);
+
+        /* Calcul des distances pour chaque élément de la RAM */
+        double distRAM = Math.abs(wishedRAM - currentRAM);
+        double distRAM_freq = Math.abs(wishedRAM_freq - currentRAM_freq);
+
+        /* On considère que la distance MAX de la RAM est 25 */
+        if (distRAM > 25)
+            distRAM = 25.;
+
+        /* On considère que la distance MAX de la RAM_freq est 25 */
+        if (distRAM_freq > 25)
+            distRAM_freq = 25.;
+
+        return (distRAM+distRAM_freq)*priorityRAM*priorityRAM_freq;
     }
 
     public double compareROM(Computer o) {
@@ -199,32 +245,13 @@ public class ComparePC {
             return (wished - current)*priority;
     }
 
-    public double compareprice(Computer o) {
+    /*public double compareprice(Computer o) {
         double priority = 0.01*_priority.get("price");
         double current = extractPriceValue(o);
         double wished = extractPriceValue(_wished);
 
         return Math.abs(wished - current)*priority;
-    }
-
-    public double compareRAM_freq(Computer o) {
-        double priority = 1*_priority.get("RAM_freq");
-        double current = extractRAM_freqValue(o);
-        double wished = extractRAM_freqValue(_wished);
-
-        return Math.abs(wished - current)*priority;
-    }
-
-    public double compareGPU_RAM(Computer o) {
-        double priority = 1*_priority.get("GPU_RAM");
-        double current = extractGPU_RAM(o);
-        double wished = extractGPU_RAM(_wished);
-
-        if(current > wished)
-            return 0;
-        else
-            return (wished - current)*priority;
-    }
+    }*/
 
     private static double extractCPU_freqValue(Computer comp) {
         return Double.valueOf(comp.getCPU_freq().substring(0, comp.getCPU_freq().length()-4));
@@ -249,19 +276,25 @@ public class ComparePC {
         return Double.valueOf(comp.getPowerSupply().substring(0, comp.getPowerSupply().length()-2));
     }
 
-    private static double extractPriceValue(Computer comp) {
+    /*private static double extractPriceValue(Computer comp) {
         String tmp = comp.getPrice().replace("€", ".");
         tmp = tmp.replaceAll("\\s+", "");
         return Double.valueOf(tmp.trim());
-    }
+    }*/
 
     private static double extractRAM_freqValue(Computer comp) {
-        int lenght = comp.getRAM_freq().length();
-        return Double.valueOf(comp.getRAM_freq().substring(lenght-8, lenght-4));
+        if (comp.getRAM_freq() != null) {
+            int length = comp.getRAM_freq().length();
+            return Double.valueOf(comp.getRAM_freq().substring(length - 8, length - 4));
+        } else
+            return 25.;
     }
 
     private static double extractGPU_RAM(Computer comp) {
-        return Double.valueOf(comp.getGPU_RAM().substring(0, comp.getGPU_RAM().length()-3));
+        if (comp.getGPU_RAM() != null)
+            return Double.valueOf(comp.getGPU_RAM().substring(0, comp.getGPU_RAM().length()-3));
+        else
+            return 20.;
     }
 
 }

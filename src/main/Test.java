@@ -21,7 +21,7 @@ public class Test {
             e.printStackTrace();
         }
 
-        Computer current = comp.get(45);
+        Computer current = comp.get(25);
         for (int i = 1; i < 100; i++) {
             Computer wished = comp.get(i);
             System.out.print(i + ". " + comp.get(i).getCPU() + " " + comp.get(i).getGPU() + "                            ");
