@@ -11,7 +11,7 @@ public class ComparePC {
 
     private Computer _wished;
     private HashMap<String, Integer> _priority;
-    /* Classés dans l'ordre du meilleur au pire */
+    /* CPU classés par ordre décroissant */
     private String[] _CPUs = new String[] {
             "Intel Core i7",
             "Intel Xeon E5",
@@ -28,16 +28,32 @@ public class ComparePC {
             "AMD A8 Quad-Core APU",
             "Intel Pentium"};
 
+    /* OS classés par ordre décroissant */
+    private String[] _OSs = new String[] {
+            "Microsoft Windows 10 Professionnel 64 bits",
+            "Microsoft Windows 10 Famille 64 bits",
+            "Microsoft Windows 10",
+            "Microsoft Windows 8.1 64 bits",
+            "Microsoft Windows 8.1 Pro 64 bits",
+            "Microsoft Windows 8 Pro 64 bits",
+            "Microsoft Windows 7 Professionnel 64 bits",
+            "Microsoft Windows 7 Édition Familiale Premium 64 bits",
+            "SteamOS"};
+
     private HashMap<String, Double> _CPUList;
     private HashMap<String, Double> _GPUList;
+    private HashMap<String, Double> _OSList;
+    private HashMap<String, Double> _MBList;
 
     public ComparePC(Computer wished) {
         _wished = wished;
         _priority = new HashMap<>();
         _CPUList = new HashMap<>();
         _GPUList = new HashMap<>();
+        _OSList = new HashMap<>();
+        _MBList = new HashMap<>();
 
-        /* Valeurs benchmark */
+        /* Valeurs benchmark GPU. */
         _GPUList.put("NVIDIA GeForce GTX TITAN X", 10.835);
         _GPUList.put("NVIDIA GeForce GTX 980", 9.735);
         _GPUList.put("2 x NVIDIA GeForce GTX 980", 10.);
@@ -67,6 +83,13 @@ public class ComparePC {
         _GPUList.put("AMD Radeon R3", 0.373);
         _GPUList.put("AMD Radeon R7 370", 4.223);
 
+        /* Valeurs Carte-mère basées sur leur côté de popularité. */
+        _MBList.put("MSI X99A GAMING 7", 21.);
+        _MBList.put("ASUS MAXIMUS VIII RANGER", 9.);
+        _MBList.put("ASUS X99-A", 207.);
+        _MBList.put("MSI B85-G43 GAMING", 297.);
+        _MBList.put("MSI H81M-P33", 171.);
+
         setPriority();
     }
 
@@ -80,6 +103,17 @@ public class ComparePC {
         for (String s : _CPUs) {
             _CPUList.put(s, CPUEvaluation);
             CPUEvaluation -= coeffCPU;
+        }
+
+        // Nombre d'OS.
+        double nbOS = 9.;
+        // Coefficient pour l'évaluation.
+        double coeffOS = 2.;
+        double OSEvaluation = nbOS*coeffOS;
+        // Ajout des coefficients dans la _OSList.
+        for (String s : _OSs) {
+            _OSList.put(s, OSEvaluation);
+            OSEvaluation -= coeffOS;
         }
 
         _priority.put("motherBoard", 1);
@@ -122,15 +156,36 @@ public class ComparePC {
         double distCPU = Math.abs(wishedCPU - currentCPU);
         double distCPU_freq = Math.abs(wishedCPU_freq - currentCPU_freq);
 
-        /* On considère que la distance MAX du CPU est 25 */
-        if (distCPU > 25)
-            distCPU = 25.;
+        /* On considère que la distance MAX du CPU est 75. */
+        if (distCPU > 75)
+            distCPU = 75.;
 
-        /* On considère que la distance MAX de la CPU_freq est 25 */
+        /* On considère que la distance MAX de la CPU_freq est 25. */
         if (distCPU_freq > 25)
             distCPU_freq = 25.;
 
         return (distCPU+distCPU_freq)*priorityCPU*priorityCPU_freq;
+    }
+
+    /**
+     *
+     * @param  c computer,
+     * @return   distance de l'OS.
+     */
+    public double compareOS(Computer c) {
+        /* OS */
+        double priorityOS = 1*_priority.get("OS");
+        double currentOS = extractValueOfOS(c);
+        double wishedOS = extractValueOfOS(_wished);
+
+        /* Calcul de la distance pour l'OS. */
+        double distCPU = Math.abs(wishedOS - currentOS);
+
+        /* On considère que la distance MAX du CPU est 50. */
+        if (distCPU > 50)
+            distCPU = 50.;
+
+        return distCPU*priorityOS;
     }
 
     /**
@@ -140,11 +195,9 @@ public class ComparePC {
      */
     public double extractValueOfCPU(Computer c) {
         for (String s : _CPUs) {
-            if (c.getCPU().equals(s)) {
+            if (c.getCPU().equals(s))
                 return _CPUList.get(s);
-            }
         }
-
         return -1;
     }
 
@@ -168,11 +221,11 @@ public class ComparePC {
         double distGPU = Math.abs(wishedGPU - currentGPU);
         double distGPU_RAM = Math.abs(wishedGPU_RAM - currentGPU_RAM);
 
-        /* On considère que la distance MAX du GPU est 30 */
+        /* On considère que la distance MAX du GPU est 30. */
         if (distGPU > 30)
             distGPU = 30.;
 
-        /* On considère que la distance MAX de la GPU_RAM est 20 */
+        /* On considère que la distance MAX de la GPU_RAM est 20. */
         if (distGPU_RAM > 20)
             distGPU_RAM = 20.;
 
@@ -186,12 +239,47 @@ public class ComparePC {
      */
     public double extractValueOfGPU(Computer c) {
         for (HashMap.Entry<String, Double> entry : _GPUList.entrySet()) {
-            if (c.getGPU().equals(entry.getKey())) {
+            if (c.getGPU().equals(entry.getKey()))
                 // *10 pour que la valeur ait un impact sur le matching. Sinon aucune diff.
                 return entry.getValue()*10.;
-            }
         }
+        return -1;
+    }
 
+    /**
+     *
+     * @param  c computer,
+     * @return   distance de la Carte-mère.
+     */
+    public double comparemotherBoard(Computer c) {
+
+        /* Mother Board */
+        double priorityMB = 1*_priority.get("motherBoard");
+        double currentMB = extractValueOfMB(c);
+        double wishedMB = extractValueOfMB(_wished);
+
+        /* Calcul de la distance de la carte-mère. */
+        double distMB = Math.abs(wishedMB - currentMB);
+        System.out.println("distMB = " + distMB);
+        /* On considère que la distance MAX de la carte-mère est 50. */
+        if (distMB > 50)
+            distMB = 50.;
+
+        return distMB*priorityMB;
+    }
+
+    /**
+     *
+     * @param   c computer,
+     * @return    valeur de la Carte-mère.
+     */
+    public double extractValueOfMB(Computer c) {
+        for (HashMap.Entry<String, Double> entry : _MBList.entrySet()) {
+            if (c.getMotherBoard().equals(entry.getKey()))
+                return entry.getValue();
+            else
+                return 0.;
+        }
         return -1;
     }
 
@@ -211,15 +299,15 @@ public class ComparePC {
         double currentRAM_freq = extractRAM_freqValue(c);
         double wishedRAM_freq = extractRAM_freqValue(_wished);
 
-        /* Calcul des distances pour chaque élément de la RAM */
+        /* Calcul des distances pour chaque élément de la RAM. */
         double distRAM = Math.abs(wishedRAM - currentRAM);
         double distRAM_freq = Math.abs(wishedRAM_freq - currentRAM_freq);
 
-        /* On considère que la distance MAX de la RAM est 25 */
+        /* On considère que la distance MAX de la RAM est 25. */
         if (distRAM > 25)
             distRAM = 25.;
 
-        /* On considère que la distance MAX de la RAM_freq est 25 */
+        /* On considère que la distance MAX de la RAM_freq est 25. */
         if (distRAM_freq > 25)
             distRAM_freq = 25.;
 
@@ -252,6 +340,21 @@ public class ComparePC {
 
         return Math.abs(wished - current)*priority;
     }*/
+
+    /**
+     *
+     * @param   c computer,
+     * @return    valeur de l'OS.
+     */
+    public double extractValueOfOS(Computer c) {
+        for (String s : _OSs) {
+            if (c.getOS().equals(s)) {
+                return _OSList.get(s);
+            }
+        }
+
+        return -1;
+    }
 
     private static double extractCPU_freqValue(Computer comp) {
         return Double.valueOf(comp.getCPU_freq().substring(0, comp.getCPU_freq().length()-4));
@@ -296,5 +399,4 @@ public class ComparePC {
         else
             return 20.;
     }
-
 }

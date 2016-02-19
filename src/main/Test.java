@@ -21,10 +21,10 @@ public class Test {
             e.printStackTrace();
         }
 
-        Computer current = comp.get(25);
-        for (int i = 1; i < 100; i++) {
+        Computer current = comp.get(3);
+        for (int i = 0; i < comp.size(); i++) {
             Computer wished = comp.get(i);
-            System.out.print(i + ". " + comp.get(i).getCPU() + " " + comp.get(i).getGPU() + "                            ");
+            System.out.print(i + ". " + comp.get(i).getCPU() + " " + comp.get(i).getGPU() + " " + comp.get(i).getMotherBoard() + "                            ");
             wished.compareTo(current);
         }
     }

@@ -5,8 +5,6 @@ import utils.ComparePC;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by olivier on 10/01/2016.
@@ -62,7 +60,7 @@ public class Computer implements Comparable<Computer> {
     }
 
     public void setMotherBoard(String motherBoard) {
-        this._motherBoard = motherBoard;
+        _motherBoard = motherBoard;
     }
 
     public String getCPU() {
@@ -244,9 +242,10 @@ public class Computer implements Comparable<Computer> {
             if(!component[i].equals("id") && !component[i].equals("name") && !component[i].equals("pict") && !component[i].equals("brand")) {
                 try {
                     Field field = this.getClass().getDeclaredField("_" + component[i]);
-                    if(field.get(this) != null && field.get(o) != null){
+                    if(field.get(this) != null && field.get(o) != null) {
                         // Cond à enlever après les tests, juste pour controller sur que ce fait la reflexion le temps de tout coder
-                        if(field.getName().equals("_CPU") || field.getName().equals("_GPU") || field.getName().equals("_RAM") || field.getName().equals("_ROM") || field.getName().equals("_powerSupply")){
+                        if (field.getName().equals("_motherBoard") || field.getName().equals("_CPU") || field.getName().equals("_GPU") || field.getName().equals("_RAM") ||
+                            field.getName().equals("_ROM") || field.getName().equals("_OS") || field.getName().equals("_powerSupply")) {
                             // meth => compareXXX(o);
                             Method meth = comparePC.getClass().getDeclaredMethod("compare" + field.getName().substring(1, field.getName().length()), Computer.class);
                             distance = distance + Double.valueOf(meth.invoke(comparePC, o).toString()); // Bizarre mais pas trouvé d'autre moyen
@@ -261,7 +260,7 @@ public class Computer implements Comparable<Computer> {
 
         /* Tri par ordre de prix */
         double price = extractPriceValue(this);
-        if (price <= 1800.) {
+        if (price <= 6000.) {
             matching = matching(distance);
             System.out.println("matching = " + matching);
             return matching;
