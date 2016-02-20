@@ -14,7 +14,13 @@ public class User {
     private int _salt;
     private String _role;
 
-    public User() {}
+    public  User() {}
+
+    public User(int id, String username, String role) {
+        _userId = id;
+        _username = username;
+        _role = role;
+    }
 
     public int getUserId() {
         return _userId;

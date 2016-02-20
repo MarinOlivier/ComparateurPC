@@ -1,6 +1,7 @@
 package gui;
 
 import data.Computer;
+import main.Main;
 import sun.awt.Graphics2Delegate;
 
 import javax.swing.*;
@@ -37,7 +38,8 @@ public class MyWindow extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         _mb = new JMenuBar();
-        JMenu user = new JMenu("Utilisateur");
+        JMenu user = new JMenu(Main.user.getUsername());
+
         reservList = new JMenuItem("Liste des souhaits");
         reservList.addActionListener(new ActionListener() {
 			@Override
@@ -53,7 +55,6 @@ public class MyWindow extends JFrame {
         user.add(reservList);
         changeUser = new JMenuItem("Changer d'utilisateur");
         changeUser.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//TODO Appeler fenêtre User.
@@ -61,6 +62,7 @@ public class MyWindow extends JFrame {
 			}
         	
         });
+
         user.add(changeUser);
         
         JMenu mode = new JMenu("Mode");
@@ -86,10 +88,11 @@ public class MyWindow extends JFrame {
         	
         });
         mode.add(expert);
+
+
         _mb.add(user);
         _mb.add(mode);
         setJMenuBar(_mb);
-        
         _topPanel = new TopPanel(this);
         _centerPanel = new CenterPanel();
         _bottomPanel = new BottomPanel();

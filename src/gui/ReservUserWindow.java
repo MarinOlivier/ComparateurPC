@@ -3,8 +3,6 @@
  */
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,9 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
 import data.Computer;
+import main.Main;
 
 /**
  * @author josetarsitano
@@ -33,7 +31,7 @@ public class ReservUserWindow extends JFrame {
 
     public ReservUserWindow(ArrayList<String[]> arrR) {
 		setSize(new Dimension(750, 200));
-		setTitle("Réservations de ");
+		setTitle("Réservations de " + Main.user.getUsername());
 		
 		_arrReserv = arrR;
 		_dataReservUser = new AbstractTableModel() {
@@ -81,7 +79,8 @@ public class ReservUserWindow extends JFrame {
 	    			Computer tmp = new Computer();
 					try {
 						tmp = utils.ConnectDB.getOneComputer(_arrReserv.get(0)[_selectedRow]);
-						new ComputerWindow(tmp);
+						if (tmp != null)
+							new ComputerWindow(tmp);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}

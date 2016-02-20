@@ -3,6 +3,8 @@
  */
 package gui;
 
+import data.User;
+import main.Main;
 import utils.ConnectDB;
 
 import java.awt.*;
@@ -51,7 +53,12 @@ public class UserWindow extends JFrame {
                 if (_passwordField.getPassword().length != 0) {
                     _password = String.valueOf(_passwordField.getPassword());
                     try {
-                        System.out.println("LOL: " + utils.ConnectDB.checkUser(_usernameField.getText(), _password));
+                        /* Connexion */
+                        if (utils.ConnectDB.checkUser(_usernameField.getText(), _password)) {
+                            Main.user = utils.ConnectDB.getUserOnDB(_usernameField.getText(), _password);
+                            MyWindow w = new MyWindow();
+                            dispose();
+                        }
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }

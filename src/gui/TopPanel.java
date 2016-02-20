@@ -243,6 +243,7 @@ public class TopPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             ArrayList<Computer> compList = new ArrayList<>();
             try {
+                System.out.println("LOLED");
                 compList = utils.ConnectDB.getComputerOnDB(_window.getCenterPanel().getWishedPC());
             } catch(Exception ex) {
                 ex.printStackTrace();

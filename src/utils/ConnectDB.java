@@ -135,7 +135,6 @@ public class ConnectDB {
     }
 
     public static String[] getCriteria(String element) throws SQLException {
-
         String selectSQL = "SELECT DISTINCT " + element + " FROM computer WHERE `"+ element +"` <> 'null' ORDER BY "+ element;
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
 

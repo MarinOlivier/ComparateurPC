@@ -22,6 +22,4 @@ public class Reserve {
     public void setIdComp(int idComp) {
         _idComp = idComp;
     }
-
-
 }

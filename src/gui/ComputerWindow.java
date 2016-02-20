@@ -26,6 +26,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import data.Computer;
+import main.Main;
 
 /**
  * @author josetarsitano
@@ -55,11 +56,11 @@ public class ComputerWindow extends JFrame {
 		reserv = new MyButton("Réserver");
 		
 		/* On vérifie si l'utilsateur n'a pas déjà réservé
-		 * cet ordinateur, si c'est le cas on disable 
+		 * cet ordinateur, si c'est le cas on modifie
 		 * le bouton Réserver
 		 */
 		try {
-			if (utils.ConnectDB.verifReserv(243, _comp.getId())) {
+			if (utils.ConnectDB.verifReserv(Main.user.getUserId(), _comp.getId())) {
 				reserv.setText("Annuler Réservation");
 				repaint();
 			}
@@ -195,10 +196,10 @@ public class ComputerWindow extends JFrame {
             	public void mouseReleased(MouseEvent e) {
             		try {
 						if (reserv.getText() == "Réserver") {
-							utils.ConnectDB.pushReservOnDB(243, _comp.getId(), _comp.getName(), _comp.getPrice());
+							utils.ConnectDB.pushReservOnDB(Main.user.getUserId(), _comp.getId(), _comp.getName(), _comp.getPrice());
 							reserv.setText("Annuler Réservation");
 						} else {
-							utils.ConnectDB.removeReservOnDB(243, _comp.getId());
+							utils.ConnectDB.removeReservOnDB(Main.user.getUserId(), _comp.getId());
 							reserv.setText("Réserver");
 						}
 						gui.ReservUserWindow.setArrReserv(utils.ConnectDB.getReservation());
