@@ -17,9 +17,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Created by olivier on 31/01/2016.
- */
 public class BestPane extends JPanel {
 
     private float _parentWidth;
@@ -36,6 +33,7 @@ public class BestPane extends JPanel {
     private ArrayList<JLabel> title = new ArrayList<>();
     private ArrayList<JLabel> image = new ArrayList<>();
     private ArrayList<JLabel> price = new ArrayList<>();
+    private ArrayList<JLabel> match = new ArrayList<>();
 
     public BestPane(float parentWidth, ArrayList<Computer> hsBest) {
         _parentWidth = parentWidth;
@@ -102,12 +100,10 @@ public class BestPane extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
-
+        super.paintComponent(g);
     }
 
-    //TODO
     public void refreshBestPanel(ArrayList<Computer> alc) {
-
         for(int i = 0 ; i < 3 ; i++) {
             title.get(i).setText(null);
             image.get(i).setIcon(null);

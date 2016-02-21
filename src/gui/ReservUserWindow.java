@@ -18,10 +18,6 @@ import javax.swing.table.AbstractTableModel;
 import data.Computer;
 import main.Main;
 
-/**
- * @author josetarsitano
- *
- */
 public class ReservUserWindow extends JFrame {
 	private static ArrayList<String[]> _arrReserv;
 	private int _selectedRow;

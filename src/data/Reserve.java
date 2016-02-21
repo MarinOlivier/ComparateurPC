@@ -1,8 +1,5 @@
 package data;
 
-/**
- * Created by olivier on 16/12/2015.
- */
 public class Reserve {
     private int _idUser;
     private int _idComp;

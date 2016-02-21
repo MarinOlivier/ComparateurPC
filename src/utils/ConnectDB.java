@@ -12,10 +12,6 @@ import java.util.*;
 import com.mysql.jdbc.Connection;
 import data.Computer;
 
-/**
- * @author josetarsitano
- *
- */
 public class ConnectDB {
 	static Connection _con = utils.ConnectDB.startConnection();
 

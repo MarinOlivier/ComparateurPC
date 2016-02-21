@@ -12,13 +12,9 @@ import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-/**
- * Created by olivier on 07/01/2016.
- */
 public class CenterPanel extends JPanel {
     private Computer _wishedPC;
     private String _mode;
-    private JPanel gridPane;
     private BestPane _bestPanel;
 
     // Données du JTable.
@@ -93,12 +89,7 @@ public class CenterPanel extends JPanel {
 						return _comp.getPrice();
 						
 					case 5:
-                        if(rowIndex == 0)
-						    return 100 + "%";
-                        else if(rowIndex == 1)
-                            return 80 + "%";
-                        else
-                            return 40 + "%";
+                        return _comp.getMatching() + "%";
 				}
 				return null;
 			}

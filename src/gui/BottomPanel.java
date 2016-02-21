@@ -5,9 +5,6 @@ import javax.swing.border.BevelBorder;
 
 import java.awt.*;
 
-/**
- * Created by olivier on 07/01/2016.
- */
 public class BottomPanel extends JPanel {
 	JLabel _statusLabel;
     public BottomPanel(){

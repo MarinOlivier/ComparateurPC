@@ -4,9 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Random;
 
-/**
- * Created by olivier on 16/12/2015.
- */
 public class User {
 	private int _userId;
     private String _username;

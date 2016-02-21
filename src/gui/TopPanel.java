@@ -1,6 +1,7 @@
 package gui;
 
 import data.Computer;
+import utils.ConnectDB;
 
 import javax.swing.*;
 
@@ -13,10 +14,9 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-/**
- * Created by olivier on 07/01/2016.
- */
 public class TopPanel extends JPanel {
 
     MyWindow _window;
@@ -239,15 +239,23 @@ public class TopPanel extends JPanel {
     }
 
     class SubmitListener implements ActionListener {
+        ArrayList<Computer> compList = new ArrayList<>();
         @Override
         public void actionPerformed(ActionEvent e) {
-            ArrayList<Computer> compList = new ArrayList<>();
             try {
-                System.out.println("LOLED");
-                compList = utils.ConnectDB.getComputerOnDB(_window.getCenterPanel().getWishedPC());
+                compList = ConnectDB.getAllComputerOnDB();
+                //compList = utils.ConnectDB.getComputerOnDB(_window.getCenterPanel().getWishedPC());
+                Computer current = _window.getCenterPanel().getWishedPC();
+                for (int i = 0; i < compList.size(); i++) {
+                    Computer wished = compList.get(i);
+                    wished.compareTo(current);
+                }
             } catch(Exception ex) {
                 ex.printStackTrace();
             }
+
+            /* Tri */
+            utils.ComparePC.sort(compList);
 
             ArrayList<Computer> hsBest;
             ArrayList<Computer> hsCmp;

@@ -14,9 +14,6 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * Created by olivier on 16/12/2015.
- */
 public class MyWindow extends JFrame {
 
     //private Computer _wishedComputer;

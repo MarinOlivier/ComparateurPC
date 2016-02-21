@@ -4,12 +4,10 @@ import utils.ComparePC;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Comparator;
 import java.util.HashMap;
 
-/**
- * Created by olivier on 10/01/2016.
- */
-public class Computer implements Comparable<Computer> {
+public class Computer implements Comparable<Computer>, Comparator<Computer> {
     public String _id;
     public String _name;
     public String _motherBoard;
@@ -31,12 +29,14 @@ public class Computer implements Comparable<Computer> {
     public String _soundCard;
 
     public String _pict;
+
+    public int _matching;
     
-    private static String component[] = {"id", "name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
+    public static String component[] = {"id", "name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
             "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
             "case_PC", "airing", "OS", "brand", "soundCard", "pict"};
 
-    public Computer(){
+    public Computer() {
 
     }
 
@@ -45,6 +45,7 @@ public class Computer implements Comparable<Computer> {
     		if (mapPC.containsKey(component[i]))
     			setName(mapPC.get(component[i]));
 		}
+        _matching = 0;
     }
     
     public String getName() {
@@ -207,6 +208,14 @@ public class Computer implements Comparable<Computer> {
         _id = id;
     }
 
+    public int getMatching() {
+        return _matching;
+    }
+
+    public void setMatching(int matching) {
+        _matching = matching;
+    }
+
     @Override
     public String toString() {
         return "Computer{" +
@@ -236,22 +245,21 @@ public class Computer implements Comparable<Computer> {
     @Override
     public int compareTo(Computer o) {
         double distance = 0;
-        int matching;
+        int matching = 0;
         ComparePC comparePC = new ComparePC(this);
-        for(int i = 0; i < component.length; i++) {
-            if(!component[i].equals("id") && !component[i].equals("name") && !component[i].equals("pict") && !component[i].equals("brand")) {
+        for (int i = 0; i < component.length; i++) {
+            if (!component[i].equals("id") && !component[i].equals("name") && !component[i].equals("pict") && !component[i].equals("brand")) {
                 try {
                     Field field = this.getClass().getDeclaredField("_" + component[i]);
-                    if(field.get(this) != null && field.get(o) != null) {
-                        // Cond à enlever après les tests, juste pour controller sur que ce fait la reflexion le temps de tout coder
+                    if (field.get(this) != null && field.get(o) != null) {
+                        // Cond à enlever après les tests, juste pour controler sur que ce fait la reflexion le temps de tout coder
                         if (field.getName().equals("_motherBoard") || field.getName().equals("_CPU") || field.getName().equals("_GPU") || field.getName().equals("_RAM") ||
-                            field.getName().equals("_ROM") || field.getName().equals("_OS") || field.getName().equals("_powerSupply")) {
+                                field.getName().equals("_ROM") || field.getName().equals("_OS") || field.getName().equals("_powerSupply")) {
                             // meth => compareXXX(o);
                             Method meth = comparePC.getClass().getDeclaredMethod("compare" + field.getName().substring(1, field.getName().length()), Computer.class);
                             distance = distance + Double.valueOf(meth.invoke(comparePC, o).toString()); // Bizarre mais pas trouvé d'autre moyen
                         }
                     }
-
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -262,11 +270,10 @@ public class Computer implements Comparable<Computer> {
         double price = extractPriceValue(this);
         if (price <= 6000.) {
             matching = matching(distance);
-            System.out.println("matching = " + matching);
-            return matching;
+            setMatching(matching);
         }
 
-        return -1;
+        return matching;
     }
 
     private static double extractPriceValue(Computer comp) {
@@ -287,5 +294,10 @@ public class Computer implements Comparable<Computer> {
             matching = (int)alpha;
         }
         return matching;
+    }
+
+    @Override
+    public int compare(Computer c1, Computer c2) {
+        return c1.compareTo(c2);
     }
 }

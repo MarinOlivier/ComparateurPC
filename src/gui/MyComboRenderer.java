@@ -3,9 +3,6 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by olivier on 29/01/2016.
- */
 public class MyComboRenderer extends JLabel implements ListCellRenderer {
 
     public MyComboRenderer() {

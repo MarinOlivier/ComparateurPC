@@ -28,10 +28,6 @@ import javax.swing.table.TableModel;
 import data.Computer;
 import main.Main;
 
-/**
- * @author josetarsitano
- *
- */
 public class ComputerWindow extends JFrame {
 	private Computer _comp;
 	private MyButton reserv;

@@ -7,11 +7,7 @@ import java.util.HashMap;
 
 import org.json.*;
 
-/**
- * Created by olivier on 06/01/2016.
- */
 public class JsonParse {
-
     public static void reader(File file, Connection conn) {
 
         try {

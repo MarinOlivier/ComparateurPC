@@ -15,10 +15,6 @@ import java.util.Arrays;
 
 import javax.swing.*;
 
-/**
- * @author josetarsitano
- *
- */
 public class UserWindow extends JFrame {
     private JTextField _usernameField;
     private JLabel _usernameLabel;

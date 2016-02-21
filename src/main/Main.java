@@ -15,8 +15,5 @@ public class Main {
     public static User user;
     public static void main(String[] args) throws SQLException {
         UserWindow uw = new UserWindow();
-
-        Test test = new Test();
-        test.run();
     }
 }
