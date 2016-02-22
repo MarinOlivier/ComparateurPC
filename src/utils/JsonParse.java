@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2016.
+ * utils.JsonParse
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
+ */
+
 package utils;
 
 import java.io.*;
@@ -14,8 +22,8 @@ public class JsonParse {
     /**
      * Reader, parse Json file.
      *
-     * @param file the file
-     * @param conn the conn
+     * @param file the file,
+     * @param conn the conn.
      */
     public static void reader(File file, Connection conn) {
 
@@ -61,13 +69,14 @@ public class JsonParse {
     }
 
     /**
-     * Convert the InputStream to String.
-     * Ignore the end of lines.
-     * Does not close the InputStream, user have to do that..
+     * Convert the InputStream to String,
+     * Ignore the end of lines,
+     * Does not close the InputStream, user have to do that.
      *
-     * @param charset the charset
-     * @return the string
-     * @throws IOException the io exception
+     * @param is the InputStream,
+     * @param charset the charset,
+     * @return the string,
+     * @throws IOException the io exception.
      */
     public static String inputStreamToString(InputStream is, Charset charset) throws IOException {
       StringBuilder builder = new StringBuilder();
@@ -79,12 +88,13 @@ public class JsonParse {
     }
 
     /**
-     * Read the entire file and convert into a String.
-     * Ignore the end of lines
+     * Read the entire file and convert into a String,
+     * Ignore the end of line.
      *
-     * @param charset the charset
-     * @return the string
-     * @throws IOException the io exception
+     * @param file the File,
+     * @param charset the charset,
+     * @return the string,
+     * @throws IOException the io exception,
      */
     public static String fileToString(File file, Charset charset) throws IOException {
       try(InputStream is = new FileInputStream(file)) {
@@ -93,11 +103,11 @@ public class JsonParse {
     }
 
     /**
-     * Read the UTF-8 file and convert it to String.
+     * Read the UTF-8 file and convert it to String,
      * Ignore the end of lines.
      *
-     * @return the string
-     * @throws IOException the io exception
+     * @return the string,
+     * @throws IOException the io exception.
      */
     public static String utf8FileToString(File file) throws IOException {
         return fileToString(file, Charset.forName("utf-8"));

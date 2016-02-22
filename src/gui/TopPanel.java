@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2016.
+ * gui.TopPanel
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
+ */
+
 package gui;
 
 import data.Computer;
@@ -13,56 +21,184 @@ import java.awt.event.ItemListener;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+/**
+ * The type Top panel.
+ */
 public class TopPanel extends JPanel {
 
+    /**
+     * The Window.
+     */
     MyWindow _window;
 
+    /**
+     * The Mother board in.
+     */
     private JComboBox<String> _motherBoardIn;
+    /**
+     * The Cpu in.
+     */
     private JComboBox<String> _CPUIn;
+    /**
+     * The Ram in.
+     */
     private JComboBox<String> _RAMIn;
+    /**
+     * The Gpu in.
+     */
     private JComboBox<String> _GPUIn;
+    /**
+     * The Rom in.
+     */
     private JComboBox<String> _ROMIn;
+    /**
+     * The Power supply in.
+     */
     private JComboBox<String> _powerSupplyIn;
+    /**
+     * The Price in.
+     */
     private JComboBox<String> _priceIn;
+    /**
+     * The Ram freq in.
+     */
     private JComboBox<String> _RAM_freqIn;
+    /**
+     * The Gpu freq in.
+     */
     private JComboBox<String> _GPU_freqIn;
+    /**
+     * The Cpu freq in.
+     */
     private JComboBox<String> _CPU_freqIn;
+    /**
+     * The Gpu ram in.
+     */
     private JComboBox<String> _GPU_RAMIn;
+    /**
+     * The E s in.
+     */
     private JComboBox<String> _E_SIn;
+    /**
+     * The Case pc in.
+     */
     private JComboBox<String> _case_PCIn;
+    /**
+     * The Airing in.
+     */
     private JComboBox<String> _airingIn;
+    /**
+     * The Os in.
+     */
     private JComboBox<String> _OSIn;
+    /**
+     * The Brand in.
+     */
     private JComboBox<String> _brandIn;
+    /**
+     * The Sound card in.
+     */
     private JComboBox<String> _soundCardIn;
 
+    /**
+     * The Mother board list.
+     */
     private String[] _motherBoardList;
+    /**
+     * The Cpu list.
+     */
     private String[] _CPUList;
+    /**
+     * The Ram list.
+     */
     private String[] _RAMList;
+    /**
+     * The Gpu list.
+     */
     private String[] _GPUList;
+    /**
+     * The Rom list.
+     */
     private String[] _ROMList;
+    /**
+     * The Power supply list.
+     */
     private String[] _powerSupplyList;
+    /**
+     * The Price list.
+     */
     private String[] _priceList;
+    /**
+     * The Ram freq list.
+     */
     private String[] _RAM_freqList;
+    /**
+     * The Gpu freq list.
+     */
     private String[] _GPU_freqList;
+    /**
+     * The Cpu freq list.
+     */
     private String[] _CPU_freqList;
+    /**
+     * The Gpu ram list.
+     */
     private String[] _GPU_RAMList;
+    /**
+     * The E s list.
+     */
     private String[] _E_SList;
+    /**
+     * The Case pc list.
+     */
     private String[] _case_PCList;
+    /**
+     * The Airing list.
+     */
     private String[] _airingList;
+    /**
+     * The Os list.
+     */
     private String[] _OSList;
+    /**
+     * The Brand list.
+     */
     private String[] _brandList;
+    /**
+     * The Sound card list.
+     */
     private String[] _soundCardList;
 
-    // Grille des JComboBox.
+    /**
+     * JComboBox Grid
+     */
     private GridBagConstraints _grid;
-    // Tableau des composants
+
+    /**
+     * Components table
+     */
     private String[] component;
-    // Tableau des composants avec les noms adaptés pour récupérer les attributs du _whishedPC.
+
+    /**
+     * Components table well formatted for reflection
+     */
     private String[] componentAdaptedToRequest;
-    // Tableau des JComboxBox.
+
+    /**
+     * JComboBox table
+     */
     ArrayList<JComboBox<?>> arrComboBox;
+
+    /**
+     * The Submit.
+     */
     JButton submit;
-    
+
+    /**
+     * Instantiates a new Top panel.
+     *
+     * @param window the window
+     */
     public TopPanel(MyWindow window) {
         _window = window;
 
@@ -142,6 +278,9 @@ public class TopPanel extends JPanel {
         displaySimple();
     }
 
+    /**
+     * Display simple.
+     */
     public void displaySimple() {
         _grid.insets = new Insets(3,3,3,3);
         
@@ -172,6 +311,9 @@ public class TopPanel extends JPanel {
         add(submit, _grid);
     }
 
+    /**
+     * Display expert.
+     */
     public void displayExpert() {
     	int k = 0;
         for (int i = 1; i <= 5; i++) {
@@ -200,17 +342,35 @@ public class TopPanel extends JPanel {
         add(submit, _grid);
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
     }
-    
+
+    /**
+     * Gets grid.
+     *
+     * @return the grid
+     */
     public GridBagConstraints getGrid() {
     	return _grid;
     }
 
+    /**
+     * The type Combo box listener.
+     */
     class ComboBoxListener implements ItemListener {
+
+        /**
+         * The modified criteria
+         */
         String _criteria;
 
+        /**
+         * Instantiates a new ComboBoxListener
+         *
+         * @param criteria
+         */
         public ComboBoxListener(String criteria){
             _criteria = criteria;
         }
@@ -234,8 +394,15 @@ public class TopPanel extends JPanel {
         }
     }
 
+    /**
+     * The type Submit listener.
+     */
     class SubmitListener implements ActionListener {
+        /**
+         * The list of computer to be printed
+         */
         ArrayList<Computer> compList = new ArrayList<>();
+
         @Override
         public void actionPerformed(ActionEvent e) {
             try {

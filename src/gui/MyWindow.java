@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2016.
+ * gui.MyWindow
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
+ */
+
 package gui;
 
 import data.Computer;
@@ -14,23 +22,47 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * The type My window.
+ */
 public class MyWindow extends JFrame {
 
-    //private Computer _wishedComputer;
+    /**
+     * The Menu bar.
+     */
 	private JMenuBar _mb;
+    /**
+     * The Top panel.
+     */
     private TopPanel _topPanel;
+    /**
+     * The Center panel.
+     */
     private CenterPanel _centerPanel;
+    /**
+     * The Bottom panel.
+     */
     private BottomPanel _bottomPanel;
-    
+
+    /**
+     * The Expert.
+     */
     private JMenuItem expert;
+    /**
+     * The Change user.
+     */
     private JMenuItem changeUser;
+    /**
+     * The Reservation list.
+     */
     private JMenuItem reservList;
 
+    /**
+     * Instantiates a new My window.
+     */
     public MyWindow(){
         this.setTitle("Comparateur d'ordinateurs");
         setSize(1000, 1000);
-        //setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //setBounds(10,10, 900, 600);
         this.setResizable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -102,26 +134,56 @@ public class MyWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Gets top panel.
+     *
+     * @return the top panel
+     */
     public TopPanel getTopPanel() {
         return _topPanel;
     }
 
+    /**
+     * Sets top panel.
+     *
+     * @param topPanel the top panel
+     */
     public void setTopPanel(TopPanel topPanel) {
         this._topPanel = topPanel;
     }
 
+    /**
+     * Gets center panel.
+     *
+     * @return the center panel
+     */
     public CenterPanel getCenterPanel() {
         return _centerPanel;
     }
 
+    /**
+     * Sets center panel.
+     *
+     * @param centerPanel the center panel
+     */
     public void setCenterPanel(CenterPanel centerPanel) {
         this._centerPanel = centerPanel;
     }
 
+    /**
+     * Gets bottom panel.
+     *
+     * @return the bottom panel
+     */
     public BottomPanel getBottomPanel() {
         return _bottomPanel;
     }
 
+    /**
+     * Sets bottom panel.
+     *
+     * @param bottomPanel the bottom panel
+     */
     public void setBottomPanel(BottomPanel bottomPanel) {
         this._bottomPanel = bottomPanel;
     }

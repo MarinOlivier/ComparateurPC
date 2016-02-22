@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2016.
+ * gui.BottomPanel
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
+ */
+
 package gui;
 
 import data.User;
@@ -7,10 +15,19 @@ import javax.swing.border.BevelBorder;
 
 import java.awt.*;
 
+/**
+ * The type Bottom panel.
+ */
 public class BottomPanel extends JPanel {
+	/**
+	 * The Status label.
+	 */
 	JLabel _statusLabel;
 
-    public BottomPanel(){
+	/**
+	 * Instantiates a new Bottom panel.
+	 */
+	public BottomPanel(){
     	setBorder(new BevelBorder(BevelBorder.LOWERED));
     	
     	setPreferredSize(new Dimension(getWidth(), 16));
@@ -21,8 +38,13 @@ public class BottomPanel extends JPanel {
 
     	add(_statusLabel);
     }
-    
-    public void setStatut(String s) {
+
+	/**
+	 * Sets statut.
+	 *
+	 * @param s the s
+	 */
+	public void setStatut(String s) {
     	_statusLabel.setText(s);
     }
 }

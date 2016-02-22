@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2016.
+ * gui.BestPane
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
+ */
+
 package gui;
 
 import data.Computer;
@@ -17,24 +25,56 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * The type Best pane.
+ */
 public class BestPane extends JPanel {
 
+    /**
+     * The Parent width.
+     */
     private float _parentWidth;
+    /**
+     * The Hs best.
+     */
     private ArrayList<Computer> _hsBest;
 
+    /**
+     * The First.
+     */
     private JPanel first;
+    /**
+     * The Second.
+     */
     private JPanel second;
+    /**
+     * The Third.
+     */
     private JPanel third;
 
-    private JLabel firstLabel;
-    private JLabel secondLabel;
-    private JLabel thirdLabel;
-
+    /**
+     * The Title.
+     */
     private ArrayList<JLabel> title = new ArrayList<>();
+    /**
+     * The Image.
+     */
     private ArrayList<JLabel> image = new ArrayList<>();
+    /**
+     * The Price.
+     */
     private ArrayList<JLabel> price = new ArrayList<>();
+    /**
+     * The Match.
+     */
     private ArrayList<JLabel> match = new ArrayList<>();
 
+    /**
+     * Instantiates a new Best pane.
+     *
+     * @param parentWidth the parent width
+     * @param hsBest      the hs best
+     */
     public BestPane(float parentWidth, ArrayList<Computer> hsBest) {
         _parentWidth = parentWidth;
         _hsBest = hsBest;
@@ -67,10 +107,21 @@ public class BestPane extends JPanel {
         setBackground(Color.WHITE);
     }
 
+    /**
+     * Sets hs best.
+     *
+     * @param arc the arc
+     */
     public void setHsBest(ArrayList<Computer> arc) {
         _hsBest = arc;
     }
 
+    /**
+     * Add mini panel.
+     *
+     * @param index the index
+     * @param p     the p
+     */
     public void addMiniPanel(int index, JPanel p) {
     	BufferedImage img = null;
         if (index < _hsBest.size()) {
@@ -103,6 +154,11 @@ public class BestPane extends JPanel {
         super.paintComponent(g);
     }
 
+    /**
+     * Refresh best panel.
+     *
+     * @param alc the alc
+     */
     public void refreshBestPanel(ArrayList<Computer> alc) {
         for(int i = 0 ; i < 3 ; i++) {
             title.get(i).setText(null);
@@ -122,10 +178,24 @@ public class BestPane extends JPanel {
         return new Dimension((int)_parentWidth, 300);
     }
 
+    /**
+     * The type Best mouse listener.
+     */
     class BestMouseListener extends MouseAdapter {
+        /**
+         * The Index.
+         */
         private int _index;
+        /**
+         * The Default font.
+         */
         private Font _defaultFont;
 
+        /**
+         * Instantiates a new Best mouse listener.
+         *
+         * @param index the index
+         */
         public BestMouseListener(int index) {
             _index = index;
             _defaultFont = title.get(_index).getFont();

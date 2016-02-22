@@ -1,6 +1,11 @@
 /**
- * 
+ * Copyright (c) 2016.
+ * gui.ComputerWindow
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
  */
+
 package gui;
 
 import java.awt.*;
@@ -28,15 +33,36 @@ import javax.swing.table.TableModel;
 import data.Computer;
 import main.Main;
 
+/**
+ * The type Computer window.
+ */
 public class ComputerWindow extends JFrame {
-	private Computer _comp;
-	private MyButton reserv;
-	private ArrayList<String> _component;
-	private String[] _nameComponent = {"Nom", "Marque", "Carte Mère", "CPU", "Fréquence CPU", "RAM", "Fréquence RAM", "GPU", "Fréquence GPU",
+
+    /**
+     * The Computer.
+     */
+    private Computer _comp;
+    /**
+     * The Reservation.
+     */
+    private MyButton reserv;
+    /**
+     * The Component.
+     */
+    private ArrayList<String> _component;
+    /**
+     * The Name component.
+     */
+    private String[] _nameComponent = {"Nom", "Marque", "Carte Mère", "CPU", "Fréquence CPU", "RAM", "Fréquence RAM", "GPU", "Fréquence GPU",
 		"RAM GPU", "Disque Dur", "Système d'exploitation", "Alimentation", "Carte Son", "E/S", "Boitier", "Refroidissement", 
 		 "Prix"};
-	
-	public ComputerWindow(Computer p) {
+
+    /**
+     * Instantiates a new Computer window.
+     *
+     * @param p the p
+     */
+    public ComputerWindow(Computer p) {
 		_comp = p;
 		_component = new ArrayList<>();
 		for (String i : _nameComponent) {
@@ -184,8 +210,16 @@ public class ComputerWindow extends JFrame {
         });
 	}
 
-	class MyButton extends JButton {
-		public MyButton(String txt) {
+    /**
+     * The type My button.
+     */
+    class MyButton extends JButton {
+        /**
+         * Instantiates a new My button.
+         *
+         * @param txt the txt
+         */
+        public MyButton(String txt) {
 			super(txt);
             setRolloverEnabled(true);
             addMouseListener(new MouseAdapter() {

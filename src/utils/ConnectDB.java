@@ -1,6 +1,11 @@
 /**
- * 
+ * Copyright (c) 2016.
+ * utils.ConnectDB
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
  */
+
 package utils;
 
 import java.lang.reflect.Field;

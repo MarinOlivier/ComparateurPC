@@ -1,10 +1,24 @@
+/**
+ * Copyright (c) 2016.
+ * gui.MyComboRenderer
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
+ */
+
 package gui;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The type My combo renderer.
+ */
 public class MyComboRenderer extends JLabel implements ListCellRenderer {
 
+    /**
+     * Instantiates a new My combo renderer.
+     */
     public MyComboRenderer() {
         setOpaque(true);
     }

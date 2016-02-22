@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2016.
+ * utils.ComparePC
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
+ */
+
 package utils;
 
 import data.Computer;

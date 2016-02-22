@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2016.
+ * gui.CenterPanel
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
+ */
+
 package gui;
 
 import data.Computer;
@@ -12,24 +20,56 @@ import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+/**
+ * The type Center panel.
+ */
 public class CenterPanel extends JPanel {
+    /**
+     * The Wished pc.
+     */
     private Computer _wishedPC;
+    /**
+     * The Mode.
+     */
     private String _mode;
+    /**
+     * The Best panel.
+     */
     private BestPane _bestPanel;
 
-    // Données du JTable.
+    /**
+     * JTable data.
+     */
     private AbstractTableModel _dataTable;
-    // Ligne sélectionnée dans la JTable.
+
+    /**
+     * Focus ligne in JTable.
+     */
     private int _selectedRow;
-    // ArrayList contenant tous les Computer en fonction de la recherche.
+
+    /**
+     * ArrayList containing all the computer to print.
+     */
     private ArrayList<Computer> _hsCmp = null;
+
+    /**
+     * The ArrayList containing the 3 best results.
+     */
     private ArrayList<Computer> _hsBest = null;
-    // Taille de l'ArrayList.
+
+    /**
+     * Length of the ArrayList.
+     */
     private int _hsCmplength;
-    // Computer propre à la ligne sélectionnée.
+
+    /**
+     * Computer of the focused row.
+     */
     private Computer _comp;
 
-
+    /**
+     * Instantiates a new Center panel.
+     */
     public CenterPanel() {
         setBackground(Color.WHITE);
         setLayout(new BorderLayout());
@@ -164,26 +204,56 @@ public class CenterPanel extends JPanel {
 	    add(new JScrollPane(t), BorderLayout.CENTER);
     }
 
+    /**
+     * Gets best panel.
+     *
+     * @return the best panel
+     */
     public BestPane getBestPanel() {
         return _bestPanel;
     }
 
+    /**
+     * Sets hs cmp length.
+     *
+     * @param size the size
+     */
     public void setHsCmpLength(int size) {
 		_hsCmplength = size;
 	}
 
+    /**
+     * Sets wished pc.
+     *
+     * @param wishedPC the wished pc
+     */
     public void setWishedPC(Computer wishedPC) {
         this._wishedPC = wishedPC;
     }
 
+    /**
+     * Gets wished pc.
+     *
+     * @return the wished pc
+     */
     public Computer getWishedPC() {
         return _wishedPC;
     }
 
+    /**
+     * Sets mode.
+     *
+     * @param mode the mode
+     */
     public void setMode(String mode) {
         this._mode = mode;
     }
-    
+
+    /**
+     * Refresh table.
+     *
+     * @param c the c
+     */
     public void refreshTable(ArrayList<Computer> c) {
         _hsCmp = c;
         setHsCmpLength(_hsCmp.size());

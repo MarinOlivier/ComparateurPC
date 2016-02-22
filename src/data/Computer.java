@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2016.
+ * data.Computer
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
+ */
+
 package data;
 
 import utils.ComparePC;
@@ -568,9 +576,10 @@ public class Computer {
     }
 
     /**
+     * Extract price value double.
      *
-     * @param comp
-     * @return
+     * @param comp the comp
+     * @return double
      */
     private static double extractPriceValue(Computer comp) {
         String tmp = comp.getPrice().replace("€", ".");
@@ -578,6 +587,12 @@ public class Computer {
         return Double.valueOf(tmp.trim());
     }
 
+    /**
+     * Matching int.
+     *
+     * @param distance the distance
+     * @return the int
+     */
     private int matching(Double distance) {
         int maxScale = 400;
         int matching;

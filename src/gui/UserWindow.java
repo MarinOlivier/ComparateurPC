@@ -1,6 +1,11 @@
 /**
- * 
+ * Copyright (c) 2016.
+ * gui.UserWindow
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
  */
+
 package gui;
 
 import data.User;
@@ -15,20 +20,69 @@ import java.util.Arrays;
 
 import javax.swing.*;
 
+/**
+ * The type User window.
+ */
 public class UserWindow extends JFrame {
+
+    /**
+     * The Username field.
+     */
     private JTextField _usernameField;
+
+    /**
+     * The Username label.
+     */
     private JLabel _usernameLabel;
+
+    /**
+     * The Password field.
+     */
     private JPasswordField _passwordField;
+
+    /**
+     * The Password label.
+     */
     private JLabel _passwordLabel;
+
+    /**
+     * The Main panel.
+     */
     private JPanel _mainPanel;
+
+    /**
+     * The Connexion.
+     */
     private JButton _connexion;
+
+    /**
+     * The Msg alert.
+     */
     private JLabel _msgAlert;
+
+    /**
+     * The Add user.
+     */
     private JButton _addUser;
+
+    /**
+     * The Add user panel.
+     */
     private JPanel _addUserPanel;
+
+    /**
+     * The Form is display.
+     */
     private boolean _formIsDisplay;
 
+    /**
+     * The Password.
+     */
     private String _password;
 
+    /**
+     * Instantiates a new User window.
+     */
     public UserWindow() {
         setSize(320, 170);
         setResizable(false);
@@ -145,19 +199,54 @@ public class UserWindow extends JFrame {
         setVisible(true);
 	}
 
+    /**
+     * The type Add user panel.
+     */
     class AddUserPanel extends JPanel {
+
+        /**
+         * The Username label.
+         */
         private JLabel _usernameLabel;
+
+        /**
+         * The Password label.
+         */
         private JLabel _passwordLabel;
+
+        /**
+         * The Comfirm pass label.
+         */
         private JLabel _comfirmPassLabel;
 
+        /**
+         * The Username field.
+         */
         private JTextField _usernameField;
+
+        /**
+         * The Password field.
+         */
         private JPasswordField _passwordField;
+
+        /**
+         * The Comfirm field.
+         */
         private JPasswordField _comfirmField;
 
+        /**
+         * The Create button.
+         */
         private JButton _createButton;
 
+        /**
+         * The Msg alert.
+         */
         private JLabel _msgAlert;
 
+        /**
+         * Instantiates a new Add user panel.
+         */
         public AddUserPanel(){
             _usernameLabel = new JLabel("Nom d'utilisateur :");
             _passwordLabel = new JLabel("Mot de passe :");

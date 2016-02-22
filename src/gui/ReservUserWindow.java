@@ -1,4 +1,12 @@
 /**
+ * Copyright (c) 2016.
+ * gui.ReservUserWindow
+ *
+ * @author: José Tarsitano
+ * @author: Olivier Marin
+ */
+
+/**
  * 
  */
 package gui;
@@ -18,13 +26,36 @@ import javax.swing.table.AbstractTableModel;
 import data.Computer;
 import main.Main;
 
+/**
+ * The type Reserv user window.
+ */
 public class ReservUserWindow extends JFrame {
-	private static ArrayList<String[]> _arrReserv;
-	private int _selectedRow;
 
+    /**
+     * The ArrayList containing the reservation.
+     */
+    private static ArrayList<String[]> _arrReserv;
+
+    /**
+     * The Selected row.
+     */
+    private int _selectedRow;
+
+    /**
+     * The constant dataReservUser.
+     */
     private static AbstractTableModel _dataReservUser;
+
+    /**
+     * The constant reservUserTable.
+     */
     private static JTable _reservUserTable;
 
+    /**
+     * Instantiates a new Reserv user window.
+     *
+     * @param arrR the array Reservation
+     */
     public ReservUserWindow(ArrayList<String[]> arrR) {
 		setSize(new Dimension(750, 200));
 		setTitle("Réservations de " + Main.user.getUsername());
@@ -97,6 +128,11 @@ public class ReservUserWindow extends JFrame {
 		});
 	}
 
+    /**
+     * Sets arr reserv.
+     *
+     * @param a the a
+     */
     public static void setArrReserv(ArrayList<String[]> a) {
         _arrReserv = a;
         _dataReservUser.fireTableDataChanged();
