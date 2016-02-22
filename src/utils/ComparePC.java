@@ -6,10 +6,25 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 
+/**
+ * The type Compare pc.
+ */
 public class ComparePC {
+
+
+    /**
+     * The Wished Computer.
+     */
     private Computer _wished;
+
+    /**
+     * The Priority.
+     */
     private HashMap<String, Integer> _priority;
-    /* CPU classés par ordre décroissant */
+
+    /**
+     * The CPU sort by descending order.
+     */
     private String[] _CPUs = new String[] {
             "Intel Core i7",
             "Intel Xeon E5",
@@ -26,7 +41,9 @@ public class ComparePC {
             "AMD A8 Quad-Core APU",
             "Intel Pentium"};
 
-    /* OS classés par ordre décroissant */
+    /**
+     * The OS sort by descending order.
+     */
     private String[] _OSs = new String[] {
             "Microsoft Windows 10 Professionnel 64 bits",
             "Microsoft Windows 10 Famille 64 bits",
@@ -38,11 +55,31 @@ public class ComparePC {
             "Microsoft Windows 7 Édition Familiale Premium 64 bits",
             "SteamOS"};
 
+    /**
+     * The Cpu list.
+     */
     private HashMap<String, Double> _CPUList;
+
+    /**
+     * The Gpu list.
+     */
     private HashMap<String, Double> _GPUList;
+
+    /**
+     * The Os list.
+     */
     private HashMap<String, Double> _OSList;
+
+    /**
+     * The Mb list.
+     */
     private HashMap<String, Double> _MBList;
 
+    /**
+     * Instantiates a new Compare pc.
+     *
+     * @param wished the wished
+     */
     public ComparePC(Computer wished) {
         _wished = wished;
         _priority = new HashMap<>();
@@ -91,6 +128,9 @@ public class ComparePC {
         setPriority();
     }
 
+    /**
+     * Sets priorities.
+     */
     private void setPriority() {
         // Nombre de CPU.
         double nbCPU = 14.;
@@ -135,9 +175,10 @@ public class ComparePC {
     }
 
     /**
+     * Compare CPU.
      *
-     * @param  c computer,
-     * @return   distance du CPU + distance de la CPU_freq.
+     * @param c Computer,
+     * @return Factored distance between CPUs.
      */
     public double compareCPU(Computer c) {
         /* CPU */
@@ -166,9 +207,10 @@ public class ComparePC {
     }
 
     /**
+     * Extract value of CPU.
      *
-     * @param   c computer,
-     * @return    valeur du CPU.
+     * @param c Computer,
+     * @return value of CPU.
      */
     public double extractValueOfCPU(Computer c) {
         if (c.getCPU() != null) {
@@ -181,9 +223,10 @@ public class ComparePC {
     }
 
     /**
+     * Compare GPU double.
      *
-     * @param  c computer,
-     * @return   distance du GPU + distance de la GPU_RAM.
+     * @param c Computer,
+     * @return Factored distance between GPUs.
      */
     public double compareGPU(Computer c) {
         /* GPU */
@@ -212,9 +255,10 @@ public class ComparePC {
     }
 
     /**
+     * Extract value of GPU.
      *
-     * @param   c computer,
-     * @return    valeur du GPU.
+     * @param c Computer,
+     * @return value of GPU.
      */
     public double extractValueOfGPU(Computer c) {
         if (c.getGPU() != null) {
@@ -228,9 +272,10 @@ public class ComparePC {
     }
 
     /**
+     * Compare mother board.
      *
-     * @param  c computer,
-     * @return   distance de la Carte-mère.
+     * @param c Computer,
+     * @return Factored distance between mother board..
      */
     public double comparemotherBoard(Computer c) {
         /* Mother Board */
@@ -249,9 +294,10 @@ public class ComparePC {
     }
 
     /**
+     * Extract value of mb double.
      *
-     * @param   c computer,
-     * @return    valeur de la Carte-mère.
+     * @param c Computer,
+     * @return value of mother board.
      */
     public double extractValueOfMB(Computer c) {
         for (HashMap.Entry<String, Double> entry : _MBList.entrySet()) {
@@ -264,9 +310,10 @@ public class ComparePC {
     }
 
     /**
+     * Compare RAM.
      *
-     * @param   c computer,
-     * @return    distance de la RAM + distance de la RAM_freq.
+     * @param c Computer,
+     * @return Factored distance between RAM.
      */
     public double compareRAM(Computer c) {
         /* RAM */
@@ -294,6 +341,12 @@ public class ComparePC {
         return (distRAM+distRAM_freq)*priorityRAM*priorityRAM_freq;
     }
 
+    /**
+     * Compare ROM.
+     *
+     * @param o computeur,
+     * @return Factored distance between ROM.
+     */
     public double compareROM(Computer o) {
         double priority = 0.1*_priority.get("ROM");
         double current = extractROMValue(o);
@@ -303,9 +356,10 @@ public class ComparePC {
     }
 
     /**
+     * Compare OS.
      *
-     * @param  c computer,
-     * @return   distance de l'OS.
+     * @param c Computer,
+     * @return Factored distance between OS.
      */
     public double compareOS(Computer c) {
         /* OS */
@@ -323,6 +377,12 @@ public class ComparePC {
         return distOS*priorityOS;
     }
 
+    /**
+     * Compare Power supply.
+     *
+     * @param o Computer,
+     * @return Factored distance between OS.
+     */
     public double comparepowerSupply(Computer o) {
         double priority = 0.1*_priority.get("powerSupply");
         double current = extractPowerSupplyValue(o);
@@ -334,18 +394,11 @@ public class ComparePC {
             return (wished - current)*priority;
     }
 
-    /*public double compareprice(Computer o) {
-        double priority = 0.01*_priority.get("price");
-        double current = extractPriceValue(o);
-        double wished = extractPriceValue(_wished);
-
-        return Math.abs(wished - current)*priority;
-    }*/
-
     /**
+     * Extract value of OS.
      *
-     * @param   c computer,
-     * @return    valeur de l'OS.
+     * @param c Computer,
+     * @return value of OS.
      */
     public double extractValueOfOS(Computer c) {
         if (c.getOS() != null) {
@@ -359,6 +412,12 @@ public class ComparePC {
         return 0.;
     }
 
+    /**
+     * Extract CPU freq value.
+     *
+     * @param comp computeur,
+     * @return value of CPU freq.
+     */
     private static double extractCPU_freqValue(Computer comp) {
         if (comp.getCPU_freq() != null)
             return Double.valueOf(comp.getCPU_freq().substring(0, comp.getCPU_freq().length()-4));
@@ -366,6 +425,12 @@ public class ComparePC {
             return 0.;
     }
 
+    /**
+     * Extract RAM value.
+     *
+     * @param comp Computer,
+     * @return value of RAM.
+     */
     private static double extractRAMValue(Computer comp) {
         if (comp.getRAM() != null)
             return Double.valueOf(comp.getRAM().substring(0, comp.getRAM().length()-3));
@@ -373,6 +438,12 @@ public class ComparePC {
             return 0.;
     }
 
+    /**
+     * Extract ROM value.
+     *
+     * @param comp Computer,
+     * @return value of ROM.
+     */
     private static double extractROMValue(Computer comp) {
         if (comp.getROM() != null) {
             String typeROM = comp.getROM().substring(comp.getROM().length() - 3, comp.getROM().length());
@@ -387,6 +458,12 @@ public class ComparePC {
         return 0.;
     }
 
+    /**
+     * Extract power supply value.
+     *
+     * @param comp Computer
+     * @return value of power supply.
+     */
     private static double extractPowerSupplyValue(Computer comp) {
         if (comp.getPowerSupply() != null)
             return Double.valueOf(comp.getPowerSupply().substring(0, comp.getPowerSupply().length()-2));
@@ -394,12 +471,12 @@ public class ComparePC {
             return 0.;
     }
 
-    /*private static double extractPriceValue(Computer comp) {
-        String tmp = comp.getPrice().replace("€", ".");
-        tmp = tmp.replaceAll("\\s+", "");
-        return Double.valueOf(tmp.trim());
-    }*/
-
+    /**
+     * Extract RAM freq value.
+     *
+     * @param comp Computer
+     * @return value of RAM freq.
+     */
     private static double extractRAM_freqValue(Computer comp) {
         if (comp.getRAM_freq() != null) {
             int length = comp.getRAM_freq().length();
@@ -408,6 +485,12 @@ public class ComparePC {
             return 0.;
     }
 
+    /**
+     * Extract GPU RAM.
+     *
+     * @param comp Computer
+     * @return value of GPU RAM.
+     */
     private static double extractGPU_RAM(Computer comp) {
         if (comp.getGPU_RAM() != null)
             return Double.valueOf(comp.getGPU_RAM().substring(0, comp.getGPU_RAM().length()-3));
@@ -416,7 +499,8 @@ public class ComparePC {
     }
 
     /**
-     * Tri par échanges.
+     * Swap sort.
+     *
      * @param c Computer
      */
     public static void sort(ArrayList<Computer> c) {

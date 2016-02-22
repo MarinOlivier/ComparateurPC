@@ -7,7 +7,16 @@ import java.util.HashMap;
 
 import org.json.*;
 
+/**
+ * The type Json parse.
+ */
 public class JsonParse {
+    /**
+     * Reader.
+     *
+     * @param file the file
+     * @param conn the conn
+     */
     public static void reader(File file, Connection conn) {
 
         try {
@@ -50,10 +59,16 @@ public class JsonParse {
             je.printStackTrace();
         }
     }
-    
-    /** Lit l'InputStream entièrement et le charge en mémoire sous forme de String avec le charset donné.
+
+    /**
+     * Lit l'InputStream entièrement et le charge en mémoire sous forme de String avec le charset donné.
      * Ignore les fins de ligne.
-     * Ne ferme pas l'InputStream, qui doit donc être fermé par son créateur. */
+     * Ne ferme pas l'InputStream, qui doit donc être fermé par son créateur.  @param is the is
+     *
+     * @param charset the charset
+     * @return the string
+     * @throws IOException the io exception
+     */
     public static String inputStreamToString(InputStream is, Charset charset) throws IOException {
       StringBuilder builder = new StringBuilder();
       BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset));
@@ -62,17 +77,28 @@ public class JsonParse {
       }
       return builder.toString();
     }
-     
-    /** Lit le fichier entièrement et le charge en mémoire sous forme de String avec le charset donné.
-     * Ignore les fins de ligne. */
+
+    /**
+     * Lit le fichier entièrement et le charge en mémoire sous forme de String avec le charset donné.
+     * Ignore les fins de ligne.  @param file the file
+     *
+     * @param charset the charset
+     * @return the string
+     * @throws IOException the io exception
+     */
     public static String fileToString(File file, Charset charset) throws IOException {
       try(InputStream is = new FileInputStream(file)) {
         return inputStreamToString(is, charset);
       }
     }
-     
-    /** Lit le fichier utf-8 entièrement et le charge en mémoire sous forme de String.
-     * Ignore les fins de ligne. */
+
+    /**
+     * Lit le fichier utf-8 entièrement et le charge en mémoire sous forme de String.
+     * Ignore les fins de ligne.  @param file the file
+     *
+     * @return the string
+     * @throws IOException the io exception
+     */
     public static String utf8FileToString(File file) throws IOException {
         return fileToString(file, Charset.forName("utf-8"));
     }
