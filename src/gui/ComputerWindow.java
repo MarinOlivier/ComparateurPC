@@ -198,7 +198,7 @@ public class ComputerWindow extends JFrame {
 							utils.ConnectDB.removeReservOnDB(Main.user.getUserId(), _comp.getId());
 							reserv.setText("Réserver");
 						}
-						gui.ReservUserWindow.setArrReserv(utils.ConnectDB.getReservation());
+						gui.ReservUserWindow.setArrReserv(utils.ConnectDB.getReservation(Main.user.getUserId()));
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}

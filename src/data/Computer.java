@@ -4,10 +4,9 @@ import utils.ComparePC;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Comparator;
 import java.util.HashMap;
 
-public class Computer implements Comparable<Computer>, Comparator<Computer> {
+public class Computer {
     public String _id;
     public String _name;
     public String _motherBoard;
@@ -242,8 +241,7 @@ public class Computer implements Comparable<Computer>, Comparator<Computer> {
                 '}';
     }
 
-    @Override
-    public int compareTo(Computer o) {
+    public int comparison(Computer o) {
         double distance = 0;
         int matching = 0;
         ComparePC comparePC = new ComparePC(this);
@@ -252,7 +250,6 @@ public class Computer implements Comparable<Computer>, Comparator<Computer> {
                 try {
                     Field field = this.getClass().getDeclaredField("_" + component[i]);
                     if (field.get(this) != null && field.get(o) != null) {
-                        // Cond à enlever après les tests, juste pour controler sur que ce fait la reflexion le temps de tout coder
                         if (field.getName().equals("_motherBoard") || field.getName().equals("_CPU") || field.getName().equals("_GPU") || field.getName().equals("_RAM") ||
                                 field.getName().equals("_ROM") || field.getName().equals("_OS") || field.getName().equals("_powerSupply")) {
                             // meth => compareXXX(o);
@@ -296,8 +293,4 @@ public class Computer implements Comparable<Computer>, Comparator<Computer> {
         return matching;
     }
 
-    @Override
-    public int compare(Computer c1, Computer c2) {
-        return c1.compareTo(c2);
-    }
 }

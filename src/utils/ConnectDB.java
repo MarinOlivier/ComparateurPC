@@ -204,9 +204,9 @@ public class ConnectDB {
         return verifIdComp == newIdComputer;
     }
     
-    public static ArrayList<String[]> getReservation() throws SQLException {
+    public static ArrayList<String[]> getReservation(int id_user) throws SQLException {
     	String selectSQL;
-        selectSQL = "SELECT * FROM reserve";
+        selectSQL = "SELECT * FROM reserve WHERE id_user = '" + id_user + "'";
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
         ResultSet rs = preparedStatement.executeQuery(selectSQL);
 
@@ -233,7 +233,7 @@ public class ConnectDB {
     }
 
     public static data.User getUserOnDB(String username, String password) throws SQLException {
-        String selectSQL = "SELECT * FROM user";
+        String selectSQL = "SELECT * FROM user WHERE username = '" + username + "'";
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
         ResultSet rs = preparedStatement.executeQuery(selectSQL);
 

@@ -42,7 +42,7 @@ public class MyWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					new ReservUserWindow(utils.ConnectDB.getReservation());
+					new ReservUserWindow(utils.ConnectDB.getReservation(Main.user.getUserId()));
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
