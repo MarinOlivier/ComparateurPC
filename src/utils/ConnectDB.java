@@ -12,14 +12,28 @@ import java.util.*;
 import com.mysql.jdbc.Connection;
 import data.Computer;
 
+/**
+ * The type Connect db.
+ */
 public class ConnectDB {
+    /**
+     * The connection.
+     */
 	static Connection _con = utils.ConnectDB.startConnection();
 
+    /**
+     * The computer component list.
+     */
     private static String component[] = {"id", "name", "motherBoard", "CPU", "RAM", "GPU", "ROM", "powerSupply",
             "price", "RAM_freq", "CPU_freq", "GPU_freq", "GPU_RAM", "E_S",
             "case_PC", "airing", "OS", "brand", "soundCard", "pict"};
 
 
+    /**
+     * Start connection connection.
+     *
+     * @return the connection
+     */
     public static Connection startConnection() {
         Connection conn = null;
         try {
@@ -32,7 +46,13 @@ public class ConnectDB {
 
         return conn;
     }
-    
+
+    /**
+     * Push computer on db.
+     *
+     * @param a the a
+     * @throws SQLException the sql exception
+     */
     public static void pushComputerOnDB(HashMap<String, String> a) throws SQLException {
         String sql = "INSERT INTO computer " +
                 "(name, motherBoard, CPU, RAM, GPU, ROM, powerSupply, price, RAM_freq, CPU_freq, GPU_freq, GPU_RAM, E_S, case_pc, airing, OS, brand, soundCard, pict)" +
@@ -52,6 +72,12 @@ public class ConnectDB {
         preparedStatement.executeUpdate();
     }
 
+    /**
+     * Gets all computer on db.
+     *
+     * @return the all computer on db
+     * @throws SQLException the sql exception
+     */
     public static ArrayList<Computer> getAllComputerOnDB() throws SQLException {
         String selectSQL = "SELECT * FROM computer";
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
@@ -60,7 +86,14 @@ public class ConnectDB {
 
         return dbToArrayList(rs);
     }
-    
+
+    /**
+     * Gets computer on db.
+     *
+     * @param wishedComp the wished comp
+     * @return the computer on db
+     * @throws SQLException the sql exception
+     */
     public static ArrayList<Computer> getComputerOnDB(Computer wishedComp) throws SQLException {
         String WHERE = "";
         
@@ -95,7 +128,14 @@ public class ConnectDB {
 
         return dbToArrayList(rs);
     }
-    
+
+    /**
+     * Gets one computer by id.
+     *
+     * @param idComputer
+     * @return
+     * @throws SQLException
+     */
     public static Computer getOneComputer(String idComputer) throws SQLException {
         int newIdComputer = Integer.parseInt(idComputer);
     	String selectSQL = "SELECT * FROM computer WHERE id = " + newIdComputer;
@@ -130,6 +170,13 @@ public class ConnectDB {
     	return tmp;
     }
 
+    /**
+     * Gets list of all possible values of a database field.
+     *
+     * @param element
+     * @return
+     * @throws SQLException
+     */
     public static String[] getCriteria(String element) throws SQLException {
         String selectSQL = "SELECT DISTINCT " + element + " FROM computer WHERE `"+ element +"` <> 'null' ORDER BY "+ element;
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
@@ -147,6 +194,12 @@ public class ConnectDB {
         return list.toArray(new String[list.size()]);
     }
 
+    /**
+     * Convert ResultSet from databse to Java ArrayList.
+     *
+     * @param rs
+     * @return
+     */
     private static ArrayList<Computer> dbToArrayList(ResultSet rs){
         ArrayList<Computer> comptList = new ArrayList<>();
         try {
@@ -167,7 +220,16 @@ public class ConnectDB {
         }
         return comptList;
     }
-    
+
+    /**
+     * Push Reservation to database.
+     *
+     * @param idUser
+     * @param idComp
+     * @param nameComp
+     * @param priceComp
+     * @throws SQLException
+     */
     public static void pushReservOnDB(int idUser, String idComp, String nameComp, String priceComp) throws SQLException {
         int newIdComputer = Integer.parseInt(idComp);
     	String sql = "INSERT INTO reserve " +
@@ -181,6 +243,13 @@ public class ConnectDB {
         preparedStatement.executeUpdate();
     }
 
+    /**
+     * Remove a reservation on database.
+     *
+     * @param idUser
+     * @param idComp
+     * @throws SQLException
+     */
     public static void removeReservOnDB(int idUser, String idComp) throws SQLException {
         int newIdComputer = Integer.parseInt(idComp);
         String sql = "DELETE FROM reserve WHERE id_user = ? AND id_computer = ?";
@@ -190,6 +259,14 @@ public class ConnectDB {
         preparedStatement.executeUpdate();
     }
 
+    /**
+     * Verify if a reservation already exist.
+     *
+     * @param idUser
+     * @param idComp
+     * @return
+     * @throws SQLException
+     */
     public static boolean verifReserv(int idUser, String idComp) throws SQLException {
         int newIdComputer = Integer.parseInt(idComp);
     	String selectSQL;
@@ -203,7 +280,14 @@ public class ConnectDB {
         
         return verifIdComp == newIdComputer;
     }
-    
+
+    /**
+     * Gets reservation by id.
+     *
+     * @param id_user
+     * @return
+     * @throws SQLException
+     */
     public static ArrayList<String[]> getReservation(int id_user) throws SQLException {
     	String selectSQL;
         selectSQL = "SELECT * FROM reserve WHERE id_user = '" + id_user + "'";
@@ -232,6 +316,14 @@ public class ConnectDB {
         return arrReserv;
     }
 
+    /**
+     * Gets user on database.
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws SQLException
+     */
     public static data.User getUserOnDB(String username, String password) throws SQLException {
         String selectSQL = "SELECT * FROM user WHERE username = '" + username + "'";
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
@@ -249,6 +341,14 @@ public class ConnectDB {
         return user;
     }
 
+    /**
+     * Check credentials of user.
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws SQLException
+     */
     public static boolean checkUser(String username, String password) throws SQLException {
         String selectSQL = "SELECT username, password, salt FROM user WHERE username = '" + username + "'";
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
@@ -288,6 +388,13 @@ public class ConnectDB {
         return Objects.equals(usernameTmp, username) && Objects.equals(sb.toString(), passwordTmp);
     }
 
+    /**
+     * Check if user exist.
+     *
+     * @param username
+     * @return
+     * @throws SQLException
+     */
     public static boolean isUserExist(String username) throws SQLException {
         String selectSQL = "SELECT id FROM user WHERE username = '" + username + "'";
         PreparedStatement preparedStatement = _con.prepareStatement(selectSQL);
@@ -296,6 +403,14 @@ public class ConnectDB {
         return rs.next();
     }
 
+    /**
+     * Push user on database.
+     *
+     * @param username
+     * @param role
+     * @param password
+     * @throws SQLException
+     */
     public static void pushUserOnDB(String username, String role, String password) throws SQLException {
         MessageDigest md = null;
 

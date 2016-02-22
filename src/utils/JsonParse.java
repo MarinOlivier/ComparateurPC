@@ -12,7 +12,7 @@ import org.json.*;
  */
 public class JsonParse {
     /**
-     * Reader.
+     * Reader, parse Json file.
      *
      * @param file the file
      * @param conn the conn
@@ -61,9 +61,9 @@ public class JsonParse {
     }
 
     /**
-     * Lit l'InputStream entièrement et le charge en mémoire sous forme de String avec le charset donné.
-     * Ignore les fins de ligne.
-     * Ne ferme pas l'InputStream, qui doit donc être fermé par son créateur.  @param is the is
+     * Convert the InputStream to String.
+     * Ignore the end of lines.
+     * Does not close the InputStream, user have to do that..
      *
      * @param charset the charset
      * @return the string
@@ -79,8 +79,8 @@ public class JsonParse {
     }
 
     /**
-     * Lit le fichier entièrement et le charge en mémoire sous forme de String avec le charset donné.
-     * Ignore les fins de ligne.  @param file the file
+     * Read the entire file and convert into a String.
+     * Ignore the end of lines
      *
      * @param charset the charset
      * @return the string
@@ -93,8 +93,8 @@ public class JsonParse {
     }
 
     /**
-     * Lit le fichier utf-8 entièrement et le charge en mémoire sous forme de String.
-     * Ignore les fins de ligne.  @param file the file
+     * Read the UTF-8 file and convert it to String.
+     * Ignore the end of lines.
      *
      * @return the string
      * @throws IOException the io exception
